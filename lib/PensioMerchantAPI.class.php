@@ -25,7 +25,7 @@ class PensioMerchantAPI
 	private $logger;
 	private $httpUtil;
 
-	public function __construct($baseURL, $username, $password, IPensioCommunicationLogger $logger = null, IPensioHTTPUtil $httpUtil = null)
+	public function __construct($baseURL, $username, $password, IPensioCommunicationLogger $logger = null, IPensioHttpUtils $httpUtil = null)
 	{
 		$this->connected = false;
 		$this->baseURL = rtrim($baseURL, '/');
@@ -111,7 +111,7 @@ class PensioMerchantAPI
 			{
 				return new SimpleXMLElement('<APIResponse version="unknown">'
 					.'<Header>'
-					.'<Date>'.date('U').'</Date>'
+					.'<Date>'.date('c').'</Date>'
 					.'<Path>API/'.$method.'</Path>'
 					.'<ErrorCode>401</ErrorCode>'
 					.'<ErrorMessage>Unauthorized Access Denied</ErrorMessage>'
@@ -123,7 +123,7 @@ class PensioMerchantAPI
 			{
 				return new SimpleXMLElement('<APIResponse version="unknown">'
 					.'<Header>'
-					.'<Date>'.date('U').'</Date>'
+					.'<Date>'.date('c').'</Date>'
 					.'<Path>API/'.$method.'</Path>'
 					.'<ErrorCode>'.$response->getHttpCode().'</ErrorCode>'
 					.'<ErrorMessage>Unknown error</ErrorMessage>'
@@ -136,7 +136,7 @@ class PensioMerchantAPI
 		{
 			return new SimpleXMLElement('<APIResponse version="unknown">'
 				.'<Header>'
-				.'<Date>'.date('U').'</Date>'
+				.'<Date>'.date('c').'</Date>'
 				.'<Path>API/'.$method.'</Path>'
 				.'<ErrorCode>89174</ErrorCode>'
 				.'<ErrorMessage>Error: '.$e->getMessage().'</ErrorMessage>'
@@ -146,7 +146,7 @@ class PensioMerchantAPI
 		}
 		return new SimpleXMLElement('<APIResponse version="unknown">'
 			.'<Header>'
-			.'<Date>'.date('U').'</Date>'
+			.'<Date>'.date('c').'</Date>'
 			.'<Path>API/'.$method.'</Path>'
 			.'<ErrorCode>239874</ErrorCode>'
 			.'<ErrorMessage>Unknown Error</ErrorMessage>'
