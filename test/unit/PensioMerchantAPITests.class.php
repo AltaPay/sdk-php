@@ -55,4 +55,16 @@ class PensioMerchantAPITests extends MockitTestCase
 		$loginResponse = $this->merchantAPI->login();
 		$this->assertEquals('Unauthorized Access Denied', $loginResponse->getErrorMessage());
 	}
+
+
+	public function testGetPaymentParsesXmlCorrectly()
+	{
+		$this->response->when()->getHttpCode()->thenReturn(200);
+		$this->response->when()->getContent()->thenReturn(file_get_contents(dirname(dirname(dirname(__FILE__))).'/example/xml/payments.xml'));
+		$this->httpUtils->when()->requestURL()->thenReturn($this->response->instance());
+
+		$this->merchantAPI->login();
+		$getPaymentResponse = $this->merchantAPI->getPayment('123');
+		throw new Exception(print_r($getPaymentResponse, true));
+	}
 }

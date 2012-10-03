@@ -314,9 +314,9 @@ class PensioMerchantAPI
 			)
 		);
 
-		if(isset($body->Transactions[0]))
+		if(isset($body->Body->Transactions))
 		{
-			return $body->Transactions[0]->Transaction[0];
+			return $body->Body->Transactions->Transaction;
 		}
 		return null;
 	}
