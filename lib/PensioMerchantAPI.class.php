@@ -392,14 +392,23 @@ class PensioMerchantAPI
 	
 	/**
 	 * @return PensioCaptureRecurringResponse
+	 * @deprecated - use chargeSubscription instead.
 	 */
 	public function captureRecurring($subscriptionId, $amount=null)
+	{
+		return $this->chargeSubscription($subscriptionId, $amount);
+	}	
+		
+	/**
+	 * @return PensioCaptureRecurringResponse
+	 */
+	public function chargeSubscription($subscriptionId, $amount=null)
 	{
 		$this->checkConnection();
 
 		return new PensioCaptureRecurringResponse(
 			$this->callAPIMethod(
-				'captureRecurring',
+				'chargeSubscription',
 				array(
 					'transaction_id'=>$subscriptionId, 
 					'amount'=>$amount,
@@ -410,14 +419,24 @@ class PensioMerchantAPI
 	
 	/**
 	 * @return PensioPreauthRecurringResponse
+	 * @deprecated - use reserveSubscriptionCharge instead
 	 */
 	public function preauthRecurring($subscriptionId, $amount=null)
+	{
+		return $this->reserveSubscriptionCharge($subscriptionId, $amount);
+	}
+	
+	
+	/**
+	 * @return PensioPreauthRecurringResponse
+	 */
+	public function reserveSubscriptionCharge($subscriptionId, $amount=null)
 	{
 		$this->checkConnection();
 
 		return new PensioPreauthRecurringResponse(
 			$this->callAPIMethod(
-				'preauthRecurring',
+				'reserveSubscriptionCharge',
 				array(
 					'transaction_id'=>$subscriptionId, 
 					'amount'=>$amount,
