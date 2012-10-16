@@ -11,6 +11,9 @@ require_once(dirname(__FILE__).'/PensioReservationResponse.class.php');
 require_once(dirname(__FILE__).'/PensioCaptureRecurringResponse.class.php');
 require_once(dirname(__FILE__).'/PensioPreauthRecurringResponse.class.php');
 require_once(dirname(__FILE__).'/PensioAPIPaymentNatureService.class.php');
+require_once(dirname(__FILE__).'/PensioAPICustomerInfo.class.php');
+require_once(dirname(__FILE__).'/PensioAPIAddress.class.php');
+require_once(dirname(__FILE__).'/PensioAPIPaymentInfos.class.php');
 require_once(dirname(__FILE__).'/PensioCalculateSurchargeResponse.class.php');
 require_once(dirname(__FILE__).'/http/PensioFOpenBasedHttpUtils.class.php');
 require_once(dirname(__FILE__).'/http/PensioCurlBasedHttpUtils.class.php');
@@ -205,14 +208,13 @@ class PensioMerchantAPI
 		, $cc_expiry_year
 		, $cc_expiry_month
 		, $cvc
-		, $payment_source)
+		, $payment_source
+		, array $customerInfo = array()
+		, array $transaction_info = array())
 	{
 		$this->checkConnection();
 
-		return new PensioReservationResponse(
-			$this->callAPIMethod(
-				'reservationOfFixedAmountMOTO',
-				array(
+		$args = array(
 					'terminal'=>$terminal, 
 					'shop_orderid'=>$shop_orderid, 
 					'amount'=>$amount, 
@@ -222,7 +224,23 @@ class PensioMerchantAPI
 					'eyear'=>$cc_expiry_year,
 					'cvc'=>$cvc,
 					'payment_source'=>$payment_source
-				)
+		);
+		foreach(array('billing_city', 'billing_region', 'billing_postal', 'billing_country', 'email', 'customer_phone', 'bank_name', 'bank_phone', 'billing_firstname', 'billing_lastname', 'billing_address') as $custField)
+		{
+			if(isset($customerInfo[$custField]))
+			{
+				$args[$custField] = $customerInfo[$custField];
+			}
+		}
+		if(count($transaction_info) > 0)
+		{
+			$args['transaction_info'] = $transaction_info;
+		}
+		
+		return new PensioReservationResponse(
+			$this->callAPIMethod(
+				'reservationOfFixedAmountMOTO',
+				$args
 			)
 		);
 	}

@@ -79,6 +79,16 @@ class PensioAPIPayment
 	private $paymentNature;
 	private $paymentNatureService;
 	
+	/**
+	 * @var PensioAPICustomerInfo
+	 */
+	private $customerInfo;
+	
+	/**
+	 * @var PensioAPIPaymentInfos
+	 */
+	private $paymentInfos;
+	
 	private $reconciliationIdentifiers = array();
 	
 	public function __construct(SimpleXmlElement $xml)
@@ -101,12 +111,13 @@ class PensioAPIPayment
 		
 		$this->paymentNature = (string)$xml->PaymentNature;
 		$this->paymentNatureService = new PensioAPIPaymentNatureService($xml->PaymentNatureService);
+		$this->customerInfo = new PensioAPICustomerInfo($xml->CustomerInfo);
+		$this->paymentInfos = new PensioAPIPaymentInfos($xml->PaymentInfos);
 		
 		foreach($xml->ReconciliationIdentifiers->ReconciliationIdentifier as $reconXml)
 		{
 			$this->reconciliationIdentifiers[] = new PensioAPIReconciliationIdentifier($reconXml);
 		}
-		
 	}
 	
 	public function mustBeCaptured()
@@ -167,9 +178,25 @@ class PensioAPIPayment
 		return $this->paymentNature;
 	}
 	
+	/**
+	 * @return PensioAPIPaymentNatureService
+	 */
 	public function getPaymentNatureService()
 	{
 		return $this->paymentNatureService;
+	}
+	
+	/**
+	 * @return PensioAPICustomerInfo
+	 */
+	public function getCustomerInfo()
+	{
+		return $this->customerInfo;
+	}
+	
+	public function getPaymentInfo($keyName)
+	{
+		return $this->paymentInfos->getInfo($keyName);
 	}
 	
 	public function getCurrency()
