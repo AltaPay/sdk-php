@@ -38,13 +38,13 @@ class PensioMerchantAPI
 		
 		if(is_null($httpUtil))
 		{
-			if(ini_get('allow_url_fopen'))
-			{
-				$httpUtil = new PensioFOpenBasedHttpUtils();
-			}
-			else if(function_exists('curl_init'))
+			if(function_exists('curl_init'))
 			{
 				$httpUtil = new PensioCurlBasedHttpUtils();
+			}
+			else if(ini_get('allow_url_fopen'))
+			{
+				$httpUtil = new PensioFOpenBasedHttpUtils();
 			}
 			else
 			{
