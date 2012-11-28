@@ -76,6 +76,7 @@ class PensioAPIPayment
 	private $refundedAmount;
 	private $recurringMaxAmount;
 		
+	private $paymentSchemeName;
 	private $paymentNature;
 	private $paymentNatureService;
 	
@@ -109,6 +110,7 @@ class PensioAPIPayment
 		$this->refundedAmount = (string)$xml->RefundedAmount;
 		$this->recurringMaxAmount = (string)$xml->RecurringMaxAmount;
 		
+		$this->paymentSchemeName = (string)$xml->PaymentSchemeName;
 		$this->paymentNature = (string)$xml->PaymentNature;
 		$this->paymentNatureService = new PensioAPIPaymentNatureService($xml->PaymentNatureService);
 		$this->customerInfo = new PensioAPICustomerInfo($xml->CustomerInfo);
@@ -176,6 +178,11 @@ class PensioAPIPayment
 	public function getPaymentNature()
 	{
 		return $this->paymentNature;
+	}
+	
+	public function getPaymentSchemeName()
+	{
+		return $this->paymentSchemeName;
 	}
 	
 	/**
