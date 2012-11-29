@@ -198,6 +198,62 @@ class PensioMerchantAPI
 		
 		return false;
 	}
+	
+	private function reservationInternal(
+			  $apiMethod
+			, $terminal
+			, $shop_orderid
+			, $amount
+			, $currency
+			, $cc_num
+			, $cc_expiry_year
+			, $cc_expiry_month
+			, $credit_card_token
+			, $cvc
+			, $payment_source
+			, array $customerInfo
+			, array $transaction_info)
+	{
+		$this->checkConnection();
+	
+		$args = array(
+				'terminal'=>$terminal,
+				'shop_orderid'=>$shop_orderid,
+				'amount'=>$amount,
+				'currency'=>$currency,
+				'cvc'=>$cvc,
+				'payment_source'=>$payment_source
+		);
+		if(!is_null($credit_card_token))
+		{
+			$args['credit_card_token'] = $credit_card_token;
+		}
+		else
+		{
+			$args['cardnum'] = $cc_num;
+			$args['emonth'] = $cc_expiry_month;
+			$args['eyear'] = $cc_expiry_year;
+		}
+		foreach(array('billing_city', 'billing_region', 'billing_postal', 'billing_country', 'email', 'customer_phone', 'bank_name', 'bank_phone', 'billing_firstname', 'billing_lastname', 'billing_address') as $custField)
+		{
+			if(isset($customerInfo[$custField]))
+			{
+				$args[$custField] = $customerInfo[$custField];
+			}
+		}
+		if(count($transaction_info) > 0)
+		{
+			$args['transaction_info'] = $transaction_info;
+		}
+	
+		return new PensioReservationResponse(
+				$this->callAPIMethod(
+						$apiMethod,
+						$args
+				)
+		);
+	}
+	
 
 	public function reservationOfFixedAmount(
 		  $terminal
@@ -210,39 +266,22 @@ class PensioMerchantAPI
 		, $cvc
 		, $payment_source
 		, array $customerInfo = array()
-		, array $transaction_info = array())
+		, array $transactionInfo = array())
 	{
-		$this->checkConnection();
-
-		$args = array(
-					'terminal'=>$terminal, 
-					'shop_orderid'=>$shop_orderid, 
-					'amount'=>$amount, 
-					'currency'=>$currency, 
-					'cardnum'=>$cc_num,
-					'emonth'=>$cc_expiry_month,
-					'eyear'=>$cc_expiry_year,
-					'cvc'=>$cvc,
-					'payment_source'=>$payment_source
-		);
-		foreach(array('billing_city', 'billing_region', 'billing_postal', 'billing_country', 'email', 'customer_phone', 'bank_name', 'bank_phone', 'billing_firstname', 'billing_lastname', 'billing_address') as $custField)
-		{
-			if(isset($customerInfo[$custField]))
-			{
-				$args[$custField] = $customerInfo[$custField];
-			}
-		}
-		if(count($transaction_info) > 0)
-		{
-			$args['transaction_info'] = $transaction_info;
-		}
-		
-		return new PensioReservationResponse(
-			$this->callAPIMethod(
-				'reservationOfFixedAmountMOTO',
-				$args
-			)
-		);
+		return $this->reservationInternal(
+				'reservationOfFixedAmountMOTO'
+				, $terminal
+				, $shop_orderid
+				, $amount
+				, $currency
+				, $cc_num
+				, $cc_expiry_year
+				, $cc_expiry_month
+				, null // $credit_card_token
+				, $cvc
+				, $payment_source
+				, $customerInfo
+				, $transactionInfo);
 	}
 
 	public function reservationOfFixedAmountMOTOWithToken(
@@ -250,25 +289,57 @@ class PensioMerchantAPI
 		, $shop_orderid
 		, $amount
 		, $currency
-		, $credit_card_token)
+		, $credit_card_token
+		, $cvc = null
+		, $payment_source = 'moto'
+		, array $customerInfo = array()
+		, array $transactionInfo = array())
 	{
-		$this->checkConnection();
-
-		return new PensioReservationResponse(
-			$this->callAPIMethod(
-				'reservationOfFixedAmountMOTO',
-				array(
-					'terminal'=>$terminal, 
-					'shop_orderid'=>$shop_orderid, 
-					'amount'=>$amount, 
-					'currency'=>$currency, 
-					'credit_card_token'=>$credit_card_token,
-					'payment_source'=>'moto'
-				)
-			)
-		);
+		return $this->reservationInternal(
+				'reservationOfFixedAmountMOTO'
+				, $terminal
+				, $shop_orderid
+				, $amount
+				, $currency
+				, null
+				, null
+				, null
+				, $credit_card_token
+				, $cvc
+				, $payment_source
+				, $customerInfo
+				, $transactionInfo);
 	}
 
+	public function setupSubscription(
+		$terminal
+		, $shop_orderid
+		, $amount
+		, $currency
+		, $cc_num
+		, $cc_expiry_year
+		, $cc_expiry_month
+		, $cvc
+		, $payment_source
+		, array $customerInfo = array()
+		, array $transactionInfo = array())
+	{
+		return $this->reservationInternal(
+				'setupSubscription'
+				, $terminal
+				, $shop_orderid
+				, $amount
+				, $currency
+				, $cc_num
+				, $cc_expiry_year
+				, $cc_expiry_month
+				, null // $credit_card_token
+				, $cvc
+				, $payment_source
+				, $customerInfo
+				, $transactionInfo);		
+	}
+	
 	/**
 	 * @return PensioCaptureResponse
 	 */

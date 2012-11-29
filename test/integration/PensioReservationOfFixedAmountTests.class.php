@@ -88,4 +88,20 @@ class PensioReservationOfFixedAmountTests extends MockitTestCase
 		$this->assertEquals("aux data (<æøå>)", $response->getPrimaryPayment()->getPaymentInfo('auxkey'));
 		$this->assertEquals("MyValue", $response->getPrimaryPayment()->getPaymentInfo('otherkey'));
 	}
+
+	public function testPaymentSchemeNameIsVisa()
+	{
+		$response = $this->merchantApi->reservationOfFixedAmount(
+				PENSIO_INTEGRATION_TERMINAL
+				, 'testorder'
+				, 42.00
+				, PENSIO_INTEGRATION_CURRENCY
+				, '4111000011110000' 
+				, '2020'
+				, '12'
+				, '123'
+				, 'eCommerce');
+		
+		$this->assertEquals('Visa', $response->getPrimaryPayment()->getPaymentSchemeName());
+	}
 }

@@ -15,18 +15,23 @@ class PensioPreauthRecurringResponse extends PensioAbstractPaymentResponse
 	}
 
 	/**
+	 * This payment represent the subscription, it is returned as the subscription it 
+	 * self might have changed since last time it was used.
+	 * 
 	 * @return PensioAPIPayment
 	 */
 	public function getSubscriptionPayment()
 	{
-		return $this->payments[0];
+		return isset($this->payments[0]) ? $this->payments[0] : null;
 	}
 	
 	/**
+	 * This is the payment which was pre-authed.
+	 * 
 	 * @return PensioAPIPayment
 	 */
 	public function getPrimaryPayment()
 	{
-		return $this->payments[1];
+		return isset($this->payments[1]) ? $this->payments[1] : null;
 	}
 }

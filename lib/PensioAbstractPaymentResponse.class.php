@@ -69,6 +69,11 @@ abstract class PensioAbstractPaymentResponse extends PensioAbstractResponse
 		return $this->getErrorCode() === '0' && $this->result == 'Failed';
 	}
 	
+	public function wasErroneous()
+	{
+		return $this->getErrorCode() !== '0' || $this->result == 'Error';
+	}
+	
 	public function getMerchantErrorMessage()
 	{
 		return $this->merchantErrorMessage;
