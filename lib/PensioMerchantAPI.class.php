@@ -71,7 +71,7 @@ class PensioMerchantAPI
 	{
 		if(strlen($pan) >= 10)
 		{
-			return  substr($pan, 0, 6).str_repeat('*', strlen($pan) - 10).substr($pan, -4);
+			return  substr($pan, 0, 6).str_repeat('x', strlen($pan) - 10).substr($pan, -4);
 		}
 		else
 		{
@@ -83,11 +83,16 @@ class PensioMerchantAPI
 	{
 		if(!is_null($this->logger))
 		{
-			if(isset($args['cardnum']))
+			$loggedArgs = $args;
+			if(isset($loggedArgs['cardnum']))
 			{
-				$args['cardnum'] = $this->maskPan($args['cardnum']);
+				$loggedArgs['cardnum'] = $this->maskPan($loggedArgs['cardnum']);
 			}
-			$logId = $this->logger->logRequest($this->baseURL."/merchant/API/".$method.'?'.http_build_query($args));
+			if(isset($loggedArgs['cvc']))
+			{
+				$loggedArgs['cvc'] = str_repeat('x', strlen($loggedArgs['cvc']));
+			}
+			$logId = $this->logger->logRequest($this->baseURL."/merchant/API/".$method.'?'.http_build_query($loggedArgs));
 		}
 
 		$request = new PensioHttpRequest();
@@ -210,6 +215,7 @@ class PensioMerchantAPI
 			, $cc_expiry_month
 			, $credit_card_token
 			, $cvc
+			, $type
 			, $payment_source
 			, array $customerInfo
 			, array $transaction_info)
@@ -222,6 +228,7 @@ class PensioMerchantAPI
 				'amount'=>$amount,
 				'currency'=>$currency,
 				'cvc'=>$cvc,
+				'type'=>$type,
 				'payment_source'=>$payment_source
 		);
 		if(!is_null($credit_card_token))
@@ -279,6 +286,7 @@ class PensioMerchantAPI
 				, $cc_expiry_month
 				, null // $credit_card_token
 				, $cvc
+				, 'payment'
 				, $payment_source
 				, $customerInfo
 				, $transactionInfo);
@@ -306,6 +314,7 @@ class PensioMerchantAPI
 				, null
 				, $credit_card_token
 				, $cvc
+				, 'payment'
 				, $payment_source
 				, $customerInfo
 				, $transactionInfo);
@@ -335,10 +344,41 @@ class PensioMerchantAPI
 				, $cc_expiry_month
 				, null // $credit_card_token
 				, $cvc
+				, 'subscription'
 				, $payment_source
 				, $customerInfo
 				, $transactionInfo);		
 	}
+	
+	public function verifyCard(
+		$terminal
+		, $shop_orderid
+		, $currency
+		, $cc_num
+		, $cc_expiry_year
+		, $cc_expiry_month
+		, $cvc
+		, $payment_source
+		, array $customerInfo = array()
+		, array $transactionInfo = array())
+	{
+		return $this->reservationInternal(
+				'reservationOfFixedAmountMOTO'
+				, $terminal
+				, $shop_orderid
+				, 1.00
+				, $currency
+				, $cc_num
+				, $cc_expiry_year
+				, $cc_expiry_month
+				, null // $credit_card_token
+				, $cvc
+				, 'verifyCard'
+				, $payment_source
+				, $customerInfo
+				, $transactionInfo);		
+	}
+	
 	
 	/**
 	 * @return PensioCaptureResponse

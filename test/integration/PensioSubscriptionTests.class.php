@@ -10,7 +10,12 @@ class PensioSubscriptionTests extends MockitTestCase
 	
 	public function setup()
 	{
-		$this->merchantApi = new PensioMerchantAPI(PENSIO_INTEGRATION_INSTALLATION, PENSIO_INTEGRATION_USERNAME, PENSIO_INTEGRATION_PASSWORD);
+		$this->logger = new ArrayCachingLogger();
+		$this->merchantApi = new PensioMerchantAPI(
+				PENSIO_INTEGRATION_INSTALLATION
+				, PENSIO_INTEGRATION_USERNAME
+				, PENSIO_INTEGRATION_PASSWORD
+				, $this->logger);
 		$this->merchantApi->login();
 	}
 	
@@ -18,7 +23,7 @@ class PensioSubscriptionTests extends MockitTestCase
 	{
 		$response = $this->merchantApi->setupSubscription(
 				PENSIO_INTEGRATION_TERMINAL
-				, 'testorder'
+				, 'subscription'.time()
 				, 42.00
 				, PENSIO_INTEGRATION_CURRENCY
 				, '4111000011110000' 
@@ -34,7 +39,7 @@ class PensioSubscriptionTests extends MockitTestCase
 	{
 		$response = $this->merchantApi->setupSubscription(
 				PENSIO_INTEGRATION_TERMINAL
-				, 'testorder'
+				, 'subscription-declined'.time()
 				, 42.00
 				, PENSIO_INTEGRATION_CURRENCY
 				, '4111000011111466'
@@ -50,7 +55,7 @@ class PensioSubscriptionTests extends MockitTestCase
 	{
 		$response = $this->merchantApi->setupSubscription(
 				PENSIO_INTEGRATION_TERMINAL
-				, 'testorder'
+				, 'subscription-error'.time()
 				, 42.00
 				, PENSIO_INTEGRATION_CURRENCY
 				, '4111000011111467'
@@ -66,7 +71,7 @@ class PensioSubscriptionTests extends MockitTestCase
 	{
 		$subscriptionResponse = $this->merchantApi->setupSubscription(
 				PENSIO_INTEGRATION_TERMINAL
-				, 'testorder'
+				, 'subscription-charge'.time()
 				, 42.00
 				, PENSIO_INTEGRATION_CURRENCY
 				, '4111000011110000'
@@ -75,8 +80,10 @@ class PensioSubscriptionTests extends MockitTestCase
 				, '123'
 				, 'eCommerce');
 	
-		$chargeResponse = $this->merchantApi->chargeSubscription($subscriptionResponse->getPrimaryPayment()->getId());
+		//$chargeResponse = $this->merchantApi->chargeSubscription($subscriptionResponse->getPrimaryPayment()->getId());
 		
+		print_r($this->logger->getLogs());
+		print_r($chargeResponse);
 		$this->assertTrue($chargeResponse->wasSuccessful(), $chargeResponse->getMerchantErrorMessage());
 	}
 	
