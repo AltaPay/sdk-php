@@ -14,7 +14,9 @@ require_once(dirname(__FILE__).'/PensioAPIPaymentNatureService.class.php');
 require_once(dirname(__FILE__).'/PensioAPICustomerInfo.class.php');
 require_once(dirname(__FILE__).'/PensioAPIAddress.class.php');
 require_once(dirname(__FILE__).'/PensioAPIPaymentInfos.class.php');
+require_once(dirname(__FILE__).'/PensioAPIFunding.class.php');
 require_once(dirname(__FILE__).'/PensioCalculateSurchargeResponse.class.php');
+require_once(dirname(__FILE__).'/PensioFundingListResponse.class.php');
 require_once(dirname(__FILE__).'/http/PensioFOpenBasedHttpUtils.class.php');
 require_once(dirname(__FILE__).'/http/PensioCurlBasedHttpUtils.class.php');
 
@@ -163,33 +165,22 @@ class PensioMerchantAPI
 		);
 	}
 
-	public function getFundingListPageCount()
-	{
-		$this->checkConnection();
-
-		$body = $this->callAPIMethod('fundingList');
-
-		$attr = $body->Fundings[0]->attributes();
-		$numPages = $attr['numberOfPages'][0];
-
-		return (int)$numPages;
-	}
-
+	/**
+	 * @return PensioFundingListResponse
+	 */
 	public function getFundingList($page=1)
 	{
 		$this->checkConnection();
 
-		return $this->callAPIMethod('fundingList');
+		return new PensioFundingListResponse($this->callAPIMethod('fundingList', array('page'=>$page)));
 	}
-
-	public function downloadFundingCSV(SimpleXMLElement $funding)
+	
+	public function downloadFundingCSV(PensioAPIFunding $funding)
 	{
 		$this->checkConnection();
 
-		$downloadLink = ((string)$funding->DownloadLink[0]);
-
 		$request = new PensioHttpRequest();
-		$request->setUrl($downloadLink);
+		$request->setUrl($funding->getDownloadLink());
 		$request->setUser($this->username);
 		$request->setPass($this->password);
 		$request->setMethod('GET');

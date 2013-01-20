@@ -1,21 +1,10 @@
 <?php
+require_once(dirname(__FILE__).'/base.php');
 
-require_once(dirname(__FILE__).'/../PensioMerchantAPI.class.php');
-
-$baseURL = "http://gateway.dev.pensio.com/";
-$username = 'shop api';
-$password = 'testpassword';
-
-$api = new PensioMerchantAPI($baseURL, $username, $password, /*IPensioCommunicationLogger $logger = */null);
-
-$response = $api->login();
-if(!$response->wasSuccessful())
-{
-	throw new Exception("Could not login to the Merchant API: ".$response->getErrorMessage());
-}
 
 $subscriptionId = 2;
 $amount = 2500.00;
+$currency = 'DKK';
 $response = $api->calculateSurchargeForSubscription($subscriptionId, $amount, $currency);
 //print_r($response);
 if(!$response->wasSuccessful())

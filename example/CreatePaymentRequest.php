@@ -1,19 +1,6 @@
 <?php
+require_once(dirname(__FILE__).'/base.php');
 
-require_once(dirname(__FILE__).'/../PensioMerchantAPI.class.php');
-
-$baseURL = "https://testgateway.pensio.com/";
-$username = 'username';
-$password = 'password';
-$terminal = 'elvvs.dk Test Terminal';
-
-$api = new PensioMerchantAPI($baseURL, $username, $password, /*IPensioCommunicationLogger $logger = */null);
-
-$response = $api->login();
-if(!$response->wasSuccessful())
-{
-	throw new Exception("Could not login to the Merchant API: ".$response->getErrorMessage());
-}
 
 // The details for the order
 $orderid = 'order'.time();
@@ -37,7 +24,7 @@ $customerInfo = array(
 			'shipping_firstname'=> 'Snej',
 			'shipping_lastname'=> 'Nyl',
 ); // See the documentation for further details
-$cookie = $_SERVER['HTTP_COOKIE'];
+$cookie = isset($_SERVER['HTTP_COOKIE']) ? $_SERVER['HTTP_COOKIE'] : 'somecookie=tastesgood';
 $language = 'en';
 $config = array(
 				  'callback_form' => 'http://shopdomain.url/pensiopayment/form.php'
@@ -65,4 +52,4 @@ if(!$response->wasSuccessful())
 }
 
 // TODO: redirect the user to the URL:
-// header('Location: '.$response->getRedirectURL());
+print("Then you can invoke: header('Location: ".$response->getRedirectURL()."');\n");

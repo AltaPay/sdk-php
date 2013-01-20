@@ -3,8 +3,8 @@
 class PensioHttpRequest
 {
 	private $url;
-	private $method;
-	private $parameters;
+	private $method = 'GET';
+	private $parameters = array();
 	private $postContent;
 	private $user;
 	private $pass;
