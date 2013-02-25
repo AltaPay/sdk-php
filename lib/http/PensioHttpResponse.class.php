@@ -13,7 +13,15 @@ class PensioHttpResponse
 	{
 		return $this->header;
 	}
-
+	
+	public function getContentType()
+	{
+		if(preg_match('/^Content-Type: (.+)$/m',$this->header,$matches))
+		{
+			return trim($matches[1]);
+		}
+	}
+	
 	public function getLocationHeader()
 	{
 		if(preg_match('/^Location: (.+)$/m',$this->header,$matches))

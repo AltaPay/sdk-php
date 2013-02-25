@@ -113,9 +113,21 @@ class PensioMerchantAPI
 
 		try
 		{
-			if($response->getHttpCode() == 200)
+			if($response->getHttpCode() == 200 && stripos($response->getContentType(), "text/xml") !== false)
 			{
 				return new SimpleXMLElement($response->getContent());
+			}
+			else if(stripos($response->getContentType(), "text/xml") === false)
+			{
+				return new SimpleXMLElement('<APIResponse version="unknown">'
+					.'<Header>'
+					.'<Date>'.date('c').'</Date>'
+					.'<Path>API/'.$method.'</Path>'
+					.'<ErrorCode>400</ErrorCode>'
+					.'<ErrorMessage>Cannot understand answer from the server</ErrorMessage>'
+					.'</Header>'
+					.'</APIResponse>'
+				);
 			}
 			else if($response->getHttpCode() == 401)
 			{
