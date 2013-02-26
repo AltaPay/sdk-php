@@ -124,7 +124,7 @@ class PensioMerchantAPI
 					.'<Date>'.date('c').'</Date>'
 					.'<Path>API/'.$method.'</Path>'
 					.'<ErrorCode>400</ErrorCode>'
-					.'<ErrorMessage>Cannot understand answer from the server</ErrorMessage>'
+					.'<ErrorMessage>Unexpected response from the server, expected "text/xml", actual "'.$response->getContentType().'"</ErrorMessage>'
 					.'</Header>'
 					.'</APIResponse>'
 				);
