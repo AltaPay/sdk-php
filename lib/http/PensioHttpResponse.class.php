@@ -37,6 +37,10 @@ class PensioHttpResponse
 	
 	public function setHeader($header)
 	{
+		if(is_array($header))
+		{
+			$header = implode("\r\n", $header);
+		}		
 		$this->header = $header;
 	}
 	
