@@ -149,7 +149,7 @@ class PensioMerchantAPI
 			}
 			else
 			{
-				throw new InvalidResponseException("Non HTTP 200 Response: ".$response->getErrorMessage());
+				throw new InvalidResponseException("Non HTTP 200 Response: ".$response->getHttpCode());
 			}
 		}
 		else if($response->getConnectionResult() == PensioHttpResponse::CONNECTION_REFUSED)
