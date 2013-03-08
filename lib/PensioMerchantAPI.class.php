@@ -172,6 +172,7 @@ class PensioMerchantAPI
 
 	/**
 	 * @return PensioFundingListResponse
+	 * @throws PensioMerchantAPIException
 	 */
 	public function getFundingList($page=1)
 	{
@@ -180,6 +181,10 @@ class PensioMerchantAPI
 		return new PensioFundingListResponse($this->callAPIMethod('fundingList', array('page'=>$page)));
 	}
 	
+	/**
+	 * @return string|boolean
+	 * @throws PensioMerchantAPIException
+	 */
 	public function downloadFundingCSV(PensioAPIFunding $funding)
 	{
 		$this->checkConnection();
@@ -258,6 +263,10 @@ class PensioMerchantAPI
 	}
 	
 
+	/**
+	 * @return PensioReservationResponse
+	 * @throws PensioMerchantAPIException
+	 */
 	public function reservationOfFixedAmount(
 		  $terminal
 		, $shop_orderid
@@ -288,6 +297,10 @@ class PensioMerchantAPI
 				, $transactionInfo);
 	}
 
+	/**
+	 * @return PensioReservationResponse
+	 * @throws PensioMerchantAPIException
+	 */
 	public function reservationOfFixedAmountMOTOWithToken(
 		$terminal
 		, $shop_orderid
@@ -316,6 +329,10 @@ class PensioMerchantAPI
 				, $transactionInfo);
 	}
 
+	/**
+	 * @return PensioReservationResponse
+	 * @throws PensioMerchantAPIException
+	 */
 	public function setupSubscription(
 		$terminal
 		, $shop_orderid
@@ -346,6 +363,10 @@ class PensioMerchantAPI
 				, $transactionInfo);		
 	}
 	
+	/**
+	 * @return PensioReservationResponse
+	 * @throws PensioMerchantAPIException
+	 */
 	public function verifyCard(
 		$terminal
 		, $shop_orderid
@@ -378,6 +399,7 @@ class PensioMerchantAPI
 	
 	/**
 	 * @return PensioCaptureResponse
+	 * @throws PensioMerchantAPIException
 	 */
 	public function captureReservation($paymentId, $amount=null, array $orderLines=array(), $salesTax=null)
 	{
@@ -398,6 +420,7 @@ class PensioMerchantAPI
 
 	/**
 	 * @return PensioRefundResponse
+	 * @throws PensioMerchantAPIException
 	 */
 	public function refundCapturedReservation($paymentId, $amount=null)
 	{
@@ -414,6 +437,10 @@ class PensioMerchantAPI
 		);
 	}
 
+	/**
+	 * @return PensioReleaseResponse
+	 * @throws PensioMerchantAPIException
+	 */
 	public function releaseReservation($paymentId, $amount=null)
 	{
 		$this->checkConnection();
@@ -428,6 +455,10 @@ class PensioMerchantAPI
 		);
 	}
 
+	/**
+	 * @return NULL
+	 * @throws PensioMerchantAPIException
+	 */
 	public function getPayment($paymentId)
 	{
 		$this->checkConnection();
@@ -448,6 +479,7 @@ class PensioMerchantAPI
 	
 	/**
 	 * @return PensioGetTerminalsResponse
+	 * @throws PensioMerchantAPIException
 	 */
 	public function getTerminals()
 	{
@@ -458,6 +490,7 @@ class PensioMerchantAPI
 
 	/**
 	 * @return PensioLoginResponse
+	 * @throws PensioMerchantAPIException
 	 */
 	public function login()
 	{
@@ -475,6 +508,7 @@ class PensioMerchantAPI
 	
 	/**
 	 * @return PensioCreatePaymentRequestResponse
+	 * @throws PensioMerchantAPIException
 	 */
 	public function createPaymentRequest($terminal,
 			$orderid,
@@ -518,6 +552,7 @@ class PensioMerchantAPI
 	/**
 	 * @return PensioCaptureRecurringResponse
 	 * @deprecated - use chargeSubscription instead.
+	 * @throws PensioMerchantAPIException
 	 */
 	public function captureRecurring($subscriptionId, $amount=null)
 	{
@@ -526,6 +561,7 @@ class PensioMerchantAPI
 		
 	/**
 	 * @return PensioCaptureRecurringResponse
+	 * @throws PensioMerchantAPIException
 	 */
 	public function chargeSubscription($subscriptionId, $amount=null)
 	{
@@ -545,6 +581,7 @@ class PensioMerchantAPI
 	/**
 	 * @return PensioPreauthRecurringResponse
 	 * @deprecated - use reserveSubscriptionCharge instead
+	 * @throws PensioMerchantAPIException
 	 */
 	public function preauthRecurring($subscriptionId, $amount=null)
 	{
@@ -554,6 +591,7 @@ class PensioMerchantAPI
 	
 	/**
 	 * @return PensioPreauthRecurringResponse
+	 * @throws PensioMerchantAPIException
 	 */
 	public function reserveSubscriptionCharge($subscriptionId, $amount=null)
 	{
@@ -572,6 +610,7 @@ class PensioMerchantAPI
 
 	/**
 	 * @return PensioCalculateSurchargeResponse
+	 * @throws PensioMerchantAPIException
 	 */
 	public function calculateSurcharge($terminal, $cardToken, $amount, $currency)
 	{
@@ -592,6 +631,7 @@ class PensioMerchantAPI
 	
 	/**
 	 * @return PensioCalculateSurchargeResponse
+	 * @throws PensioMerchantAPIException
 	 */
 	public function calculateSurchargeForSubscription($subscriptionId, $amount)
 	{
