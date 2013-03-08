@@ -2,12 +2,18 @@
 
 class PensioHttpResponse
 {
+	const CONNECTION_REFUSED = 'CONNECTION_REFUSED';
+	const CONNECTION_TIMEOUT = 'CONNECTION_TIMEOUT';
+	const CONNECTION_READ_TIMEOUT = 'CONNECTION_READ_TIMEOUT';
+	const CONNECTION_OKAY = 'CONNECTION_OKAY';
+	
 	private $requestHeader = '';
 	private $header = '';
 	private $content = '';
 	private $info;
 	private $errorMessage;
 	private $errorNumber;
+	private $connectionResult;
 	
 	public function getHeader()
 	{
@@ -87,6 +93,16 @@ class PensioHttpResponse
 	public function setErrorNumber($errorNumber)
 	{
 		$this->errorNumber = $errorNumber;
+	}
+	
+	public function getConnectionResult()
+	{
+		return $this->connectionResult;
+	}
+	
+	public function setConnectionResult($connectionResult)
+	{
+		$this->connectionResult = $connectionResult;
 	}
 	
 	public function getHttpCode()
