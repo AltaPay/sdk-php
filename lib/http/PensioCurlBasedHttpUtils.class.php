@@ -4,9 +4,10 @@ require_once(dirname(__FILE__).'/IPensioHttpUtils.class.php');
 
 class PensioCurlBasedHttpUtils implements IPensioHttpUtils
 {
-	public function __construct($timeoutSeconds=60)
+	public function __construct($timeoutSeconds=60, $connectionTimeout=30)
 	{
 		$this->timeout = $timeoutSeconds;
+		$this->connectionTimeout = $connectionTimeout;
 	}
 	
 	/**
@@ -20,10 +21,8 @@ class PensioCurlBasedHttpUtils implements IPensioHttpUtils
 			curl_setopt($curl, CURLOPT_USERPWD, $request->getUser().":".$request->getPass());
 		}
 		
-		if(!is_null($this->timeout))
-		{
-			curl_setopt($curl, CURLOPT_TIMEOUT, $this->timeout);
-		}
+		curl_setopt($curl, CURLOPT_TIMEOUT, $this->timeout);
+		curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, $this->connectionTimeout);
 		
 		if(!is_null($request->getCookie()))
 		{

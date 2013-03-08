@@ -19,6 +19,12 @@ require_once(dirname(__FILE__).'/PensioCalculateSurchargeResponse.class.php');
 require_once(dirname(__FILE__).'/PensioFundingListResponse.class.php');
 require_once(dirname(__FILE__).'/http/PensioFOpenBasedHttpUtils.class.php');
 require_once(dirname(__FILE__).'/http/PensioCurlBasedHttpUtils.class.php');
+require_once(dirname(__FILE__).'/exceptions/PensioMerchantAPIException.class.php');
+require_once(dirname(__FILE__).'/exceptions/UnauthorizedAccessException.class.php');
+require_once(dirname(__FILE__).'/exceptions/RequestTimeoutException.class.php');
+require_once(dirname(__FILE__).'/exceptions/ConnectionFailedException.class.php');
+require_once(dirname(__FILE__).'/exceptions/InvalidResponseException.class.php');
+require_once(dirname(__FILE__).'/exceptions/UnknownMerchantAPIException.class.php');
 
 class PensioMerchantAPI
 {
@@ -60,7 +66,7 @@ class PensioMerchantAPI
 	{
 		if(!$this->connected)
 		{
-			throw new Exception("Not Connected, invoke connect(...) before using any API calls");
+			throw new Exception("Not Connected, invoke login() before using any API calls");
 		}
 	}
 	
@@ -83,6 +89,8 @@ class PensioMerchantAPI
 
 	private function callAPIMethod($method, array $args = array())
 	{
+		$absoluteUrl = $this->baseURL."/merchant/API/".$method;
+		
 		if(!is_null($this->logger))
 		{
 			$loggedArgs = $args;
@@ -94,11 +102,11 @@ class PensioMerchantAPI
 			{
 				$loggedArgs['cvc'] = str_repeat('x', strlen($loggedArgs['cvc']));
 			}
-			$logId = $this->logger->logRequest($this->baseURL."/merchant/API/".$method.'?'.http_build_query($loggedArgs));
+			$logId = $this->logger->logRequest($absoluteUrl.'?'.http_build_query($loggedArgs));
 		}
 
 		$request = new PensioHttpRequest();
-		$request->setUrl($this->baseURL."/merchant/API/".$method);
+		$request->setUrl($absoluteUrl);
 		$request->setParameters($args);
 		$request->setUser($this->username);
 		$request->setPass($this->password);
@@ -111,70 +119,55 @@ class PensioMerchantAPI
 			$this->logger->logResponse($logId, print_r($response, true));
 		}
 
-		try
+		if($response->getConnectionResult() == PensioHttpResponse::CONNECTION_OKAY)
 		{
-			if($response->getHttpCode() == 200 && stripos($response->getContentType(), "text/xml") !== false)
+			if($response->getHttpCode() == 200)
 			{
-				return new SimpleXMLElement($response->getContent());
-			}
-			else if(stripos($response->getContentType(), "text/xml") === false)
-			{
-				return new SimpleXMLElement('<APIResponse version="unknown">'
-					.'<Header>'
-					.'<Date>'.date('c').'</Date>'
-					.'<Path>API/'.$method.'</Path>'
-					.'<ErrorCode>400</ErrorCode>'
-					.'<ErrorMessage>Unexpected response from the server, expected "text/xml", actual "'.$response->getContentType().'"</ErrorMessage>'
-					.'</Header>'
-					.'</APIResponse>'
-				);
+				if(stripos($response->getContentType(), "text/xml") !== false)
+				{
+					try
+					{
+						return new SimpleXMLElement($response->getContent());
+					}
+					catch(Exception $e)
+					{
+						if($e->getMessage() == 'String could not be parsed as XML')
+						{
+							throw new InvalidResponseException("Unparsable XML Content in response");
+						}
+						throw new UnknownMerchantAPIException($e);
+					}
+				}
+				else
+				{
+					throw new InvalidResponseException("Non XML ContentType (was: ".$response->getContentType().")");
+				}
 			}
 			else if($response->getHttpCode() == 401)
 			{
-				return new SimpleXMLElement('<APIResponse version="unknown">'
-					.'<Header>'
-					.'<Date>'.date('c').'</Date>'
-					.'<Path>API/'.$method.'</Path>'
-					.'<ErrorCode>401</ErrorCode>'
-					.'<ErrorMessage>Unauthorized Access Denied</ErrorMessage>'
-					.'</Header>'
-					.'</APIResponse>'
-				);
+				throw new UnauthorizedAccessException($absoluteUrl, $this->username);
 			}
 			else
 			{
-				return new SimpleXMLElement('<APIResponse version="unknown">'
-					.'<Header>'
-					.'<Date>'.date('c').'</Date>'
-					.'<Path>API/'.$method.'</Path>'
-					.'<ErrorCode>'.$response->getHttpCode().'</ErrorCode>'
-					.'<ErrorMessage>Unknown error</ErrorMessage>'
-					.'</Header>'
-					.'</APIResponse>'
-				);
+				throw new InvalidResponseException("Non HTTP 200 Response: ".$response->getErrorMessage());
 			}
 		}
-		catch(Exception $e)
+		else if($response->getConnectionResult() == PensioHttpResponse::CONNECTION_REFUSED)
 		{
-			return new SimpleXMLElement('<APIResponse version="unknown">'
-				.'<Header>'
-				.'<Date>'.date('c').'</Date>'
-				.'<Path>API/'.$method.'</Path>'
-				.'<ErrorCode>89174</ErrorCode>'
-				.'<ErrorMessage>Error: '.$e->getMessage().'</ErrorMessage>'
-				.'</Header>'
-				.'</APIResponse>'
-			);
+			throw new ConnectionFailedException($absoluteUrl, 'Connection refused');
 		}
-		return new SimpleXMLElement('<APIResponse version="unknown">'
-			.'<Header>'
-			.'<Date>'.date('c').'</Date>'
-			.'<Path>API/'.$method.'</Path>'
-			.'<ErrorCode>239874</ErrorCode>'
-			.'<ErrorMessage>Unknown Error</ErrorMessage>'
-			.'</Header>'
-			.'</APIResponse>'
-		);
+		else if($response->getConnectionResult() == PensioHttpResponse::CONNECTION_TIMEOUT)
+		{
+			throw new ConnectionFailedException($absoluteUrl, 'Connection timed out');
+		}
+		else if($response->getConnectionResult() == PensioHttpResponse::CONNECTION_READ_TIMEOUT)
+		{
+			throw new RequestTimeoutException($absoluteUrl);
+		}
+		else
+		{
+			throw new UnknownMerchantAPIException();
+		}
 	}
 
 	/**
