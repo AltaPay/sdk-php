@@ -528,10 +528,19 @@ class PensioMerchantAPI
 			'currency'=>$currencyCode,
 			'type'=>$paymentType
 		);
-		if(!is_null($customerInfo))
+		
+		if(!is_null($customerInfo) && is_array($customerInfo))
 		{
+			foreach($customerInfo as $customerInfoKey => $customerInfoValue)
+			{
+				if (is_array($customerInfo[$customerInfoKey]))
+				{
+					unset($customerInfo[$customerInfoKey]);
+				}
+			}
 			$args['customer_info'] = $customerInfo;
 		}
+		
 		if(!is_null($cookie))
 		{
 			$args['cookie'] = $cookie;
