@@ -537,7 +537,7 @@ class PensioMerchantAPI
 			{
 				if (is_array($customerInfo[$customerInfoKey]))
 				{
-					$errors[] = "customer_info[$customerInfoKey] is an array";
+					$errors[] = "customer_info[$customerInfoKey] is not expected to be an array";
 				}
 			}
 			if (count($errors) > 0)
