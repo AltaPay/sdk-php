@@ -531,12 +531,18 @@ class PensioMerchantAPI
 		
 		if(!is_null($customerInfo) && is_array($customerInfo))
 		{
+			$errors = array();
+			
 			foreach($customerInfo as $customerInfoKey => $customerInfoValue)
 			{
 				if (is_array($customerInfo[$customerInfoKey]))
 				{
-					unset($customerInfo[$customerInfoKey]);
+					$errors[] = "customer_info[$customerInfoKey] is an array";
 				}
+			}
+			if (count($errors) > 0)
+			{
+				throw new PensioMerchantAPIException("Failed to create customer_info variable: \n".print_r($errors, true));
 			}
 			$args['customer_info'] = $customerInfo;
 		}
