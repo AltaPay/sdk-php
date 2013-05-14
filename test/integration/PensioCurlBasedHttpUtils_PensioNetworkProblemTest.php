@@ -1,7 +1,7 @@
 <?php
 require_once(dirname(__FILE__).'/../lib/bootstrap_integration.php');
 
-class PensioNetworkProblemTests_PensioCurlBasedHttpUtils extends MockitTestCase
+class PensioCurlBasedHttpUtils_PensioNetworkProblemTest extends MockitTestCase
 {
 	/**
 	 * ArrayCachingLogger

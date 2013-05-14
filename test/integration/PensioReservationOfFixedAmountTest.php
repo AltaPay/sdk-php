@@ -1,7 +1,7 @@
 <?php
 require_once(dirname(__FILE__).'/../lib/bootstrap_integration.php');
 
-class PensioReservationOfFixedAmountTests extends MockitTestCase
+class PensioReservationOfFixedAmountTest extends MockitTestCase
 {
 	/**
 	 * @var PensioMerchantAPI

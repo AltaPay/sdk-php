@@ -1,7 +1,7 @@
 <?php
 require_once(dirname(__FILE__).'/../lib/bootstrap_integration.php');
 
-class PensioSubscriptionTests extends MockitTestCase
+class PensioSubscriptionTest extends MockitTestCase
 {
 	/**
 	 * @var PensioMerchantAPI
@@ -80,10 +80,10 @@ class PensioSubscriptionTests extends MockitTestCase
 				, '123'
 				, 'eCommerce');
 	
-		//$chargeResponse = $this->merchantApi->chargeSubscription($subscriptionResponse->getPrimaryPayment()->getId());
+		$chargeResponse = $this->merchantApi->chargeSubscription($subscriptionResponse->getPrimaryPayment()->getId());
 		
-		print_r($this->logger->getLogs());
-		print_r($chargeResponse);
+//		print_r($this->logger->getLogs());
+//		print_r($chargeResponse);
 		$this->assertTrue($chargeResponse->wasSuccessful(), $chargeResponse->getMerchantErrorMessage());
 	}
 	
