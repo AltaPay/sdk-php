@@ -519,7 +519,8 @@ class PensioMerchantAPI
 			$cookie = null,
 			$language = null,
 			array $config = array(),
-			array $transaction_info = array())
+			array $transaction_info = array(),
+			array $orderLines = array())
 	{
 		$args = array(
 			'terminal'=>$terminal,
@@ -558,7 +559,11 @@ class PensioMerchantAPI
 		if(count($transaction_info) > 0)
 		{
 			$args['transaction_info'] = $transaction_info;
-		}	
+		}
+		if(count($orderLines) > 0)
+		{
+			$args['orderLines'] = $orderLines;
+		}
 		$args['config'] = $config;
 		
 		return new PensioCreatePaymentRequestResponse($this->callAPIMethod('createPaymentRequest', $args));
