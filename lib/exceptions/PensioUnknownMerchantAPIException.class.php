@@ -1,6 +1,6 @@
 <?php
 
-class UnknownMerchantAPIException extends PensioMerchantAPIException
+class PensioUnknownMerchantAPIException extends PensioMerchantAPIException
 {
 	/**
 	 * @var Exception

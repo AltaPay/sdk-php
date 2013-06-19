@@ -20,7 +20,7 @@ class PensioCurlBasedHttpUtils_PensioNetworkProblemTest extends MockitTestCase
 	}
 	
 	/**
-	 * @expectedException ConnectionFailedException
+	 * @expectedException PensioConnectionFailedException
 	 */
 	public function testConnectionRefused()
 	{
@@ -34,7 +34,7 @@ class PensioCurlBasedHttpUtils_PensioNetworkProblemTest extends MockitTestCase
 	}
 	
 	/**
-	 * @expectedException ConnectionFailedException
+	 * @expectedException PensioConnectionFailedException
 	 */
 	public function testNoConnection()
 	{
@@ -48,7 +48,7 @@ class PensioCurlBasedHttpUtils_PensioNetworkProblemTest extends MockitTestCase
 	}
 	
 	/**
-	 * @expectedException RequestTimeoutException
+	 * @expectedException PensioRequestTimeoutException
 	 */
 	public function testRequestTimeout()
 	{
@@ -62,7 +62,7 @@ class PensioCurlBasedHttpUtils_PensioNetworkProblemTest extends MockitTestCase
 	}
 	
 	/**
-	 * @expectedException InvalidResponseException
+	 * @expectedException PensioInvalidResponseException
 	 */
 	public function testNonXMLResponse()
 	{
@@ -76,7 +76,7 @@ class PensioCurlBasedHttpUtils_PensioNetworkProblemTest extends MockitTestCase
 	}
 
 	/**
-	 * @expectedException UnauthorizedAccessException
+	 * @expectedException PensioUnauthorizedAccessException
 	 */
 	public function testUnauthorizedResponse()
 	{
@@ -90,7 +90,7 @@ class PensioCurlBasedHttpUtils_PensioNetworkProblemTest extends MockitTestCase
 	}
 
 	/**
-	 * @expectedException InvalidResponseException
+	 * @expectedException PensioInvalidResponseException
 	 */
 	public function testNonHTTP200Response()
 	{

@@ -1,30 +1,30 @@
 <?php
 
 require_once(dirname(__FILE__).'/IPensioCommunicationLogger.class.php');
-require_once(dirname(__FILE__).'/PensioGetTerminalsResponse.class.php');
-require_once(dirname(__FILE__).'/PensioLoginResponse.class.php');
-require_once(dirname(__FILE__).'/PensioCreatePaymentRequestResponse.class.php');
-require_once(dirname(__FILE__).'/PensioCaptureResponse.class.php');
-require_once(dirname(__FILE__).'/PensioRefundResponse.class.php');
-require_once(dirname(__FILE__).'/PensioReleaseResponse.class.php');
-require_once(dirname(__FILE__).'/PensioReservationResponse.class.php');
-require_once(dirname(__FILE__).'/PensioCaptureRecurringResponse.class.php');
-require_once(dirname(__FILE__).'/PensioPreauthRecurringResponse.class.php');
-require_once(dirname(__FILE__).'/PensioAPIPaymentNatureService.class.php');
-require_once(dirname(__FILE__).'/PensioAPICustomerInfo.class.php');
-require_once(dirname(__FILE__).'/PensioAPIAddress.class.php');
-require_once(dirname(__FILE__).'/PensioAPIPaymentInfos.class.php');
-require_once(dirname(__FILE__).'/PensioAPIFunding.class.php');
-require_once(dirname(__FILE__).'/PensioCalculateSurchargeResponse.class.php');
-require_once(dirname(__FILE__).'/PensioFundingListResponse.class.php');
+require_once(dirname(__FILE__).'/response/PensioGetTerminalsResponse.class.php');
+require_once(dirname(__FILE__).'/response/PensioLoginResponse.class.php');
+require_once(dirname(__FILE__).'/response/PensioCreatePaymentRequestResponse.class.php');
+require_once(dirname(__FILE__).'/response/PensioCaptureResponse.class.php');
+require_once(dirname(__FILE__).'/response/PensioRefundResponse.class.php');
+require_once(dirname(__FILE__).'/response/PensioReleaseResponse.class.php');
+require_once(dirname(__FILE__).'/response/PensioReservationResponse.class.php');
+require_once(dirname(__FILE__).'/response/PensioCaptureRecurringResponse.class.php');
+require_once(dirname(__FILE__).'/response/PensioPreauthRecurringResponse.class.php');
+require_once(dirname(__FILE__).'/response/PensioAPIPaymentNatureService.class.php');
+require_once(dirname(__FILE__).'/response/PensioAPICustomerInfo.class.php');
+require_once(dirname(__FILE__).'/response/PensioAPIAddress.class.php');
+require_once(dirname(__FILE__).'/response/PensioAPIPaymentInfos.class.php');
+require_once(dirname(__FILE__).'/response/PensioAPIFunding.class.php');
+require_once(dirname(__FILE__).'/response/PensioCalculateSurchargeResponse.class.php');
+require_once(dirname(__FILE__).'/response/PensioFundingListResponse.class.php');
 require_once(dirname(__FILE__).'/http/PensioFOpenBasedHttpUtils.class.php');
 require_once(dirname(__FILE__).'/http/PensioCurlBasedHttpUtils.class.php');
 require_once(dirname(__FILE__).'/exceptions/PensioMerchantAPIException.class.php');
-require_once(dirname(__FILE__).'/exceptions/UnauthorizedAccessException.class.php');
-require_once(dirname(__FILE__).'/exceptions/RequestTimeoutException.class.php');
-require_once(dirname(__FILE__).'/exceptions/ConnectionFailedException.class.php');
-require_once(dirname(__FILE__).'/exceptions/InvalidResponseException.class.php');
-require_once(dirname(__FILE__).'/exceptions/UnknownMerchantAPIException.class.php');
+require_once(dirname(__FILE__).'/exceptions/PensioUnauthorizedAccessException.class.php');
+require_once(dirname(__FILE__).'/exceptions/PensioRequestTimeoutException.class.php');
+require_once(dirname(__FILE__).'/exceptions/PensioConnectionFailedException.class.php');
+require_once(dirname(__FILE__).'/exceptions/PensioInvalidResponseException.class.php');
+require_once(dirname(__FILE__).'/exceptions/PensioUnknownMerchantAPIException.class.php');
 
 class PensioMerchantAPI
 {
@@ -133,40 +133,40 @@ class PensioMerchantAPI
 					{
 						if($e->getMessage() == 'String could not be parsed as XML')
 						{
-							throw new InvalidResponseException("Unparsable XML Content in response");
+							throw new PensioInvalidResponseException("Unparsable XML Content in response");
 						}
-						throw new UnknownMerchantAPIException($e);
+						throw new PensioUnknownMerchantAPIException($e);
 					}
 				}
 				else
 				{
-					throw new InvalidResponseException("Non XML ContentType (was: ".$response->getContentType().")");
+					throw new PensioInvalidResponseException("Non XML ContentType (was: ".$response->getContentType().")");
 				}
 			}
 			else if($response->getHttpCode() == 401)
 			{
-				throw new UnauthorizedAccessException($absoluteUrl, $this->username);
+				throw new PensioUnauthorizedAccessException($absoluteUrl, $this->username);
 			}
 			else
 			{
-				throw new InvalidResponseException("Non HTTP 200 Response: ".$response->getHttpCode());
+				throw new PensioInvalidResponseException("Non HTTP 200 Response: ".$response->getHttpCode());
 			}
 		}
 		else if($response->getConnectionResult() == PensioHttpResponse::CONNECTION_REFUSED)
 		{
-			throw new ConnectionFailedException($absoluteUrl, 'Connection refused');
+			throw new PensioConnectionFailedException($absoluteUrl, 'Connection refused');
 		}
 		else if($response->getConnectionResult() == PensioHttpResponse::CONNECTION_TIMEOUT)
 		{
-			throw new ConnectionFailedException($absoluteUrl, 'Connection timed out');
+			throw new PensioConnectionFailedException($absoluteUrl, 'Connection timed out');
 		}
 		else if($response->getConnectionResult() == PensioHttpResponse::CONNECTION_READ_TIMEOUT)
 		{
-			throw new RequestTimeoutException($absoluteUrl);
+			throw new PensioRequestTimeoutException($absoluteUrl);
 		}
 		else
 		{
-			throw new UnknownMerchantAPIException();
+			throw new PensioUnknownMerchantAPIException();
 		}
 	}
 

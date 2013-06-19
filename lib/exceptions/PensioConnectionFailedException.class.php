@@ -1,6 +1,6 @@
 <?php
 
-class ConnectionFailedException extends PensioMerchantAPIException
+class PensioConnectionFailedException extends PensioMerchantAPIException
 {
 	public function __construct($url, $reason)
 	{

@@ -1,6 +1,6 @@
 <?php
 
-class RequestTimeoutException extends PensioMerchantAPIException
+class PensioRequestTimeoutException extends PensioMerchantAPIException
 {
 	public function __construct($url)
 	{

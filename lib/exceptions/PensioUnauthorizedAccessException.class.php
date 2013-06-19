@@ -1,6 +1,6 @@
 <?php
 
-class UnauthorizedAccessException extends PensioMerchantAPIException
+class PensioUnauthorizedAccessException extends PensioMerchantAPIException
 {
 	public function __construct($url, $username)
 	{
