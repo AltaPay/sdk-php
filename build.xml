@@ -1,0 +1,29 @@
+<project name="PensioPHPAPI" default="Build">
+
+    <!-- Release variables -->
+    <property name="pensio.release" value="20130627" />
+
+    <target name="-InitializeRelease">
+        <tstamp>
+            <format property="pensio.release" pattern="MMyyyy" locale="en,GB"/>
+        </tstamp>
+    </target>
+
+
+    <target name="Build" depends="-InitializeRelease">
+
+        <zip destfile="dist/PensioPHPAPI_${pensio.release}.zip">
+            <fileset dir=".">
+                <include name="lib/**/*" />
+                <include name="example/**/*" />
+
+                <exclude name="**/.svn" />
+                <exclude name="**/.svn/**/*" />
+                <exclude name="external/**/*" />
+                <exclude name="test/**/*" />
+                <exclude name="dist/**/*" />
+                <exclude name="*.*" />
+            </fileset>
+        </zip>
+    </target>
+</project>
