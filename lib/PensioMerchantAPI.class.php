@@ -15,6 +15,8 @@ require_once(dirname(__FILE__).'/response/PensioAPICustomerInfo.class.php');
 require_once(dirname(__FILE__).'/response/PensioAPIAddress.class.php');
 require_once(dirname(__FILE__).'/response/PensioAPIPaymentInfos.class.php');
 require_once(dirname(__FILE__).'/response/PensioAPIFunding.class.php');
+require_once(dirname(__FILE__).'/response/PensioAPIChargebackEvent.class.php');
+require_once(dirname(__FILE__).'/response/PensioAPIChargebackEvents.class.php');
 require_once(dirname(__FILE__).'/response/PensioCalculateSurchargeResponse.class.php');
 require_once(dirname(__FILE__).'/response/PensioFundingListResponse.class.php');
 require_once(dirname(__FILE__).'/http/PensioFOpenBasedHttpUtils.class.php');

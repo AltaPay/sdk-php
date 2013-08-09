@@ -91,6 +91,11 @@ class PensioAPIPayment
 	private $paymentInfos;
 	
 	private $reconciliationIdentifiers = array();
+
+	/**
+	 * @var PensioAPIChargebackEvents
+	 */
+	private $chargebackEvents;
 	
 	public function __construct(SimpleXmlElement $xml)
 	{
@@ -115,6 +120,7 @@ class PensioAPIPayment
 		$this->paymentNatureService = new PensioAPIPaymentNatureService($xml->PaymentNatureService);
 		$this->customerInfo = new PensioAPICustomerInfo($xml->CustomerInfo);
 		$this->paymentInfos = new PensioAPIPaymentInfos($xml->PaymentInfos);
+		$this->chargebackEvents = new PensioAPIChargebackEvents($xml->ChargebackEvents);
 		
 		foreach($xml->ReconciliationIdentifiers->ReconciliationIdentifier as $reconXml)
 		{
@@ -219,5 +225,13 @@ class PensioAPIPayment
 	public function getCapturedAmount()
 	{
 		return $this->capturedAmount; 
+	}
+
+	/**
+	 * @return PensioAPIChargebackEvents
+	 */
+	public function getChargebackEvents()
+	{
+		return $this->chargebackEvents;
 	}
 }
