@@ -16,7 +16,7 @@ class PensioCurlBasedHttpUtils_PensioNetworkProblemTest extends MockitTestCase
 	public function setup()
 	{
 		$this->logger = new ArrayCachingLogger();
-		$this->httpUtils = new PensioCurlBasedHttpUtils(15, 5);
+		$this->httpUtils = new PensioCurlBasedHttpUtils(5, 3);
 	}
 	
 	/**
@@ -53,12 +53,12 @@ class PensioCurlBasedHttpUtils_PensioNetworkProblemTest extends MockitTestCase
 	public function testRequestTimeout()
 	{
 		$this->merchantApi = new PensioMerchantAPI(
-				'https://testbank.pensio.com/Sleep?time=120&'
+				'http://testbank.anton.earth.pensio.com/Sleep?time=21&'
 				, 'username'
 				, 'password'
 				, $this->logger
 				, $this->httpUtils);
-		$response = $this->merchantApi->login();
+		$this->merchantApi->login();
 	}
 	
 	/**
