@@ -53,7 +53,7 @@ class PensioCurlBasedHttpUtils_PensioNetworkProblemTest extends MockitTestCase
 	public function testRequestTimeout()
 	{
 		$this->merchantApi = new PensioMerchantAPI(
-				'http://testbank.anton.earth.pensio.com/Sleep?time=21&'
+				'https://testbank.pensio.com/Sleep?time=21&'
 				, 'username'
 				, 'password'
 				, $this->logger
