@@ -44,7 +44,7 @@ abstract class PensioAbstractPaymentResponse extends PensioAbstractResponse
 	}
 	
 	/**
-	 * @return array of PensioAPIPayment
+	 * @return PensioAPIPayment[]
 	 */
 	public function getPayments()
 	{

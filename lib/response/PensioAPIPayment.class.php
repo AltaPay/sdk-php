@@ -60,6 +60,8 @@ require_once(dirname(__FILE__).'/PensioAPIReconciliationIdentifier.class.php');
  */
 class PensioAPIPayment
 {
+	private $xml;
+
 	private $paymentId;
 	private $authType;
 	private $creditCardMaskedPan;
@@ -99,6 +101,7 @@ class PensioAPIPayment
 	
 	public function __construct(SimpleXmlElement $xml)
 	{
+		$this->xml = $xml->saveXML();
 		$this->paymentId = (string)$xml->TransactionId;
 		$this->authType = (string)$xml->AuthType;
 		$this->creditCardMaskedPan = (string)$xml->CreditCardMaskedPan;
@@ -233,5 +236,10 @@ class PensioAPIPayment
 	public function getChargebackEvents()
 	{
 		return $this->chargebackEvents;
+	}
+
+	public function getXml()
+	{
+		return $this->xml;
 	}
 }
