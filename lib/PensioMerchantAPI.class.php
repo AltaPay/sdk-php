@@ -206,6 +206,32 @@ class PensioMerchantAPI
 		
 		return false;
 	}
+
+	/**
+	 * @return string|boolean
+	 * @throws PensioMerchantAPIException
+	 */
+	public function downloadFundingCSVByFundingId($id)
+	{
+		$this->checkConnection();
+
+		$request = new PensioHttpRequest();
+
+		$downloadUrl = $this->baseURL."/merchant.php/API/fundingDownload?id=".$id;
+		$request->setUrl($downloadUrl);
+		$request->setUser($this->username);
+		$request->setPass($this->password);
+		$request->setMethod('GET');
+
+		$response = $this->httpUtil->requestURL($request);
+
+		if($response->getHttpCode() == 200)
+		{
+			return $response->getContent();
+		}
+
+		return false;
+	}
 	
 	private function reservationInternal(
 			  $apiMethod
