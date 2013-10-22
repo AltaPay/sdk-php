@@ -65,4 +65,29 @@ class PensioAPIFunding
 	{
 		return $this->downloadLink;
 	}
+
+	public function getFilename()
+	{
+		return $this->filename;
+	}
+
+	public function getContractIdentifier()
+	{
+		return $this->contractIdentifier;
+	}
+
+	public function getShops()
+	{
+		return $this->shops;
+	}
+
+	public function getAcquirer()
+	{
+		return $this->acquirer;
+	}
+
+	public function getCreatedDate()
+	{
+		return $this->createdDate;
+	}
 }
