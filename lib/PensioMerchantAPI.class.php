@@ -211,14 +211,13 @@ class PensioMerchantAPI
 	 * @return string|boolean
 	 * @throws PensioMerchantAPIException
 	 */
-	public function downloadFundingCSVByFundingId($id)
+	public function downloadFundingCSVByLink($downloadLink)
 	{
 		$this->checkConnection();
 
 		$request = new PensioHttpRequest();
 
-		$downloadUrl = $this->baseURL."/merchant.php/API/fundingDownload?id=".$id;
-		$request->setUrl($downloadUrl);
+		$request->setUrl($downloadLink);
 		$request->setUser($this->username);
 		$request->setPass($this->password);
 		$request->setMethod('GET');
