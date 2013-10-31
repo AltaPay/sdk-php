@@ -12,6 +12,7 @@ require_once(dirname(__FILE__).'/response/PensioCaptureRecurringResponse.class.p
 require_once(dirname(__FILE__).'/response/PensioPreauthRecurringResponse.class.php');
 require_once(dirname(__FILE__).'/response/PensioAPIPaymentNatureService.class.php');
 require_once(dirname(__FILE__).'/response/PensioAPICustomerInfo.class.php');
+require_once(dirname(__FILE__).'/response/PensioAPICountryOfOrigin.class.php');
 require_once(dirname(__FILE__).'/response/PensioAPIAddress.class.php');
 require_once(dirname(__FILE__).'/response/PensioAPIPaymentInfos.class.php');
 require_once(dirname(__FILE__).'/response/PensioAPIFunding.class.php');

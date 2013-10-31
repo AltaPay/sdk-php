@@ -10,6 +10,9 @@ class PensioAPICustomerInfo
 					<Username></Username>
 					<CustomerPhone></CustomerPhone>
 					<OrganisationNumber></OrganisationNumber>
+					<CountryOfOrigin>
+						<Country></Country><Source>NotSet</Source>
+					</CountryOfOrigin>
 	*/
 	private $userAgent;
 	private $ipAddress;
@@ -22,7 +25,9 @@ class PensioAPICustomerInfo
 	 * @var PensioAPIAddress
 	 */
 	private $billingAddress,$shippingAddress,$registeredAddress;
-	
+
+	private $countryOfOrigin;
+
 	public function __construct(SimpleXmlElement $xml)
 	{
 		$this->userAgent = (string)$xml->UserAgent;
@@ -31,7 +36,11 @@ class PensioAPICustomerInfo
 		$this->username = (string)$xml->Username;
 		$this->phone = (string)$xml->CustomerPhone;
 		$this->organisationNumber = (string)$xml->OrganisationNumber;
-		
+
+		if(isset($xml->CountryOfOrigin))
+		{
+			$this->countryOfOrigin = new PensioAPICountryOfOrigin($xml->CountryOfOrigin);
+		}
 		if(isset($xml->BillingAddress))
 		{
 			$this->billingAddress = new PensioAPIAddress($xml->BillingAddress);
@@ -68,6 +77,14 @@ class PensioAPICustomerInfo
 	public function getRegisteredAddress()
 	{
 		return $this->registeredAddress;
+	}
+
+	/**
+	 * @return PensioAPICountryOfOrigin
+	 */
+	public function getCountryOfOrigin()
+	{
+		return $this->countryOfOrigin;
 	}
 	
 	public function getUserAgent()
