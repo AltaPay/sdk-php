@@ -19,6 +19,7 @@
 
                 <exclude name="**/.svn" />
                 <exclude name="**/.svn/**/*" />
+                <exclude name="example/base.php" />
                 <exclude name="external/**/*" />
                 <exclude name="test/**/*" />
                 <exclude name="dist/**/*" />
