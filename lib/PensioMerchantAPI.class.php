@@ -402,7 +402,7 @@ class PensioMerchantAPI
 		, $currency
 		, $credit_card_token
 		, $cvc = null
-		, $payment_source
+		, $payment_source = 'moto'
 		, array $customerInfo = array()
 		, array $transactionInfo = array())
 	{
@@ -466,7 +466,7 @@ class PensioMerchantAPI
 		, $currency
 		, $credit_card_token
 		, $cvc = null
-		, $payment_source
+		, $payment_source = 'moto'
 		, array $customerInfo = array()
 		, array $transactionInfo = array())
 	{
