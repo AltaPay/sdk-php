@@ -390,6 +390,38 @@ class PensioMerchantAPI
 				, $customerInfo
 				, $transactionInfo);		
 	}
+
+	/**
+	 * @return PensioReservationResponse
+	 * @throws PensioMerchantAPIException
+	 */
+	public function setupSubscriptionWithToken(
+		$terminal
+		, $shop_orderid
+		, $amount
+		, $currency
+		, $credit_card_token
+		, $cvc = null
+		, $payment_source
+		, array $customerInfo = array()
+		, array $transactionInfo = array())
+	{
+		return $this->reservationInternal(
+			'setupSubscription'
+			, $terminal
+			, $shop_orderid
+			, $amount
+			, $currency
+			, null
+			, null
+			, null
+			, $credit_card_token
+			, $cvc
+			, 'subscription'
+			, $payment_source
+			, $customerInfo
+			, $transactionInfo);
+	}
 	
 	/**
 	 * @return PensioReservationResponse
@@ -422,6 +454,37 @@ class PensioMerchantAPI
 				, $payment_source
 				, $customerInfo
 				, $transactionInfo);		
+	}
+
+	/**
+	 * @return PensioReservationResponse
+	 * @throws PensioMerchantAPIException
+	 */
+	public function verifyCardWithToken(
+		$terminal
+		, $shop_orderid
+		, $currency
+		, $credit_card_token
+		, $cvc = null
+		, $payment_source
+		, array $customerInfo = array()
+		, array $transactionInfo = array())
+	{
+		return $this->reservationInternal(
+			'reservationOfFixedAmountMOTO'
+			, $terminal
+			, $shop_orderid
+			, 1.00
+			, $currency
+			, null
+			, null
+			, null
+			, $credit_card_token
+			, $cvc
+			, 'verifyCard'
+			, $payment_source
+			, $customerInfo
+			, $transactionInfo);
 	}
 	
 	

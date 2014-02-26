@@ -81,10 +81,32 @@ class PensioSubscriptionTest extends MockitTestCase
 				, 'eCommerce');
 	
 		$chargeResponse = $this->merchantApi->chargeSubscription($subscriptionResponse->getPrimaryPayment()->getId());
-		
-//		print_r($this->logger->getLogs());
-//		print_r($chargeResponse);
+
 		$this->assertTrue($chargeResponse->wasSuccessful(), $chargeResponse->getMerchantErrorMessage());
+	}
+
+	public function testSuccessfulChargeSubscriptionWithToken()
+	{
+		$verifyCardResponse = $this->merchantApi->verifyCard(
+			PENSIO_INTEGRATION_TERMINAL
+			, 'verify-card'.time()
+			, PENSIO_INTEGRATION_CURRENCY
+			, '4111000011110000'
+			, '2020'
+			, '12'
+			, '123'
+			, 'eCommerce');
+
+		$subscriptionResponseWithToken = $this->merchantApi->setupSubscriptionWithToken(
+			PENSIO_INTEGRATION_TERMINAL
+			, 'subscription-with-token'.time()
+			, 42.00
+			, PENSIO_INTEGRATION_CURRENCY
+			, $verifyCardResponse->getPrimaryPayment()->getCreditCardToken()
+			, '123'
+			, 'eCommerce');
+
+		$this->assertTrue($subscriptionResponseWithToken->wasSuccessful(), $subscriptionResponseWithToken->getMerchantErrorMessage());
 	}
 	
 }
