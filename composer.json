@@ -1,0 +1,12 @@
+{
+    "name": "pensio-php-api",
+    "minimum-stability": "dev",
+    "require-dev": {
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "http://packages.mars.pensio.com"
+        }
+    ]
+}
