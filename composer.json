@@ -1,5 +1,5 @@
 {
-    "name": "pensio-php-api",
+    "name": "pensio/pensio-php-api",
     "minimum-stability": "dev",
     "require-dev": {
     },
