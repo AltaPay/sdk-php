@@ -51,7 +51,7 @@ class PensioAPICustomerInfo
 		}
 		if(isset($xml->RegisteredAddress))
 		{
-			$this->registeredAddress = new PensioAPIAddress($xml->ShippingAddress);
+			$this->registeredAddress = new PensioAPIAddress($xml->RegisteredAddress);
 		}
 	}
 	
