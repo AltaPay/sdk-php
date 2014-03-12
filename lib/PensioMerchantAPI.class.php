@@ -611,7 +611,9 @@ class PensioMerchantAPI
 			$language = null,
 			array $config = array(),
 			array $transaction_info = array(),
-			array $orderLines = array())
+			array $orderLines = array(),
+			$accountOffer = false
+		)
 	{
 		$args = array(
 			'terminal'=>$terminal,
@@ -655,6 +657,11 @@ class PensioMerchantAPI
 		{
 			$args['orderLines'] = $orderLines;
 		}
+		if(in_array($accountOffer, array("required", "disabled")))
+		{
+			$args['account_offer'] = $accountOffer;
+		}
+
 		$args['config'] = $config;
 		
 		return new PensioCreatePaymentRequestResponse($this->callAPIMethod('createPaymentRequest', $args));
