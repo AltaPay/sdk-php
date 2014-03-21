@@ -1,7 +1,7 @@
 <?php
 require_once(dirname(__FILE__).'/../lib/bootstrap.php');
 
-class PensioMerchantAPITests extends MockitTestCase
+class PensioMerchantAPITest extends MockitTestCase
 {
 	/**
 	 * @var PensioMerchantAPI

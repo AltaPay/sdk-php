@@ -1,7 +1,7 @@
 <?php
 require_once(dirname(__FILE__).'/../lib/bootstrap.php');
 
-class PensioCallbackHandlerTests extends MockitTestCase
+class PensioCallbackHandlerTest extends MockitTestCase
 {
 	/**
 	 * @var PensioCallbackHandler

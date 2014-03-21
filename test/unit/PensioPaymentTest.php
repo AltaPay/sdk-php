@@ -1,7 +1,7 @@
 <?php
 require_once(dirname(__FILE__).'/../lib/bootstrap.php');
 
-class PensioPaymentTests extends MockitTestCase
+class PensioPaymentTest extends MockitTestCase
 {
 	
 	public function setup()
@@ -14,4 +14,6 @@ class PensioPaymentTests extends MockitTestCase
 		$xml = new SimpleXMLElement('<Transaction><PaymentNatureService /><ReconciliationIdentifiers /></Transaction>');
 		$payment = new PensioAPIPayment($xml);
 	}
+
+
 }
