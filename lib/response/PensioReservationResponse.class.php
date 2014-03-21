@@ -12,5 +12,19 @@ class PensioReservationResponse extends PensioAbstractPaymentResponse
 	protected function parseBody(SimpleXmlElement $body)
 	{
 		
-	}	
+	}
+
+	public function wasSuccessful()
+	{
+		if(parent::wasSuccessful())
+		{
+			// There must be at least one Payment
+			if(!is_null($this->getPrimaryPayment()))
+			{
+				// If the current state is supposed to be more than 'created'
+				return $this->getPrimaryPayment()->getCurrentStatus() != 'created';
+			}
+		}
+		return false;
+	}
 }

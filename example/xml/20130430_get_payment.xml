@@ -1,23 +1,17 @@
-<?php
-require_once(dirname(__FILE__).'/../lib/bootstrap.php');
-
-class PensioPaymentTest extends MockitTestCase
-{
-	
-	public function setup()
-	{
-		
-	}
-	
-	public function testParsingOfSimpleXml()
-	{
-		$xml = new SimpleXMLElement('<Transaction><PaymentNatureService /><ReconciliationIdentifiers /></Transaction>');
-		$payment = new PensioAPIPayment($xml);
-	}
-
-	public function testParsing_of_CountryOfOrigin()
-	{
-		$xml = new SimpleXMLElement('
+<?xml version="1.0"?>
+<APIResponse version="20130430">
+    <Header>
+        <Date>2014-03-21T21:57:44+01:00</Date>
+        <Path>API/transactions</Path>
+        <ErrorCode>0</ErrorCode>
+        <ErrorMessage></ErrorMessage>
+    </Header>
+    <Body>
+        <Result/>
+        <ResultFilter>
+            <TransactionIdEquals>14398495</TransactionIdEquals>
+        </ResultFilter>
+        <Transactions>
             <Transaction>
                 <TransactionId>14398495</TransactionId>
                 <AuthType>paymentAndCapture</AuthType>
@@ -26,12 +20,12 @@ class PensioPaymentTest extends MockitTestCase
                     <Year>2015</Year>
                     <Month>11</Month>
                 </CreditCardExpiry>
-                <CreditCardToken>37ad3ff596164142876df477e13336e0aeef0905</CreditCardToken>
+                <CreditCardToken>37ad3ff5961641421d5df477e13336e0aeef0905</CreditCardToken>
                 <CreditCardMaskedPan>424374******7275</CreditCardMaskedPan>
                 <ThreeDSecureResult>Disabled</ThreeDSecureResult>
                 <CVVCheckResult>Matched</CVVCheckResult>
-                <BlacklistToken>185c1c823a9b94731d9c6ba035d9b967587187bc</BlacklistToken>
-                <ShopOrderId>ceae3968b82640e38a24ac162d8c2738</ShopOrderId>
+                <BlacklistToken>185c1c823a9be7e11d9c6ba035d9b967587187bc</BlacklistToken>
+                <ShopOrderId>ceae3968b13111e38a24ac162d8c2738</ShopOrderId>
                 <Shop>Wargaming</Shop>
                 <Terminal>Wargaming CC EUR</Terminal>
                 <TransactionStatus>captured</TransactionStatus>
@@ -79,9 +73,7 @@ class PensioPaymentTest extends MockitTestCase
                         <Date>2014-03-21T20:49:41+01:00</Date>
                     </ReconciliationIdentifier>
                 </ReconciliationIdentifiers>
-            </Transaction>');
-		$payment = new PensioAPIPayment($xml);
-
-		$this->assertEquals('FI', $payment->getCustomerInfo()->getCountryOfOrigin()->getCountry());
-	}
-}
+            </Transaction>
+        </Transactions>
+    </Body>
+</APIResponse>

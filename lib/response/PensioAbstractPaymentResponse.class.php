@@ -25,15 +25,18 @@ abstract class PensioAbstractPaymentResponse extends PensioAbstractResponse
 		$this->payments = array();
 		if($this->getErrorCode() === '0')
 		{
-			$this->result = (string)$xml->Body->Result;
+			$this->result = strval($xml->Body->Result);
 			$this->merchantErrorMessage = (string)$xml->Body->MerchantErrorMessage;
 			$this->cardHolderErrorMessage = (string)$xml->Body->CardHolderErrorMessage;
 			
 			$this->parseBody($xml->Body);
-			
-			foreach($xml->Body->Transactions->Transaction as $transactionXml)
+
+			if(isset($xml->Body->Transactions->Transaction))
 			{
-				$this->addPayment(new PensioAPIPayment($transactionXml));
+				foreach($xml->Body->Transactions->Transaction as $transactionXml)
+				{
+					$this->addPayment(new PensioAPIPayment($transactionXml));
+				}
 			}
 		}
 	}
@@ -56,7 +59,7 @@ abstract class PensioAbstractPaymentResponse extends PensioAbstractResponse
 	 */
 	public function getPrimaryPayment()
 	{
-		return $this->payments[0];
+		return isset($this->payments[0]) ? $this->payments[0] : null;
 	}
 	
 	public function wasSuccessful()

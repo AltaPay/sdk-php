@@ -6,9 +6,12 @@ class PensioAPIChargebackEvents
 
 	public function __construct(SimpleXmlElement $xml)
 	{
-		foreach($xml->ChargebackEvent as $chargebackEvent)
+		if(isset($xml->ChargebackEvent))
 		{
-			$this->chargebackEvents[] = new PensioAPIChargebackEvent($chargebackEvent);
+			foreach($xml->ChargebackEvent as $chargebackEvent)
+			{
+				$this->chargebackEvents[] = new PensioAPIChargebackEvent($chargebackEvent);
+			}
 		}
 	}
 

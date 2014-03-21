@@ -9,19 +9,30 @@ class PensioMerchantAPITest extends MockitTestCase
 	private $merchantAPI;
 	
 	/**
-	 * @var Mockit
+	 * @var Mock_IPensioCommunicationLogger
 	 */
-	private $logger,$httpUtils,$response;
+	private $logger;
+	/**
+	 * @var Mock_IPensioHttpUtils
+	 */
+	private $httpUtils;
+	/**
+	 * @var Mock_PensioHttpResponse
+	 */
+	private $response;
 	
 	public function setup()
 	{
-		$this->logger = $this->getMockit('IPensioCommunicationLogger');
-		$this->httpUtils = $this->getMockit('IPensioHttpUtils');
-		$this->response = $this->getMockit('PensioHttpResponse');
-		
+		Mockit::initMocks($this);
+		$this->response->when()->getConnectionResult()->thenReturn(PensioHttpResponse::CONNECTION_OKAY);
+		$this->response->when()->getContentType()->thenReturn("text/xml");
+
 		$this->merchantAPI = new PensioMerchantAPI('http://base.url', 'username', 'password', $this->logger->instance(), $this->httpUtils->instance());
 	}
-	
+
+	/**
+	 * @expectedException PensioInvalidResponseException
+	 */
 	public function testHandlesNonXmlNicely()
 	{
 		$this->response->when()->getHttpCode()->thenReturn(200);
@@ -38,33 +49,62 @@ class PensioMerchantAPITest extends MockitTestCase
 		$this->assertEquals('Error: String could not be parsed as XML', $loginResponse->getErrorMessage());
 	}
 
+	/**
+	 * @expectedException PensioInvalidResponseException
+	 */
 	public function testNon200ReturnCodeIsHandled()
 	{
 		$this->response->when()->getHttpCode()->thenReturn(500);
 		$this->httpUtils->when()->requestURL()->thenReturn($this->response->instance());
 		
 		$loginResponse = $this->merchantAPI->login();
-		$this->assertEquals('Unknown error', $loginResponse->getErrorMessage());
 	}
 
+	/**
+	 * @expectedException PensioUnauthorizedAccessException
+	 */
 	public function testUnAuthorizedReturnCodeIsHandled()
 	{
 		$this->response->when()->getHttpCode()->thenReturn(401);
 		$this->httpUtils->when()->requestURL()->thenReturn($this->response->instance());
 		
 		$loginResponse = $this->merchantAPI->login();
-		$this->assertEquals('Unauthorized Access Denied', $loginResponse->getErrorMessage());
 	}
 
 
-	public function testGetPaymentParsesXmlCorrectly()
+	public function testGetPayment_Parses20110831XmlCorrectly()
 	{
 		$this->response->when()->getHttpCode()->thenReturn(200);
-		$this->response->when()->getContent()->thenReturn(file_get_contents(dirname(dirname(dirname(__FILE__))).'/example/xml/payments.xml'));
+		$this->response->when()->getContent()->thenReturn(file_get_contents(dirname(dirname(dirname(__FILE__))).'/example/xml/20110831_get_payment.xml'));
 		$this->httpUtils->when()->requestURL()->thenReturn($this->response->instance());
 
 		$this->merchantAPI->login();
 		$getPaymentResponse = $this->merchantAPI->getPayment('123');
-		throw new Exception(print_r($getPaymentResponse, true));
+		$this->assertTrue($getPaymentResponse instanceof PensioGetPaymentResponse);
+		$this->assertTrue($getPaymentResponse->wasSuccessful());
+	}
+
+	public function testGetPayment_Parses20130430XmlCorrectly()
+	{
+		$this->response->when()->getHttpCode()->thenReturn(200);
+		$this->response->when()->getContent()->thenReturn(file_get_contents(dirname(dirname(dirname(__FILE__))).'/example/xml/20130430_get_payment.xml'));
+		$this->httpUtils->when()->requestURL()->thenReturn($this->response->instance());
+
+		$this->merchantAPI->login();
+		$getPaymentResponse = $this->merchantAPI->getPayment('123');
+		$this->assertTrue($getPaymentResponse instanceof PensioGetPaymentResponse);
+		$this->assertTrue($getPaymentResponse->wasSuccessful());
+	}
+
+
+	public function testGetPayment_WithNoPayment_IsNotSuccessful()
+	{
+		$this->response->when()->getHttpCode()->thenReturn(200);
+		$this->response->when()->getContent()->thenReturn(file_get_contents(dirname(dirname(dirname(__FILE__))).'/example/xml/20130430_get_payment_empty.xml'));
+		$this->httpUtils->when()->requestURL()->thenReturn($this->response->instance());
+
+		$this->merchantAPI->login();
+		$getPaymentResponse = $this->merchantAPI->getPayment('123');
+		$this->assertFalse($getPaymentResponse->wasSuccessful());
 	}
 }

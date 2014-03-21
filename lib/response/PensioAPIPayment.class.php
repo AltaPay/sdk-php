@@ -124,10 +124,13 @@ class PensioAPIPayment
 		$this->customerInfo = new PensioAPICustomerInfo($xml->CustomerInfo);
 		$this->paymentInfos = new PensioAPIPaymentInfos($xml->PaymentInfos);
 		$this->chargebackEvents = new PensioAPIChargebackEvents($xml->ChargebackEvents);
-		
-		foreach($xml->ReconciliationIdentifiers->ReconciliationIdentifier as $reconXml)
+
+		if(isset($xml->ReconciliationIdentifiers->ReconciliationIdentifier))
 		{
-			$this->reconciliationIdentifiers[] = new PensioAPIReconciliationIdentifier($reconXml);
+			foreach($xml->ReconciliationIdentifiers->ReconciliationIdentifier as $reconXml)
+			{
+				$this->reconciliationIdentifiers[] = new PensioAPIReconciliationIdentifier($reconXml);
+			}
 		}
 	}
 	

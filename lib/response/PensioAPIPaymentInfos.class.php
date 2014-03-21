@@ -11,10 +11,13 @@ class PensioAPIPaymentInfos
 	
 	public function __construct(SimpleXmlElement $xml)
 	{
-		foreach($xml->PaymentInfo as $paymentInfo)
+		if(isset($xml->PaymentInfo))
 		{
-			$attrs = $paymentInfo->attributes();			
-			$this->infos[(string)$attrs['name']] = (string)$paymentInfo;
+			foreach($xml->PaymentInfo as $paymentInfo)
+			{
+				$attrs = $paymentInfo->attributes();
+				$this->infos[(string)$attrs['name']] = (string)$paymentInfo;
+			}
 		}
 	}
 	

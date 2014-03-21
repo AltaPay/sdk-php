@@ -2,6 +2,7 @@
 
 require_once(dirname(__FILE__).'/IPensioCommunicationLogger.class.php');
 require_once(dirname(__FILE__).'/response/PensioGetTerminalsResponse.class.php');
+require_once(dirname(__FILE__).'/response/PensioGetPaymentResponse.class.php');
 require_once(dirname(__FILE__).'/response/PensioLoginResponse.class.php');
 require_once(dirname(__FILE__).'/response/PensioCreatePaymentRequestResponse.class.php');
 require_once(dirname(__FILE__).'/response/PensioCaptureResponse.class.php');
@@ -547,25 +548,19 @@ class PensioMerchantAPI
 	}
 
 	/**
-	 * @return NULL
+	 * @return PensioGetPaymentResponse
 	 * @throws PensioMerchantAPIException
 	 */
 	public function getPayment($paymentId)
 	{
 		$this->checkConnection();
 
-		$body = $this->callAPIMethod(
+		return new PensioGetPaymentResponse($this->callAPIMethod(
 			'payments',
 			array(
 				'transaction'=>$paymentId
 			)
-		);
-
-		if(isset($body->Body->Transactions))
-		{
-			return $body->Body->Transactions->Transaction;
-		}
-		return null;
+		));
 	}
 	
 	/**

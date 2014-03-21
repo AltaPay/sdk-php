@@ -11,7 +11,8 @@ class PensioAPIPaymentNatureService
 	public function __construct(SimpleXmlElement $xml)
 	{
 		$attrs = $xml->attributes();
-		$this->name = (string)$attrs['name'];
+
+		$this->name = strval(@$attrs['name']);
 		$this->supportsRefunds = (string)$xml->SupportsRefunds;
 		$this->supportsRelease = (string)$xml->SupportsRelease;
 		$this->supportsMultipleCaptures = (string)$xml->SupportsMultipleCaptures;
