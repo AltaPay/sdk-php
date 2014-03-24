@@ -19,10 +19,8 @@ if(!$response->wasSuccessful())
 /**
  * If you get the following error when trying to login...
  * SSL certificate problem: unable to get local issuer certificate
- * ...then take a look at http://stackoverflow.com/a/19149687
  *
- * Basically you need to update your list of certificate authorities
- * 1) Download http://curl.haxx.se/ca/cacert.pem
- * 2) Add the following to your php.ini
- *    curl.cainfo=<path-to>cacert.pem
+ * You need to update your Thawte root certificate
+ * 1) Get the certificate from http://www.thawte.com/roots/thawte_Server_CA.pem
+ * 2) Add it/update the certificate in your operating system's certificate store
  */
