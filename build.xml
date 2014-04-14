@@ -1,11 +1,11 @@
 <project name="PensioPHPAPI" default="Build">
 
     <!-- Release variables -->
-    <property name="pensio.release" value="20130627" />
+    <!--<property name="pensio.release" value="20130627" />-->
 
     <target name="-InitializeRelease">
         <tstamp>
-            <format property="pensio.release" pattern="MMyyyy" locale="en,GB"/>
+            <format property="pensio.release" pattern="yyyyMM" locale="en,GB"/>
         </tstamp>
     </target>
 
