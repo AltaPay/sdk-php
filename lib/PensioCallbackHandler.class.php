@@ -1,6 +1,11 @@
 <?php
 
-require_once(dirname(__FILE__).'/PensioMerchantAPI.class.php');
+if(!defined('PENSIO_API_ROOT'))
+{
+	define('PENSIO_API_ROOT',__DIR__);
+}
+
+require_once(PENSIO_API_ROOT.'/PensioMerchantAPI.class.php');
 
 /**
  * The purpose of this class is to parse the callback parameters and return

@@ -1,6 +1,11 @@
 <?php
 
-require_once(dirname(__FILE__).'/PensioAbstractResponse.class.php');
+if(!defined('PENSIO_API_ROOT'))
+{
+	define('PENSIO_API_ROOT',dirname(__DIR__));
+}
+
+require_once(PENSIO_API_ROOT.'/response/PensioAbstractResponse.class.php');
 
 class PensioCreatePaymentRequestResponse extends PensioAbstractResponse
 {
