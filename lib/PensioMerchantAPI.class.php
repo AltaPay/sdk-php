@@ -147,6 +147,10 @@ class PensioMerchantAPI
 						throw new PensioUnknownMerchantAPIException($e);
 					}
 				}
+				elseif (stripos($response->getContentType(), "text/csv") !== false)
+				{
+					return $response->getContent();
+				}
 				else
 				{
 					throw new PensioInvalidResponseException("Non XML ContentType (was: ".$response->getContentType().")");
@@ -764,5 +768,16 @@ class PensioMerchantAPI
 						)
 				)
 		);
+	}
+
+	/**
+	 * @return string|boolean
+	 * @throws PensioMerchantAPIException
+	 */
+	public function getCustomReport($args)
+	{
+		$this->checkConnection();
+		$response = $this->callAPIMethod('getCustomReport', $args);
+		return $response;
 	}
 }
