@@ -187,7 +187,7 @@ class PensioMerchantAPI
 	 * @return PensioFundingListResponse
 	 * @throws PensioMerchantAPIException
 	 */
-	public function getFundingList($page=1)
+	public function getFundingList($page=0)
 	{
 		$this->checkConnection();
 
