@@ -59,6 +59,11 @@ abstract class PensioAbstractResponse
 	{
 		return $this->errorMessage;
 	}
-	
+
+	public function getXml()
+	{
+		return $this->xml;
+	}
+
 	public abstract function wasSuccessful();
 }
