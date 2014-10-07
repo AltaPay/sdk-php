@@ -16,6 +16,8 @@ class PensioCaptureReservationTest extends MockitTestCase
 	
 	public function testCapture()
 	{
+		$testReconciliationIdentifier = "reconrecon";
+		$testInvoiceNumber = "invoiceinvoice";
 		$testOrderId = "SomeOrderId";
 		$testAmount = 42.24;
 		$testSalesTax = 0.0;
@@ -43,7 +45,9 @@ class PensioCaptureReservationTest extends MockitTestCase
 			, $testAmount
 			, $testOrderLines
 			, $testSalesTax
-		);
+			, $testReconciliationIdentifier
+			, $testInvoiceNumber
+	);
 
 		$this->assertTrue($response->wasSuccessful());
 	}

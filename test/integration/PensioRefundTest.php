@@ -16,6 +16,9 @@ class PensioRefundTest extends MockitTestCase
 	
 	public function testReservationCaptureRefund()
 	{
+		$testReconciliationIdentifier = "reconrecon";
+		$testAllowOverRefunding = true;
+		$testInvoiceNumber = "invoiceinvoice";
 		$testOrderId = "SomeOrderId";
 		$testAmount = 42.24;
 		$testSalesTax = 0.0;
@@ -43,6 +46,8 @@ class PensioRefundTest extends MockitTestCase
 			, $testAmount
 			, $testOrderLines
 			, $testSalesTax
+			, $testReconciliationIdentifier
+			, $testInvoiceNumber
 		);
 
 		$this->assertTrue($response->wasSuccessful());
@@ -51,6 +56,9 @@ class PensioRefundTest extends MockitTestCase
 			$response->getPrimaryPayment()->getId()
 			, $testAmount
 			, $testOrderLines
+			, $testReconciliationIdentifier
+			, $testAllowOverRefunding
+			, $testInvoiceNumber
 		);
 
 		$this->assertTrue($response->wasSuccessful());

@@ -502,7 +502,7 @@ class PensioMerchantAPI
 	 * @return PensioCaptureResponse
 	 * @throws PensioMerchantAPIException
 	 */
-	public function captureReservation($paymentId, $amount=null, array $orderLines=array(), $salesTax=null)
+	public function captureReservation($paymentId, $amount=null, array $orderLines=array(), $salesTax=null, $reconciliationIdentifier=null, $invoiceNumber=null)
 	{
 		$this->checkConnection();
 
@@ -514,6 +514,8 @@ class PensioMerchantAPI
 					'amount'=>$amount,
 					'orderLines'=>$orderLines,
 					'sales_tax'=>$salesTax,
+					'reconciliation_identifier'=>$reconciliationIdentifier,
+					'invoice_number'=>$invoiceNumber
 				)
 			)
 		);
@@ -523,7 +525,7 @@ class PensioMerchantAPI
 	 * @return PensioRefundResponse
 	 * @throws PensioMerchantAPIException
 	 */
-	public function refundCapturedReservation($paymentId, $amount=null, $orderLines=null)
+	public function refundCapturedReservation($paymentId, $amount=null, $orderLines=null, $reconciliationIdentifier=null, $allowOverRefund=null, $invoiceNumber=null)
 	{
 		$this->checkConnection();
 
@@ -533,7 +535,10 @@ class PensioMerchantAPI
 				array(
 					'transaction_id'=>$paymentId, 
 					'amount'=>$amount,
-					'orderLines'=>$orderLines
+					'orderLines'=>$orderLines,
+					'reconciliation_identifier'=>$reconciliationIdentifier,
+					'allow_over_refund'=>$allowOverRefund,
+					'invoice_number'=>$invoiceNumber
 				)
 			)
 		);
