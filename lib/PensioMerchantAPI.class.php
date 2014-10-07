@@ -510,7 +510,7 @@ class PensioMerchantAPI
 			$this->callAPIMethod(
 				'captureReservation',
 				array(
-					'transaction_id'=>$paymentId, 
+					'transaction_id'=>$paymentId,
 					'amount'=>$amount,
 					'orderLines'=>$orderLines,
 					'sales_tax'=>$salesTax,
@@ -523,7 +523,7 @@ class PensioMerchantAPI
 	 * @return PensioRefundResponse
 	 * @throws PensioMerchantAPIException
 	 */
-	public function refundCapturedReservation($paymentId, $amount=null)
+	public function refundCapturedReservation($paymentId, $amount=null, $orderLines=null)
 	{
 		$this->checkConnection();
 
@@ -532,7 +532,8 @@ class PensioMerchantAPI
 				'refundCapturedReservation',
 				array(
 					'transaction_id'=>$paymentId, 
-					'amount'=>$amount
+					'amount'=>$amount,
+					'orderLines'=>$orderLines
 				)
 			)
 		);
