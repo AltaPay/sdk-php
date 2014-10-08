@@ -82,11 +82,15 @@ class PensioAPIPayment
 	private $capturedAmount;
 	private $refundedAmount;
 	private $recurringMaxAmount;
-		
+
 	private $paymentSchemeName;
 	private $paymentNature;
 	private $paymentNatureService;
-	
+
+	private $fraudRiskScore;
+	private $fraudExplanation;
+	private $fraudRecommendation;
+
 	/**
 	 * @var PensioAPICustomerInfo
 	 */
@@ -126,6 +130,11 @@ class PensioAPIPayment
 		$this->paymentSchemeName = (string)$xml->PaymentSchemeName;
 		$this->paymentNature = (string)$xml->PaymentNature;
 		$this->paymentNatureService = new PensioAPIPaymentNatureService($xml->PaymentNatureService);
+
+		$this->fraudRiskScore = (string)$xml->FraudRiskScore;
+		$this->fraudExplanation = (string)$xml->FraudExplanation;
+		$this->fraudRecommendation = (string)$xml->FraudRecommendation;
+
 		$this->customerInfo = new PensioAPICustomerInfo($xml->CustomerInfo);
 		$this->paymentInfos = new PensioAPIPaymentInfos($xml->PaymentInfos);
 		$this->chargebackEvents = new PensioAPIChargebackEvents($xml->ChargebackEvents);
@@ -209,7 +218,31 @@ class PensioAPIPayment
 	{
 		return $this->paymentNatureService;
 	}
-	
+
+	/**
+	 * @return string
+	 */
+	public function getFraudRiskScore()
+	{
+		return $this->fraudRiskScore;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getFraudExplanation()
+	{
+		return $this->fraudExplanation;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getFraudRecommendation()
+	{
+		return $this->fraudRecommendation;
+	}
+
 	/**
 	 * @return PensioAPICustomerInfo
 	 */
