@@ -23,4 +23,24 @@ class PensioAPIPaymentNatureService
 	{
 		return $this->name;
 	}
+
+	public function getSupportsRefunds()
+	{
+		return $this->supportsRefunds;
+	}
+
+	public function getSupportsRelease()
+	{
+		return $this->supportsRelease;
+	}
+
+	public function getSupportsMultipleCaptures()
+	{
+		return $this->supportsMultipleCaptures;
+	}
+
+	public function getSupportsMultipleRefunds()
+	{
+		return $this->supportsMultipleRefunds;
+	}
 }
