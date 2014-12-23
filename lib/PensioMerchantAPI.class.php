@@ -99,7 +99,7 @@ class PensioMerchantAPI
 	private function callAPIMethod($method, array $args = array())
 	{
 		$absoluteUrl = $this->baseURL."/merchant/API/".$method;
-		
+
 		if(!is_null($this->logger))
 		{
 			$loggedArgs = $args;
@@ -785,5 +785,15 @@ class PensioMerchantAPI
 		$this->checkConnection();
 		$response = $this->callAPIMethod('getCustomReport', $args);
 		return $response;
+	}
+
+	/**
+	 * @return string|boolean
+	 * @throws PensioMerchantAPIException
+	 */
+	public function getTransactions($args) //$args = shop, terminal, transaction, transaction_id, shop_orderid, payment_status, reconciliation_identifier, acquirer_reconciliation_identifier
+	{
+		$this->checkConnection();
+		return $this->callAPIMethod('transactions', $args);
 	}
 }
