@@ -6,6 +6,7 @@ if(!defined('PENSIO_API_ROOT'))
 }
 
 require_once(PENSIO_API_ROOT.'/IPensioCommunicationLogger.class.php');
+require_once(PENSIO_API_ROOT.'/request/PensioAPITransactionsRequest.class.php');
 require_once(PENSIO_API_ROOT.'/response/PensioGetTerminalsResponse.class.php');
 require_once(PENSIO_API_ROOT.'/response/PensioGetPaymentResponse.class.php');
 require_once(PENSIO_API_ROOT.'/response/PensioLoginResponse.class.php');
@@ -791,9 +792,9 @@ class PensioMerchantAPI
 	 * @return string|boolean
 	 * @throws PensioMerchantAPIException
 	 */
-	public function getTransactions($args) //$args = shop, terminal, transaction, transaction_id, shop_orderid, payment_status, reconciliation_identifier, acquirer_reconciliation_identifier
+	public function getTransactions(PensioAPITransactionsRequest $transactionsRequest)
 	{
 		$this->checkConnection();
-		return $this->callAPIMethod('transactions', $args);
+		return $this->callAPIMethod('transactions', $transactionsRequest->asArray());
 	}
 }
