@@ -10,7 +10,7 @@
     </target>
 
     <target name="SetAltaPayVersion" depends="-InitializeRelease">
-        <echo file="lib/ALTAPAY_VERSION.php">&lt;?php define('ALTAPAY_VERSION', '${pensio.release}');</echo>
+        <echo file="lib/ALTAPAY_VERSION.php">&lt;?php define('ALTAPAY_VERSION', 'PHPSDK/${pensio.release}');</echo>
     </target>
 
     <target name="Build" depends="-InitializeRelease,SetAltaPayVersion">
