@@ -1,1 +1,1 @@
-<?php define('ALTAPAY_VERSION', '201502');
+<?php define('ALTAPAY_VERSION', 'MagentoPlugin/201502');
