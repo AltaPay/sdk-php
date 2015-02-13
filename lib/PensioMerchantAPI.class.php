@@ -35,6 +35,7 @@ require_once(PENSIO_API_ROOT.'/exceptions/PensioRequestTimeoutException.class.ph
 require_once(PENSIO_API_ROOT.'/exceptions/PensioConnectionFailedException.class.php');
 require_once(PENSIO_API_ROOT.'/exceptions/PensioInvalidResponseException.class.php');
 require_once(PENSIO_API_ROOT.'/exceptions/PensioUnknownMerchantAPIException.class.php');
+require_once(PENSIO_API_ROOT.'/ALTAPAY_VERSION.php');
 
 class PensioMerchantAPI
 {
@@ -121,7 +122,8 @@ class PensioMerchantAPI
 		$request->setUser($this->username);
 		$request->setPass($this->password);
 		$request->setMethod('POST');
-		
+		$request->addHeader('x-altapay-client-version: '.ALTAPAY_VERSION);
+
 		$response = $this->httpUtil->requestURL($request);
 		
 		if(!is_null($this->logger))

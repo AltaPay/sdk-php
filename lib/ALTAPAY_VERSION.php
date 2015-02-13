@@ -1,0 +1,1 @@
+<?php define('ALTAPAY_VERSION', '201502');

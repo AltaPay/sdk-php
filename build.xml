@@ -9,8 +9,11 @@
         </tstamp>
     </target>
 
+    <target name="SetAltaPayVersion" depends="-InitializeRelease">
+        <echo file="lib/ALTAPAY_VERSION.php">&lt;?php define('ALTAPAY_VERSION', '${pensio.release}');</echo>
+    </target>
 
-    <target name="Build" depends="-InitializeRelease">
+    <target name="Build" depends="-InitializeRelease,SetAltaPayVersion">
 
         <zip destfile="dist/PensioPHPAPI_${pensio.release}.zip">
             <fileset dir=".">
