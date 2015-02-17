@@ -5,7 +5,7 @@
 
     <target name="-InitializeRelease">
         <tstamp>
-            <format property="pensio.release" pattern="yyyyMM" locale="en,GB"/>
+            <format property="pensio.release" pattern="yyyyMMdd" locale="en,GB"/>
         </tstamp>
     </target>
 
