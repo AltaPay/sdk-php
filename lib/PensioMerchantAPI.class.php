@@ -625,7 +625,8 @@ class PensioMerchantAPI
 			array $config = array(),
 			array $transaction_info = array(),
 			array $orderLines = array(),
-			$accountOffer = false
+			$accountOffer = false,
+			$ccToken = null
 		)
 	{
 		$args = array(
@@ -674,6 +675,10 @@ class PensioMerchantAPI
 		{
 			$args['account_offer'] = $accountOffer;
 		}
+        if(!is_null($ccToken))
+        {
+            $args['ccToken'] = $ccToken;
+        }
 
 		$args['config'] = $config;
 		
