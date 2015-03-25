@@ -51,15 +51,15 @@ class PensioCallbackHandler
 	{
 		if($xml->getName() != 'APIResponse')
 		{
-			throw new Exception("Unknown root-tag <".$xml->getName()."> in XML, should have been <APIResponse>");
+			throw new PensioXmlException("Unknown root-tag <".$xml->getName()."> in XML, should have been <APIResponse>", $xml);
 		}
 		if(!isset($xml->Header))
 		{
-			throw new Exception("No <Header> in response");
+			throw new PensioXmlException("No <Header> in response", $xml);
 		}
 		if(!isset($xml->Header->ErrorCode))
 		{
-			throw new Exception("No <ErrorCode> in Header of response");
+			throw new PensioXmlException("No <ErrorCode> in Header of response", $xml);
 		}
 		if((string)$xml->Header->ErrorCode !== '0')
 		{
@@ -67,17 +67,17 @@ class PensioCallbackHandler
 		}
 		if(!isset($xml->Body))
 		{
-			throw new Exception("No <Body> in response");
+			throw new PensioXmlException("No <Body> in response", $xml);
 		}
 		if(!isset($xml->Body[0]->Transactions))
 		{
 			$error = $this->getBodyMerchantErrorMessage($xml);
-			throw new Exception("No <Transactions> in <Body> of response".($error ? ' ('.$error.')' : ''));
+			throw new PensioXmlException("No <Transactions> in <Body> of response".($error ? ' ('.$error.')' : ''), $xml);
 		}
 		if(!isset($xml->Body[0]->Transactions[0]->Transaction))
 		{
 			$error = $this->getBodyMerchantErrorMessage($xml);
-			throw new Exception("No <Transaction> in <Transactions> of response".($error ? ' ('.$error.')' : ''));
+			throw new PensioXmlException("No <Transaction> in <Transactions> of response".($error ? ' ('.$error.')' : ''), $xml);
 		}
 	}
 	
