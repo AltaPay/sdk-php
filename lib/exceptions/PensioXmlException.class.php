@@ -9,7 +9,7 @@ class PensioXmlException extends Exception
 
 	public function __construct($message, SimpleXMLElement $xml)
 	{
-		parent::__construct($message ."\n\n".$xml);
+		parent::__construct($message ."\n\n".$xml->asXML());
 		$this->xml = $xml;
 	}
 
