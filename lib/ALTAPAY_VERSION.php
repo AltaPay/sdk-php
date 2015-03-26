@@ -1,1 +1,3 @@
-<?php define('ALTAPAY_VERSION', 'MagentoPlugin/201503');
+<?php
+// This file is auto-generated... do not edit by hand
+define('ALTAPAY_VERSION', 'PHPSDK/20150326');
