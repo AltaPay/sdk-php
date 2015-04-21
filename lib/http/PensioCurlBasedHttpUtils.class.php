@@ -106,11 +106,13 @@ class PensioCurlBasedHttpUtils implements IPensioHttpUtils
 			}
 		}
 
-		if($httpResponse->getErrorMessage() == 'connect() timed out!')
+		if($httpResponse->getErrorMessage() == 'connect() timed out!'
+			|| preg_match('/Connection timed out after [0-9]+ milliseconds/', $httpResponse->getErrorMessage()))
 		{
 			$httpResponse->setConnectionResult(PensioHttpResponse::CONNECTION_TIMEOUT);
 		}
-		else if($httpResponse->getErrorMessage() == 'couldn\'t connect to host')
+		else if($httpResponse->getErrorMessage() == 'couldn\'t connect to host'
+			|| preg_match('/Failed to connect to .+: Connection refused/', $httpResponse->getErrorMessage()))
 		{
 			$httpResponse->setConnectionResult(PensioHttpResponse::CONNECTION_REFUSED);
 		}
