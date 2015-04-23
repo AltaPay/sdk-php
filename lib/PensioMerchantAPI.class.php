@@ -283,6 +283,14 @@ class PensioMerchantAPI
 			$args['emonth'] = $cc_expiry_month;
 			$args['eyear'] = $cc_expiry_year;
 		}
+
+        if(!is_null($customerInfo) && is_array($customerInfo))
+        {
+            $this->addCustomerInfo($customerInfo, $args);
+        }
+
+        // Not needed when everyone has been upgraded to 20150428
+        // ====================================================================
 		foreach(array('billing_city', 'billing_region', 'billing_postal', 'billing_country', 'email', 'customer_phone', 'bank_name', 'bank_phone', 'billing_firstname', 'billing_lastname', 'billing_address') as $custField)
 		{
 			if(isset($customerInfo[$custField]))
@@ -290,6 +298,7 @@ class PensioMerchantAPI
 				$args[$custField] = $customerInfo[$custField];
 			}
 		}
+        // ====================================================================
 		if(count($transaction_info) > 0)
 		{
 			$args['transaction_info'] = $transaction_info;
@@ -639,20 +648,7 @@ class PensioMerchantAPI
 		
 		if(!is_null($customerInfo) && is_array($customerInfo))
 		{
-			$errors = array();
-			
-			foreach($customerInfo as $customerInfoKey => $customerInfoValue)
-			{
-				if (is_array($customerInfo[$customerInfoKey]))
-				{
-					$errors[] = "customer_info[$customerInfoKey] is not expected to be an array";
-				}
-			}
-			if (count($errors) > 0)
-			{
-				throw new PensioMerchantAPIException("Failed to create customer_info variable: \n".print_r($errors, true));
-			}
-			$args['customer_info'] = $customerInfo;
+            $this->addCustomerInfo($customerInfo, $args);
 		}
 		
 		if(!is_null($cookie))
@@ -804,4 +800,24 @@ class PensioMerchantAPI
 		$this->checkConnection();
 		return $this->callAPIMethod('transactions', $transactionsRequest->asArray());
 	}
+
+    /**
+     * @param $customerInfo
+     * @param $args
+     * @throws PensioMerchantAPIException
+     */
+    private function addCustomerInfo($customerInfo, &$args)
+    {
+        $errors = array();
+
+        foreach ($customerInfo as $customerInfoKey => $customerInfoValue) {
+            if (is_array($customerInfo[$customerInfoKey])) {
+                $errors[] = "customer_info[$customerInfoKey] is not expected to be an array";
+            }
+        }
+        if (count($errors) > 0) {
+            throw new PensioMerchantAPIException("Failed to create customer_info variable: \n" . print_r($errors, true));
+        }
+        $args['customer_info'] = $customerInfo;
+    }
 }
