@@ -35,6 +35,7 @@ require_once(PENSIO_API_ROOT.'/exceptions/PensioRequestTimeoutException.class.ph
 require_once(PENSIO_API_ROOT.'/exceptions/PensioConnectionFailedException.class.php');
 require_once(PENSIO_API_ROOT.'/exceptions/PensioInvalidResponseException.class.php');
 require_once(PENSIO_API_ROOT.'/exceptions/PensioUnknownMerchantAPIException.class.php');
+require_once(PENSIO_API_ROOT.'/exceptions/PensioXmlException.class.php');
 require_once(PENSIO_API_ROOT.'/ALTAPAY_VERSION.php');
 
 class PensioMerchantAPI
