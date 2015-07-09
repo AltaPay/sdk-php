@@ -1,6 +1,6 @@
 <?php
 
-require_once(dirname(__FILE__).'/../PensioMerchantAPI.class.php');
+require_once(dirname(__DIR__).'/lib/PensioMerchantAPI.class.php');
 
 $baseURL = "https://testgateway.pensio.com/";
 $username = 'username';

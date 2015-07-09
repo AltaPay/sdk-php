@@ -36,16 +36,43 @@ $config = array(
 );
 $transaction_info = array('auxkey'=>'aux data'); // this can be left out.
 
-$response = $api->createPaymentRequest($terminal,
-			$orderid,
-			$amount,
-			$currencyCode,
-			$paymentType,
-			$customerInfo,
-			$cookie,
-			$language,
-			$config,
-			$transaction_info);
+/**
+ * Order lines (optional, but recommended)
+ */
+$orderLines = array(
+	array(
+		  'description' => 'An even faster Santa Claus'
+		, 'itemId' => 'SantaClausTurbo'
+		, 'quantity' => 165.43
+		, 'unitPrice' => 13.37
+		// optional stuff
+		, 'taxAmount' => 0.42
+		, 'unitCode' => 'kg'
+		, 'goodsType' => 'item'
+	)
+	, array(
+		  'description' => 'Shipping fee'
+		, 'itemId' => 'ShipShip'
+		, 'quantity' => 1
+		, 'unitPrice' => 5
+		// optional stuff
+		, 'goodsType' => 'shipping'
+	)
+);
+
+$response = $api->createPaymentRequest(
+			  $terminal
+			, $orderid
+			, $amount
+			, $currencyCode
+			, $paymentType
+			, $customerInfo
+			, $cookie
+			, $language
+			, $config
+			, $transaction_info
+			, $orderLines // optional, but recommended
+);
 if(!$response->wasSuccessful())
 {
 	throw new Exception("Could not create the payment request: ".$response->getErrorMessage());
