@@ -289,4 +289,8 @@ class PensioAPIPayment
 	public function getSurchargeAmount(){
 		return $this->surchargeAmount;
 	}
+
+	public function getTerminal(){
+		return $this->terminal;
+	}
 }
