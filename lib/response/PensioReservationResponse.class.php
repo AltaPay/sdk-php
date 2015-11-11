@@ -32,7 +32,4 @@ class PensioReservationResponse extends PensioAbstractPaymentResponse
 		return false;
 	}
 
-	public function getSurchargeAmount(){
-		return $this->getXml()->Body->Transactions[0]->Transaction->SurchargeAmount;
-	}
 }

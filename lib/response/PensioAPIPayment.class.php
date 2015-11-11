@@ -82,6 +82,7 @@ class PensioAPIPayment
 	private $capturedAmount;
 	private $refundedAmount;
 	private $recurringMaxAmount;
+	private $surchargeAmount;
 
 	private $paymentSchemeName;
 	private $paymentNature;
@@ -126,6 +127,7 @@ class PensioAPIPayment
 		$this->capturedAmount = (string)$xml->CapturedAmount;
 		$this->refundedAmount = (string)$xml->RefundedAmount;
 		$this->recurringMaxAmount = (string)$xml->RecurringMaxAmount;
+		$this->surchargeAmount = (String)$xml->SurchargeAmount;
 		
 		$this->paymentSchemeName = (string)$xml->PaymentSchemeName;
 		$this->paymentNature = (string)$xml->PaymentNature;
@@ -282,5 +284,9 @@ class PensioAPIPayment
 	public function getXml()
 	{
 		return $this->xml;
+	}
+
+	public function getSurchargeAmount(){
+		return $this->surchargeAmount;
 	}
 }
