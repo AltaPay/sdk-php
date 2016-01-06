@@ -293,4 +293,11 @@ class PensioAPIPayment
 	public function getTerminal(){
 		return $this->terminal;
 	}
+
+	/**
+	 * Gives the amount of the good(s) without surcharge.
+	 */
+	public function getInitiallyAmount(){
+		return bcsub($this->reservedAmount, $this->surchargeAmount, 2);
+	}
 }
