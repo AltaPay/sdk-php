@@ -48,9 +48,9 @@ class PensioCreatePaymentRequestTest extends MockitTestCase
 		$cookie = 'some cookie';
 		$language = 'da';
 		$config = array(
-				'callback_form' => 'http://shopdomain.url/pensiopayment/form.php'
-				, 'callback_ok' => 'http://shopdomain.url/pensiopayment/ok.php'
-				, 'callback_fail' => 'http://shopdomain.url/pensiopayment/fail.php'
+				'callback_form' => 'http://127.0.0.1/pensiopayment/form.php'
+				, 'callback_ok' => 'http://127.0.0.1/pensiopayment/ok.php'
+				, 'callback_fail' => 'http://127.0.0.1/pensiopayment/fail.php'
 				, 'callback_redirect' => ''     // See documentation if this is needed
 				, 'callback_open' => ''         // See documentation if this is needed
 				, 'callback_notification' => '' // See documentation if this is needed
@@ -69,6 +69,6 @@ class PensioCreatePaymentRequestTest extends MockitTestCase
 				, $config
 				, $transaction_info);
 		
-		$this->assertTrue($response->wasSuccessful());
+		$this->assertTrue($response->wasSuccessful(), $response->getErrorMessage());
 	}
 }
