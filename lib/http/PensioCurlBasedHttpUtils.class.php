@@ -10,10 +10,15 @@ require_once(PENSIO_API_ROOT.'/http/IPensioHttpUtils.class.php');
 
 class PensioCurlBasedHttpUtils implements IPensioHttpUtils
 {
-	public function __construct($timeoutSeconds=60, $connectionTimeout=30)
+	private $timeout;
+	private $connectionTimeout;
+	private $sslVerifyPeer;
+
+	public function __construct($timeoutSeconds=60, $connectionTimeout=30, $sslVerifyPeer=true)
 	{
 		$this->timeout = $timeoutSeconds;
 		$this->connectionTimeout = $connectionTimeout;
+		$this->sslVerifyPeer = $sslVerifyPeer;
 	}
 	
 	/**
@@ -42,6 +47,7 @@ class PensioCurlBasedHttpUtils implements IPensioHttpUtils
 		curl_setopt($curl, CURLOPT_FOLLOWLOCATION, false);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, false);
 		curl_setopt($curl, CURLOPT_HEADER, false);
+		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, $this->sslVerifyPeer);
 
 		// Container for the header/content
 		$httpResponse = new PensioHttpResponse();

@@ -12,11 +12,15 @@ class PensioCurlBasedHttpUtils_PensioNetworkProblemTest extends MockitTestCase
 	 * @var PensioMerchantAPI
 	 */
 	private $merchantApi;
-	
+	/**
+	 * @var PensioCurlBasedHttpUtils
+	 */
+	private $httpUtils;
+
 	public function setup()
 	{
 		$this->logger = new ArrayCachingLogger();
-		$this->httpUtils = new PensioCurlBasedHttpUtils(5, 3);
+		$this->httpUtils = new PensioCurlBasedHttpUtils(5, 3, false);
 	}
 	
 	/**
