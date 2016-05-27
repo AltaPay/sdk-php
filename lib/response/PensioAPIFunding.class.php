@@ -30,6 +30,7 @@ class PensioAPIFunding
 	private $currency;
 	private $createdDate;
 	private $downloadLink;
+	private $referenceText;
 	
 	public function __construct(SimpleXmlElement $xml)
 	{
@@ -44,6 +45,7 @@ class PensioAPIFunding
 		list($this->amount, $this->currency) = explode(" ", (string)$xml->Amount, 2);
 		$this->createdDate = (string)$xml->CreatedDate;
 		$this->downloadLink = (string)$xml->DownloadLink;
+		$this->referenceText = (string)$xml->ReferenceText;
 	}
 	
 	public function getFundingDate()
@@ -89,5 +91,10 @@ class PensioAPIFunding
 	public function getCreatedDate()
 	{
 		return $this->createdDate;
+	}
+
+	public function getReferenceText()
+	{
+		return $this->referenceText;
 	}
 }
