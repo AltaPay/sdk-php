@@ -15,7 +15,12 @@
 define('ALTAPAY_VERSION', 'PHPSDK/${pensio.release}');</echo>
     </target>
 
-    <target name="Build" depends="-InitializeRelease,SetAltaPayVersion">
+    <target name="-ensureDist">
+        <delete dir="dist"/>
+        <mkdir dir="dist"/>
+    </target>
+
+    <target name="Build" depends="-InitializeRelease,-ensureDist,SetAltaPayVersion">
 
         <zip destfile="dist/PensioPHPAPI_${pensio.release}.zip">
             <fileset dir=".">
