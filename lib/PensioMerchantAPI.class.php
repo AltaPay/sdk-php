@@ -12,6 +12,7 @@ require_once(PENSIO_API_ROOT.'/response/PensioGetPaymentResponse.class.php');
 require_once(PENSIO_API_ROOT.'/response/PensioLoginResponse.class.php');
 require_once(PENSIO_API_ROOT.'/response/PensioCreatePaymentRequestResponse.class.php');
 require_once(PENSIO_API_ROOT.'/response/PensioCaptureResponse.class.php');
+require_once(PENSIO_API_ROOT.'/response/PensioCreateInvoiceReservationResponse.class.php');
 require_once(PENSIO_API_ROOT.'/response/PensioRefundResponse.class.php');
 require_once(PENSIO_API_ROOT.'/response/PensioReleaseResponse.class.php');
 require_once(PENSIO_API_ROOT.'/response/PensioReservationResponse.class.php');
@@ -681,7 +682,75 @@ class PensioMerchantAPI
 		
 		return new PensioCreatePaymentRequestResponse($this->callAPIMethod('createPaymentRequest', $args));
 	}
-	
+
+	public function createInvoiceReservation($terminal,
+											 $shop_orderid,
+											 $amount,
+											 $currencyCode,
+											 $paymentType = null,
+											 $customerInfo = null,
+											 array $transaction_info = array(),
+											 $accountNumber = null,
+											 $bankCode = null,
+											 $fraud_service = null,
+											 $payment_source = null,
+											 array $orderLines = array(),
+											 $organisationNumber = null,
+											 $personalIdentifyNumber = null,
+											 $birthDate = null)
+	{
+		$args = array(
+			'terminal' => $terminal,
+			'shop_orderid' => $shop_orderid,
+			'amount' => $amount,
+			'currency' => $currencyCode
+		);
+
+		if(!is_null($paymentType))
+		{
+			$args['type'] = $paymentType;
+		}
+		if(!is_null($customerInfo) && is_array($customerInfo))
+		{
+			$this->addCustomerInfo($customerInfo, $args); // just checks and saves $customerInfo inside $args
+		}
+		if(count($transaction_info) > 0) {
+			$args['transaction_info'] = $transaction_info;
+		}
+		if(!is_null($accountNumber))
+		{
+			$args['accountNumber'] = $accountNumber;
+		}
+		if(!is_null($bankCode))
+		{
+			$args['bankCode'] = $bankCode;
+		}
+		if(!is_null($fraud_service))
+		{
+			$args['fraud_service'] = $fraud_service;
+		}
+		if(!is_null($payment_source))
+		{
+			$args['payment_source'] = $payment_source;
+		}
+		if(count($orderLines) > 0) {
+			$args['orderLines'] = $orderLines;
+		}
+		if(!is_null($organisationNumber)) {
+			$args['organisationNumber'] = $organisationNumber;
+		}
+		if(!is_null($personalIdentifyNumber)) {
+			$args['personalIdentifyNumber'] = $personalIdentifyNumber;
+		}
+		if(!is_null($birthDate)) {
+			$args['birthDate'] = $birthDate;
+		}
+
+		return new PensioCreateInvoiceReservationResponse($this->callAPIMethod('createInvoiceReservation', $args));
+
+	}
+
+
 	/**
 	 * @return PensioCaptureRecurringResponse
 	 * @deprecated - use chargeSubscription instead.
