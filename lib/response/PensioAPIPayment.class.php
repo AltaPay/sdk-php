@@ -272,6 +272,11 @@ class PensioAPIPayment
 	{
 		return $this->capturedAmount; 
 	}
+	
+	public function getRefundedAmount()
+	{
+		return $this->refundedAmount;
+	}
 
 	/**
 	 * @return PensioAPIChargebackEvents
