@@ -28,6 +28,7 @@ require_once(PENSIO_API_ROOT.'/response/PensioAPIChargebackEvent.class.php');
 require_once(PENSIO_API_ROOT.'/response/PensioAPIChargebackEvents.class.php');
 require_once(PENSIO_API_ROOT.'/response/PensioCalculateSurchargeResponse.class.php');
 require_once(PENSIO_API_ROOT.'/response/PensioFundingListResponse.class.php');
+require_once(PENSIO_API_ROOT.'/response/PensioUpdateOrderResponse.class.php');
 require_once(PENSIO_API_ROOT.'/http/PensioFOpenBasedHttpUtils.class.php');
 require_once(PENSIO_API_ROOT.'/http/PensioCurlBasedHttpUtils.class.php');
 require_once(PENSIO_API_ROOT.'/exceptions/PensioMerchantAPIException.class.php');
@@ -553,6 +554,32 @@ class PensioMerchantAPI
 					'reconciliation_identifier'=>$reconciliationIdentifier,
 					'allow_over_refund'=>$allowOverRefund,
 					'invoice_number'=>$invoiceNumber
+				)
+			)
+		);
+	}
+
+	/**
+	 * @param $paymentId string
+	 * @param $orderLines array
+	 * @return PensioUpdateOrderResponse
+	 * @throws PensioMerchantAPIException
+	 */
+	public function updateOrder($paymentId, $orderLines)
+	{
+		if ($orderLines == null ||  count ($orderLines) != 2)
+		{
+			throw new PensioMerchantAPIException("orderLines must contain exactly two elements");
+		}
+
+		$this->checkConnection();
+
+		return new PensioUpdateOrderResponse(
+			$this->callAPIMethod(
+				'updateOrder',
+				array(
+					'payment_id'=>$paymentId,
+					'orderLines'=>$orderLines
 				)
 			)
 		);
