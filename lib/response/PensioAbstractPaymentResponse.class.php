@@ -11,7 +11,7 @@ require_once(PENSIO_API_ROOT.'/response/PensioAPIPayment.class.php');
 abstract class PensioAbstractPaymentResponse extends PensioAbstractResponse
 {
 	private $result;
-	private $merchantErrorMessage, $cardHolderErrorMessage;
+	private $merchantErrorMessage, $cardHolderErrorMessage, $cardHolderMessageMustBeShown;
 	protected $payments = array();
 	
 	public function __construct(SimpleXmlElement $xml)
@@ -33,6 +33,7 @@ abstract class PensioAbstractPaymentResponse extends PensioAbstractResponse
 			$this->result = strval($xml->Body->Result);
 			$this->merchantErrorMessage = (string)$xml->Body->MerchantErrorMessage;
 			$this->cardHolderErrorMessage = (string)$xml->Body->CardHolderErrorMessage;
+			$this->cardHolderMessageMustBeShown = (string)$xml->Body->CardHolderMessageMustBeShown;
 			
 			$this->parseBody($xml->Body);
 
@@ -91,6 +92,11 @@ abstract class PensioAbstractPaymentResponse extends PensioAbstractResponse
 	{
 		return $this->cardHolderErrorMessage;
 	}
-	
+
+	public function getCardHolderMessageMustBeShown()
+	{
+		return $this->cardHolderMessageMustBeShown;
+	}
+
 	abstract protected function parseBody(SimpleXmlElement $body);
 }

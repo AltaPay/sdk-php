@@ -207,4 +207,24 @@ class PensioCallbackHandlerTest extends MockitTestCase
 		$this->assertEquals('epayment_cancelled', $response->getPrimaryPayment()->getCurrentStatus());
 
 	}
+
+	public function testReadCardHolderErrorMessageMustBeShown() {
+
+		$xml = file_get_contents(dirname(__FILE__).'/xml/CardHolderMessageMustBeShownFalse.xml');
+		$response = $this->handler->parseXmlResponse($xml);
+		$this->assertEquals('false', $response->getCardHolderMessageMustBeShown());
+
+		$xml = file_get_contents(dirname(__FILE__).'/xml/CardHolderMessageMustBeShownTrue.xml');
+		$response = $this->handler->parseXmlResponse($xml);
+		$this->assertEquals('true', $response->getCardHolderMessageMustBeShown());
+
+	}
+
+	public function testReadReasonCode() {
+
+		$xml = file_get_contents(dirname(__FILE__).'/xml/ReasonCode.xml');
+		$response = $this->handler->parseXmlResponse($xml);
+		$this->assertEquals('NONE', $response->getPrimaryPayment()->getReasonCode());
+
+	}
 }

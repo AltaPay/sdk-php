@@ -76,6 +76,7 @@ class PensioAPIPayment
 	private $shop;
 	private $terminal;
 	private $transactionStatus;
+	private $reasonCode;
 	private $currency;
 	
 	private $reservedAmount;
@@ -121,6 +122,7 @@ class PensioAPIPayment
 		$this->shop = (string)$xml->Shop;
 		$this->terminal = (string)$xml->Terminal;
 		$this->transactionStatus = (string)$xml->TransactionStatus;
+		$this->reasonCode = (string)$xml->ReasonCode;
 		$this->currency = (string)$xml->MerchantCurrency;
 		
 		$this->reservedAmount = (string)$xml->ReservedAmount;
@@ -257,7 +259,12 @@ class PensioAPIPayment
 	{
 		return $this->paymentInfos->getInfo($keyName);
 	}
-	
+
+	public function getReasonCode()
+	{
+		return $this->reasonCode;
+	}
+
 	public function getCurrency()
 	{
 		return $this->currency;
