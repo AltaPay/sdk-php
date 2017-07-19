@@ -1,7 +1,12 @@
 {
     "name": "pensio/pensio-php-api",
     "minimum-stability": "dev",
+    "config": {
+        "secure-http": false
+    },
     "require-dev": {
+        "pensio/mockit": "dev-Mockit",
+        "pensio/phpunit": "dev-PHPUnit"
     },
     "repositories": [
         {
