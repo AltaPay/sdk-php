@@ -70,6 +70,8 @@ class PensioAPIPayment
 	private $paymentId;
 	private $authType;
 	private $creditCardMaskedPan;
+	private $creditCardExpiryMonth;
+	private $creditCardExpiryYear;
 	private $creditCardToken;
 	private $cardStatus;
 	private $shopOrderId;
@@ -116,6 +118,8 @@ class PensioAPIPayment
 		$this->paymentId = (string)$xml->TransactionId;
 		$this->authType = (string)$xml->AuthType;
 		$this->creditCardMaskedPan = (string)$xml->CreditCardMaskedPan;
+		$this->creditCardExpiryMonth = (string)$xml->CreditCardExpiry->Month;
+		$this->creditCardExpiryYear = (string)$xml->CreditCardExpiry->Year;
 		$this->creditCardToken = (string)$xml->CreditCardToken;
 		$this->cardStatus = (string)$xml->CardStatus;
 		$this->shopOrderId = (string)$xml->ShopOrderId;
@@ -194,7 +198,17 @@ class PensioAPIPayment
 	{
 		return $this->creditCardMaskedPan;
 	}
-	
+
+	public function getCreditCardExpiryMonth()
+	{
+		return $this->creditCardExpiryMonth;
+	}
+
+	public function getCreditCardExpiryYear()
+	{
+		return $this->creditCardExpiryYear;
+	}
+
 	public function getCreditCardToken()
 	{
 		return $this->creditCardToken;
