@@ -7,6 +7,7 @@ if(!defined('PENSIO_API_ROOT'))
 
 require_once(PENSIO_API_ROOT.'/IPensioCommunicationLogger.class.php');
 require_once(PENSIO_API_ROOT.'/request/PensioAPITransactionsRequest.class.php');
+require_once(PENSIO_API_ROOT.'/response/AltapayReservationResponse.class.php');
 require_once(PENSIO_API_ROOT.'/response/PensioGetTerminalsResponse.class.php');
 require_once(PENSIO_API_ROOT.'/response/PensioGetPaymentResponse.class.php');
 require_once(PENSIO_API_ROOT.'/response/PensioLoginResponse.class.php');
@@ -777,6 +778,91 @@ class PensioMerchantAPI
 
 	}
 
+	public function reservation($terminal,
+								$shop_orderid,
+								$amount,
+								$currencyCode,
+								$creditCardToken = null,
+								$pan = null,
+								$expiryMonth = null,
+								$expiryYear = null,
+								$cvc = null,
+								array $transaction_info = array(),
+								$paymentType = null,
+								$paymentSource = null,
+								$fraudService = null,
+								$surcharge = null,
+								$customerCreatedDate = null,
+								$shippingMethod = null,
+								$customerInfo = null,
+								array $orderLines = array()
+	)
+	{
+		$args = array(
+			'terminal' => $terminal,
+			'shop_orderid' => $shop_orderid,
+			'amount' => $amount,
+			'currency' => $currencyCode
+		);
+
+		if(!is_null($creditCardToken))
+		{
+			$args['credit_card_token'] = $creditCardToken;
+		}
+		if(!is_null($pan))
+		{
+			$args['cardnum'] = $pan;
+		}
+		if(!is_null($expiryMonth))
+		{
+			$args['emonth'] = $expiryMonth;
+		}
+		if(!is_null($expiryYear))
+		{
+			$args['eyear'] = $expiryYear;
+		}
+		if(!is_null($cvc))
+		{
+			$args['cvc'] = $cvc;
+		}
+		if(count($transaction_info) > 0) {
+			$args['transaction_info'] = $transaction_info;
+		}
+		if(!is_null($paymentType))
+		{
+			$args['type'] = $paymentType;
+		}
+		if(!is_null($paymentSource))
+		{
+			$args['payment_source'] = $paymentSource;
+		}
+		if(!is_null($fraudService))
+		{
+			$args['fraud_service'] = $fraudService;
+		}
+		if(!is_null($surcharge))
+		{
+			$args['surcharge'] = $surcharge;
+		}
+		if(!is_null($customerCreatedDate))
+		{
+			$args['customer_created_date'] = $customerCreatedDate;
+		}
+		if(!is_null($shippingMethod))
+		{
+			$args['shipping_method'] = $shippingMethod;
+		}
+		if(!is_null($customerInfo) && is_array($customerInfo))
+		{
+			$this->addCustomerInfo($customerInfo, $args); // just checks and saves $customerInfo inside $args
+		}
+		if(count($orderLines) > 0) {
+			$args['orderLines'] = $orderLines;
+		}
+
+		return new AltapayReservationResponse($this->callAPIMethod('reservation', $args));
+
+	}
 
 	/**
 	 * @return PensioCaptureRecurringResponse
