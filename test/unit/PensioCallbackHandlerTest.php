@@ -227,4 +227,12 @@ class PensioCallbackHandlerTest extends MockitTestCase
 		$this->assertEquals('NONE', $response->getPrimaryPayment()->getReasonCode());
 
 	}
+
+	public function testReadPaymentId() {
+
+		$xml = file_get_contents(dirname(__FILE__).'/xml/ReasonCode.xml');
+		$response = $this->handler->parseXmlResponse($xml);
+		$this->assertEquals('17794956-9bb6-4854-9712-bce5931e6e3a', $response->getPrimaryPayment()->getPaymentId());
+
+	}
 }

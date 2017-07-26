@@ -67,7 +67,8 @@ class PensioAPIPayment
 {
 	private $xml;
 
-	private $paymentId;
+	private $transactionId;
+	private $uuid;
 	private $authType;
 	private $creditCardMaskedPan;
 	private $creditCardExpiryMonth;
@@ -115,7 +116,8 @@ class PensioAPIPayment
 	public function __construct(SimpleXmlElement $xml)
 	{
 		$this->xml = $xml->saveXML();
-		$this->paymentId = (string)$xml->TransactionId;
+		$this->transactionId = (string)$xml->TransactionId;
+		$this->uuid = (string)$xml->PaymentId;
 		$this->authType = (string)$xml->AuthType;
 		$this->creditCardMaskedPan = (string)$xml->CreditCardMaskedPan;
 		$this->creditCardExpiryMonth = (string)$xml->CreditCardExpiry->Month;
@@ -181,7 +183,12 @@ class PensioAPIPayment
 	
 	public function getId()
 	{
-		return $this->paymentId;
+		return $this->transactionId;
+	}
+
+	public function getPaymentId()
+	{
+		return $this->uuid;
 	}
 	
 	public function getAuthType()
