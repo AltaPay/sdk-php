@@ -1,4 +1,4 @@
-<project name="PensioPHPAPI" default="Build">
+<project name="phpsdk" default="Build">
 
     <!-- Release variables -->
     <!--<property name="pensio.release" value="20130627" />-->
@@ -22,13 +22,15 @@ define('ALTAPAY_VERSION', 'PHPSDK/${pensio.release}');</echo>
 
     <target name="Build" depends="-InitializeRelease,-ensureDist,SetAltaPayVersion">
 
-        <zip destfile="dist/PensioPHPAPI_${pensio.release}.zip">
+        <zip destfile="dist/PHPSDK_${pensio.release}.zip">
             <fileset dir=".">
                 <include name="lib/**/*" />
                 <include name="example/**/*" />
 
-                <exclude name="**/.svn" />
-                <exclude name="**/.svn/**/*" />
+                <exclude name=".idea/*" />
+                <exclude name=".settings/*" />
+                <exclude name="**/.git" />
+                <exclude name="**/.git/**/*" />
                 <exclude name="example/base.php" />
                 <exclude name="external/**/*" />
                 <exclude name="test/**/*" />
