@@ -47,6 +47,7 @@ $orderLines = array(
 		, 'unitPrice' => 13.37
 		// optional stuff
 		, 'taxAmount' => 0.42
+		, 'taxPercent' => 15
 		, 'unitCode' => 'kg'
 		, 'goodsType' => 'item'
 	)
