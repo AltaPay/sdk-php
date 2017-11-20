@@ -81,6 +81,8 @@ class PensioAPIPayment
 	private $transactionStatus;
 	private $reasonCode;
 	private $currency;
+	private $addressVerification;
+	private $addressVerificationDescription;
 	
 	private $reservedAmount;
 	private $capturedAmount;
@@ -130,7 +132,9 @@ class PensioAPIPayment
 		$this->transactionStatus = (string)$xml->TransactionStatus;
 		$this->reasonCode = (string)$xml->ReasonCode;
 		$this->currency = (string)$xml->MerchantCurrency;
-		
+		$this->addressVerification = (string)$xml->AddressVerification;
+		$this->addressVerificationDescription = (string)$xml->AddressVerificationDescription;
+
 		$this->reservedAmount = (string)$xml->ReservedAmount;
 		$this->capturedAmount = (string)$xml->CapturedAmount;
 		$this->refundedAmount = (string)$xml->RefundedAmount;
@@ -332,5 +336,15 @@ class PensioAPIPayment
 	 */
 	public function getInitiallyAmount(){
 		return bcsub($this->reservedAmount, $this->surchargeAmount, 2);
+	}
+
+	public function getAddressVerification()
+	{
+		return $this->addressVerification;
+	}
+
+	public function getAddressVerificationDescription()
+	{
+		return $this->addressVerificationDescription;
 	}
 }
