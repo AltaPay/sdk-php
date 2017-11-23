@@ -1,35 +1,50 @@
 <?php
-require_once(dirname(__FILE__).'/base.php');
+require_once(__DIR__.'/base.php');
 
-
+// Different variables used as arguments
 $subscriptionId = 2;
 $amount = 2500.00;
 $currency = 'DKK';
-$response = $api->calculateSurchargeForSubscription($subscriptionId, $amount, $currency);
-//print_r($response);
+$cardToken = '193c93414f049ee89ef9381320adb334d7e49afc';
+$terminalName = 'Pensio Surcharge Test Terminal';
+
+// Example 1
+/**
+ * @return PensioCalculateSurchargeResponse
+ */
+$response = $api->calculateSurchargeForSubscription($subscriptionId, $amount);
 if(!$response->wasSuccessful())
 {
-	throw new Exception("Could not get surcharge amount: ".$response->getErrorMessage());
+	throw new Exception("Could not calculate surcharge amount: ".$response->getErrorMessage());
 }
 print("[Case 1] Surcharge Amount: ".$response->getSurchargeAmount()."\n");
-$response = $api->captureRecurring($subscriptionId, bcadd($amount, $response->getSurchargeAmount(), 2));
+
+/**
+ * @return PensioCaptureRecurringResponse
+ */
+$response = $api->chargeSubscription($subscriptionId, bcadd($amount, $response->getSurchargeAmount(), 2));
 if(!$response->wasSuccessful())
 {
 	throw new Exception("Could not capture including surcharge amount: ".$response->getErrorMessage());
 }
 print("[Case 1] Captured Amount: ".$response->getPrimaryPayment()->getCapturedAmount()."\n");
 
-
-$amount = 123.37;
+// Example 2
 $currency = 'XXX';
-$response = $api->calculateSurcharge("Pensio Surcharge Test Terminal", '193c93414f049ee89ef9381320adb334d7e49afc', $amount, $currency);
-//print_r($response);
+/**
+ * @return PensioCalculateSurchargeResponse
+ */
+$response = $api->calculateSurcharge($terminalName, $cardToken, $amount, $currency);
 if(!$response->wasSuccessful())
 {
 	throw new Exception("Could not get surcharge amount: ".$response->getErrorMessage());
 }
 print("[Case 2] Surcharge Amount: ".$response->getSurchargeAmount()."\n");
-$response = $api->captureRecurring($subscriptionId, bcadd($amount, $response->getSurchargeAmount(), 2));
+
+/**
+ * @return PensioCaptureRecurringResponse
+ */
+$response = $api->chargeSubscription($subscriptionId, bcadd($amount, $response->getSurchargeAmount(), 2));
 if(!$response->wasSuccessful())
 {
 	throw new Exception("Could not capture including surcharge amount: ".$response->getErrorMessage());
