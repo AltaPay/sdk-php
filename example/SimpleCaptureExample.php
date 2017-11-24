@@ -1,66 +1,68 @@
 <?php
-require_once(dirname(__FILE__).'/base.php');
+require_once(__DIR__.'/base.php');
 
-//Transaction ID is returned from the gateway when payment request was successful
-$transaction_id = reserveAmount($api, $terminal);
+// Different variables which are used as arguments
+$amount = 125.55;
+$transactionId = reserveAmount($api, $terminal, $amount);
 
-//call capture method
-$response = $api->captureReservation($transaction_id);
+/**
+ * Helper method for reserving the payment amount
+ * @param $api PensioMerchantAPI
+ * @param $terminal string
+ * @param $amount float
+ * @return mixed
+ * @throws Exception
+ */
+function reserveAmount($api, $terminal, $amount)
+{
+	$orderId = 'order_'.time();
+	$transactionInfo = array();
+	$cardToken = null;
+	// Credit card details
+	$currencyCode = 'DKK';
+	$paymentType = 'payment';
+	$pan = '4111000011110000';
+	$cvc = '111';
+	$expiryMonth = '12';
+	$expiryYear = '2018';
 
-//response contains wasSuccessful() method which returns TRUE if request was successful or FALSE if not
+	/**
+	 * @var $api PensioMerchantAPI
+	 * @var $response PensioCreatePaymentRequestResponse
+	 */
+	$response = $api->reservation(
+		$terminal,
+		$orderId,
+		$amount,
+		$currencyCode,
+		$cardToken,
+		$pan,
+		$expiryMonth,
+		$expiryYear,
+		$cvc,
+		$transactionInfo,
+		$paymentType
+	);
+	if($response->wasSuccessful())
+	{
+		return $response->getPrimaryPayment()->getId();
+	}
+	else
+	{
+		throw new Exception('Amount reservation failed: '. $response->getErrorMessage());
+	}
+}
+
+/**
+ * @var $api PensioMerchantAPI
+ * @var $response PensioCaptureResponse
+ */
+$response = $api->captureReservation($transactionId);
 if ($response->wasSuccessful()) 
 {
-    //capture was successful
     print('Successful capture');
 }
 else 
 {
-    //getErrorMessage() method returns description about what went wrong
-    print('Error message: '.$response->getErrorMessage());
-}
-
-
-
-//helper method to reserve amount for the payment in order to be captured
-//method is returning transaction_id value
-function reserveAmount($api, $terminal) {
-    $order_id = 'order'.time();
-    $amount = 125.55;
-    $currency_code = 'DKK';
-    $payment_type = 'payment';
-    $pan = '4111000011110000';
-    $cvc = '111';
-    $expiry_month = '12';
-    $expiry_year = '2018';
-    $transaction_info = array();
-    $order_lines = array();
-
-    $response = $api->reservation(
-    $terminal
-        ,$order_id
-        ,$amount
-        ,$currency_code
-        ,NULL
-        ,$pan
-        ,$expiry_month
-        ,$expiry_year
-        ,$cvc
-        ,$transaction_info
-        ,$payment_type
-        ,NULL
-        ,NULL
-        ,NULL
-        ,NULL
-        ,NULL
-        ,NULL
-        ,$order_lines
-    );
-    if($response->wasSuccessful())
-    {
-        return $response->getPrimaryPayment()->getId();
-    }
-    else
-    {
-        print("Error message: ".$response->getErrorMessage());
-    }
+	throw new Exception('Capture failed: '. $response->getErrorMessage());
 }

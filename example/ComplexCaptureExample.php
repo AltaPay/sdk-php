@@ -32,7 +32,7 @@ $orderLines = array(
 		'goodsType' => 'shipping'
 	)
 );
-$transaction_id = reserveAmount($api, $terminal, $amount);
+$transactionId = reserveAmount($api, $terminal, $amount, $orderLines);
 
 /**
  * Helper method for reserving the payment amount
@@ -40,10 +40,11 @@ $transaction_id = reserveAmount($api, $terminal, $amount);
  * @param $api PensioMerchantAPI
  * @param $terminal string
  * @param $amount float
+ * @param $orderLines
  * @return mixed
  * @throws Exception
  */
-function reserveAmount($api, $terminal, $amount)
+function reserveAmount($api, $terminal, $amount, $orderLines)
 {
 	$orderId = 'order_'.time();
 	$transactionInfo = array();
@@ -55,7 +56,9 @@ function reserveAmount($api, $terminal, $amount)
 	$cvc = '111';
 	$expiryMonth = '12';
 	$expiryYear = '2018';
-
+	/**
+	 * @var $api PensioMerchantAPI
+	 */
 	$response = $api->reservation(
 		$terminal,
 		$orderId,
@@ -67,7 +70,14 @@ function reserveAmount($api, $terminal, $amount)
 		$expiryYear,
 		$cvc,
 		$transactionInfo,
-		$paymentType
+		$paymentType,
+		null,
+		null,
+		null,
+		null,
+		null,
+		null,
+		$orderLines
 	);
 	if($response->wasSuccessful())
 	{
@@ -75,19 +85,20 @@ function reserveAmount($api, $terminal, $amount)
 	}
 	else
 	{
-		throw new Exception("Amount reservation failed: ".$response->getErrorMessage());
+		throw new Exception('Amount reservation failed: '.$response->getErrorMessage());
 	}
 }
 
 /**
  * @return PensioCaptureResponse
+ * @var $api PensioMerchantAPI
  */
-$response = $api->captureReservation($transaction_id, $amount, $orderLines);
+$response = $api->captureReservation($transactionId, $amount, $orderLines);
 if ($response->wasSuccessful()) 
 {
     print('Successful capture');
 }
 else 
 {
-	throw new Exception("Capture operation has failed: ".$response->getErrorMessage());
+	throw new Exception('Capture failed: '.$response->getErrorMessage());
 }

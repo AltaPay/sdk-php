@@ -1,19 +1,31 @@
 <?php
+require_once(__DIR__.'/../lib/PensioCallbackHandler.class.php');
 
-require_once(dirname(__FILE__).'/../lib/PensioCallbackHandler.class.php');
 $callbackHandler = new PensioCallbackHandler();
+// Load an example of reservation and capture request
+$xml = file_get_contents(__DIR__.'/xml/CallbackXML_reservationAndCapture.xml');
 
-//PensioReservationResponse will be understood
-$xml = file_get_contents(dirname(__FILE__).'/xml/CallbackXML_reservationAndCapture.xml');
-/* @var $response PensioReservationResponse */
+/**
+ * @var $response PensioReservationResponse
+ */
 $response = $callbackHandler->parseXmlResponse($xml);
 if($response->wasSuccessful())
 {
-	print("The payment was successful\n");
-}
-if($response->getPrimaryPayment()->getCapturedAmount() > 0)
+	print('Reservation and capture was successful'.PHP_EOL);
+	if($response->getPrimaryPayment()->getCapturedAmount() > 0)
+	{
+		print('The capture was successful, the amount of ' . number_format($response->getPrimaryPayment()->getCapturedAmount(), 2) . ' was captured'.PHP_EOL);
+		$avsResponse = $response->getPrimaryPayment()->getAddressVerification();
+		if ($avsResponse != '')
+		{
+			print('AVS response: ' . $avsResponse . PHP_EOL);
+			print('AVS description: ' . $response->getPrimaryPayment()->getAddressVerificationDescription() . PHP_EOL);
+		} else
+		{
+			print('No AVS response'. PHP_EOL);
+		}
+	}
+} else
 {
-	print("The capture was successful, we captured: ".number_format($response->getPrimaryPayment()->getCapturedAmount(), 2)."\n");
-	print("AVS Response: ".$response->getPrimaryPayment()->getAddressVerification()."\n");
-	print("AVS Description: ".$response->getPrimaryPayment()->getAddressVerificationDescription()."\n");
+	throw new Exception('Reservation and capture failed: '. $response->getErrorMessage());
 }

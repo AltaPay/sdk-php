@@ -1,28 +1,38 @@
 <?php
-
-require_once(dirname(__FILE__).'/base.php');
-
-
-// 
-
-
-$pageCount = 1; // We assume there is at least one page (then we correct it later)
+require_once(__DIR__.'/base.php');
+// For the purpose of this example will be assumed that there is one page
+$pageCount = 1;
 for($page = 1; $page <= $pageCount; $page++)
 {
+	/**
+	 * @var $response PensioFundingListResponse
+	 */
 	$response = $api->getFundingList($page);
 	if($response->wasSuccessful())
 	{
-		foreach($response->getFundings() as $funding) /* @var $funding PensioAPIFunding */
+		/**
+        * @var $funding PensioAPIFunding
+		 */
+		foreach($response->getFundings() as $funding)
 		{
-			print("We have a funding of ".$funding->getAmount()." ".$funding->getCurrency()." made on the date ".$funding->getFundingDate()."\n");
+			print('There is a funding of '.$funding->getAmount().' '.$funding->getCurrency().', made on '.$funding->getFundingDate(). PHP_EOL);
+			/**
+			 * @var $csv boolean|string
+			 */
 			$csv = $api->downloadFundingCSV($funding);
-			
-			print("The CSV Downloaded is:\n".$csv."\n");
+			if (!$csv)
+			{
+				//throw new Exception('The funding CSV file '. $funding->getFilename() .' could not be found');
+				//or
+				print('The funding CSV file ' . $funding->getFilename(). ' could not be found.' . PHP_EOL);
+			} else
+			{
+				print('The content of the funding CSV file('.$funding->getFilename().') is:'. PHP_EOL . $csv . PHP_EOL);
+			}
 		}
-		$pageCount = $response->getNumberOfPages();
 	}
 	else
 	{
-		throw new Exception("We could not get the funding list: ".$response->getErrorCode());
+		throw new Exception('The funding list could not be fetched: '.$response->getErrorMessage());
 	}
 }

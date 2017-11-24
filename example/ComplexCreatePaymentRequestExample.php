@@ -4,7 +4,7 @@ require_once(__DIR__.'/base.php');
 // Order details
 $orderId = 'order_'.time();
 $amount = 45.25;
-$currencyCode = 'DKK';
+$currency = 'DKK';
 $paymentType = 'payment';
 $cookie = isset($_SERVER['HTTP_COOKIE']) ? $_SERVER['HTTP_COOKIE'] : 'somecookie=tastesgood';
 $language = 'en';
@@ -34,7 +34,7 @@ $customerInfo = array(
 					'shipping_lastname'=> 'Nyl',
 				);
 // Optional
-$transaction_info = array('auxkey'=>'aux data');
+$transactionInfo = array('auxkey'=>'aux data');
 
 // Initialize order lines
 $orderLines = array(
@@ -59,18 +59,19 @@ $orderLines = array(
 
 /**
  * @return PensioCreatePaymentRequestResponse
+ * @var $api PensioMerchantAPI
  */
 $response = $api->createPaymentRequest(
 					$terminal,
 					$orderId,
 					$amount,
-					$currencyCode,
+					$currency,
 					$paymentType,
 					$customerInfo,
 					$cookie,
 					$language,
 					$config,
-					$transaction_info,
+					$transactionInfo,
 					$orderLines
 );
 if($response->wasSuccessful())

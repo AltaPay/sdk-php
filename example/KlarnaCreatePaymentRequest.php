@@ -1,22 +1,11 @@
 <?php
-/**
- * Created by PhpStorm.
- *
- * Klarna test script.
- *
- * User: emerson
- * Date: 7/5/17
- * Time: 11:14 AM
- */
+require_once(__DIR__.'/base.php');
 
-require_once(dirname(__FILE__).'/base.php');
-
-
-// The details for the order
+// Different variables, which are used as arguments
 $terminal = 'AltaPay Klarna DK';
-$orderid = 'Example_Klarna_' . time();
+$orderId = 'Example_Klarna_' . time();
 $amount = 5.5;
-$currencyCode = 'DKK';
+$currency = 'DKK';
 $paymentType = 'payment';
 
 $customerInfo = array(
@@ -41,21 +30,17 @@ $customerInfo = array(
     'bank_phone' => '+45 12-34 5678'
 );
 
-
-/**
- * Order lines:
- */
 $orderLines = array(
     array(
         'description' => 'description 1',
-        'itemId' => 'id 01',
+        'itemId' => 'id1',
         'quantity' => 1,
         'unitPrice' => 1.1,
         'goodsType' => 'item'
     ),
     array(
         'description' => 'description 2',
-        'itemId' => 'id 02',
+        'itemId' => 'id2',
         'quantity' => 2,
         'unitPrice' => 2.2,
         'goodsType' => 'item'
@@ -63,23 +48,26 @@ $orderLines = array(
 );
 
 $response = $api->createPaymentRequest(
-    $terminal
-    , $orderid
-    , $amount
-    , $currencyCode
-    , $paymentType
-    , $customerInfo
-    , null
-    , null
-    , array()
-    , array()
-    , $orderLines
+    $terminal,
+    $orderId,
+    $amount,
+    $currency,
+    $paymentType,
+    $customerInfo,
+    null,
+    null,
+    array(),
+    array(),
+    $orderLines
 );
 
-if(!$response->wasSuccessful())
+if($response->wasSuccessful())
 {
-    throw new Exception("Could not create the payment request: ".$response->getErrorMessage());
+	// Access the url below and use the social security number 0801363945
+	// to complete the Klarna order
+	print($response->getRedirectURL());
+} else
+{
+	throw new Exception('Could not create the payment request: '.$response->getErrorMessage());
 }
 
-// Access the url below and use the social security number 0801363945 in the page form to complete the Klarna order
-print($response->getRedirectURL());

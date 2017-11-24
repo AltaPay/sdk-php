@@ -11,6 +11,7 @@ $terminalName = 'Pensio Surcharge Test Terminal';
 // Example 1
 /**
  * @return PensioCalculateSurchargeResponse
+ * @var $api PensioMerchantAPI
  */
 $response = $api->calculateSurchargeForSubscription($subscriptionId, $amount);
 if(!$response->wasSuccessful())
@@ -21,6 +22,7 @@ print("[Case 1] Surcharge Amount: ".$response->getSurchargeAmount()."\n");
 
 /**
  * @return PensioCaptureRecurringResponse
+ * @var $api PensioMerchantAPI
  */
 $response = $api->chargeSubscription($subscriptionId, bcadd($amount, $response->getSurchargeAmount(), 2));
 if(!$response->wasSuccessful())
@@ -33,6 +35,7 @@ print("[Case 1] Captured Amount: ".$response->getPrimaryPayment()->getCapturedAm
 $currency = 'XXX';
 /**
  * @return PensioCalculateSurchargeResponse
+ * @var $api PensioMerchantAPI
  */
 $response = $api->calculateSurcharge($terminalName, $cardToken, $amount, $currency);
 if(!$response->wasSuccessful())
@@ -43,6 +46,7 @@ print("[Case 2] Surcharge Amount: ".$response->getSurchargeAmount()."\n");
 
 /**
  * @return PensioCaptureRecurringResponse
+ * @var $api PensioMerchantAPI
  */
 $response = $api->chargeSubscription($subscriptionId, bcadd($amount, $response->getSurchargeAmount(), 2));
 if(!$response->wasSuccessful())

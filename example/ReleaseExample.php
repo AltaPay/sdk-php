@@ -1,66 +1,100 @@
 <?php
-require_once(dirname(__FILE__).'/base.php');
+require_once(__DIR__.'/base.php');
 
-//Transaction ID is returned from the gateway when payment request was successful
-$transaction_id = reserveAmount($api, $terminal);
+// Different variables which are used as arguments
+$amount = 125.55;
+$orderLines = array(
+	array(
+		'description' => 'Item1',
+		'itemId' => 'Item1',
+		'quantity' => 5,
+		'unitPrice' => 12.0,
+		'taxAmount' => 0.0,
+		'taxPercent' => 0.0,
+		'unitCode' => 'g',
+		'goodsType' => 'item'
+	),
+	array(
+		'description' => 'Item2',
+		'itemId' => 'Item2',
+		'quantity' => 2,
+		'unitPrice' => 15.0,
+		'taxAmount' => 0.0,
+		'taxPercent' => 0.0,
+		'unitCode' => 'g',
+		'goodsType' => 'item'
+	),
+	array(
+		'description' => 'Shipping fee',
+		'itemId' => 'ShippingItem',
+		'quantity' => 1,
+		'unitPrice' => 5,
+		'goodsType' => 'shipping'
+	)
+);
+$transactionId = reserveAmount($api, $terminal, $amount, $orderLines);
 
-//call release method
-$response = $api->releaseReservation($transaction_id);
+/**
+ * Helper method for reserving the payment amount
+ * @param $api PensioMerchantAPI
+ * @param $terminal string
+ * @param $amount float
+ * @param $orderLines
+ * @return mixed
+ * @throws Exception
+ */
+function reserveAmount($api, $terminal, $amount, $orderLines)
+{
+	$orderId = 'order_'.time();
+	$transactionInfo = array();
+	$cardToken = null;
+	// Credit card details
+	$currencyCode = 'DKK';
+	$paymentType = 'payment';
+	$pan = '4111000011110000';
+	$cvc = '111';
+	$expiryMonth = '12';
+	$expiryYear = '2018';
 
-//response contains wasSuccessful() method which returns TRUE if request was successful or FALSE if not
+	$response = $api->reservation(
+		$terminal,
+		$orderId,
+		$amount,
+		$currencyCode,
+		$cardToken,
+		$pan,
+		$expiryMonth,
+		$expiryYear,
+		$cvc,
+		$transactionInfo,
+		$paymentType,
+		null,
+		null,
+		null,
+		null,
+		null,
+		null,
+		$orderLines
+	);
+	if($response->wasSuccessful())
+	{
+		return $response->getPrimaryPayment()->getId();
+	}
+	else
+	{
+		throw new Exception('Amount reservation failed: '. $response->getErrorMessage());
+	}
+}
+
+/**
+ * @var $response PensioReleaseResponse
+ */
+$response = $api->releaseReservation($transactionId);
 if ($response->wasSuccessful()) 
 {
-    //release was successful
     print('Successful release');
 }
 else 
 {
-    //getErrorMessage() method returns description about what went wrong
-    print('Error message: '.$response->getErrorMessage());
-}
-
-
-
-//helper method to reserve amount for the payment in order to be released
-//method is returning transaction_id value
-function reserveAmount($api, $terminal) {
-    $order_id = 'order'.time();
-    $amount = 125.55;
-    $currency_code = 'DKK';
-    $payment_type = 'payment';
-    $pan = '4111000011110000';
-    $cvc = '111';
-    $expiry_month = '12';
-    $expiry_year = '2018';
-    $transaction_info = array();
-    $order_lines = array();
-
-    $response = $api->reservation(
-    $terminal
-        ,$order_id
-        ,$amount
-        ,$currency_code
-        ,NULL
-        ,$pan
-        ,$expiry_month
-        ,$expiry_year
-        ,$cvc
-        ,$transaction_info
-        ,$payment_type
-        ,NULL
-        ,NULL
-        ,NULL
-        ,NULL
-        ,NULL
-        ,NULL
-        ,$order_lines
-    );
-    if($response->wasSuccessful())
-    {
-        return $response->getPrimaryPayment()->getId();
-    }
-    else
-    {
-        print("Error message: ".$response->getErrorMessage());
-    }
+	throw new Exception('Release operation failed: '. $response->getErrorMessage());
 }

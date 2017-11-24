@@ -1,21 +1,21 @@
 <?php
+require_once(__DIR__.'/../lib/PensioCallbackHandler.class.php');
 
-require_once(dirname(__FILE__).'/../PensioCallbackHandler.class.php');
 $callbackHandler = new PensioCallbackHandler();
+// Load an example of reservation and capture request
+// The XML would normally be POST'ed back to the okay/fail page as a parameter named 'xml'
+$xml = file_get_contents(__DIR__.'/xml/CallbackXML_subscriptionAndCharge_released.xml');
 
-
-
-// The XML would normally be POST'ed back to your okay/fail page as a parameter named 'xml'. 
-// But for these tests, we just pump some static XML in to show you what you will get from the XML. 
-$xml = file_get_contents(dirname(__FILE__).'/xml/CallbackXML_subscriptionAndCharge_released.xml');
+/**
+ * @var $response PensioCaptureRecurringResponse
+ */
 $response = $callbackHandler->parseXmlResponse($xml);
+
 if($response->wasSubscriptionReleased())
 {
-	print("The subscription was released\n");
+	print('The subscription was released' . PHP_EOL);
+	if($response->getPrimaryPayment()->getCapturedAmount() > 0)
+	{
+		print('The capture was successful for the amount '.number_format($response->getPrimaryPayment()->getCapturedAmount(), 2) . PHP_EOL);
+	}
 }
-if($response->getPrimaryPayment()->getCapturedAmount() > 0)
-{
-	print("The capture was successful, we captured: ".number_format($response->getPrimaryPayment()->getCapturedAmount(), 2)."\n");
-}
-
-//print_r($response);

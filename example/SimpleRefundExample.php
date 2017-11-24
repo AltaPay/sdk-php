@@ -1,76 +1,90 @@
 <?php
-require_once(dirname(__FILE__).'/base.php');
+require_once(__DIR__.'/base.php');
 
-//Transaction ID is returned from the gateway when payment request was successful
-$transaction_id = reserveAndCapture($api, $terminal);
+// Different variables, which are used as arguments
+/**
+ * @var $amount float
+ */
+$amount = 215.00;
+/**
+ * @var $transactionId string
+ */
+$transactionId = reserveAndCapture($api, $terminal, $amount);
 
-//call refund method
-$response = $api->refundCapturedReservation($transaction_id);
-
-//response contains wasSuccessful() method which returns TRUE if request was successful or FALSE if not
-if ($response->wasSuccessful()) 
+/**
+ * Helper method for reserving the order amount
+ * If success then the amount is captured
+ * Obs: the amount cannot be captured if is not reserved firstly
+ * @param $api PensioMerchantAPI
+ * @param $terminal string
+ * @param $amount float
+ * @return mixed
+ * @throws Exception
+ */
+function reserveAndCapture($api, $terminal, $amount)
 {
-    //refund was successful
-    print('Successful refund');
+	$orderId = 'order_'.time();
+	$transactionInfo = array();
+	$cardToken = null;
+	// Credit card details
+	$currencyCode = 'DKK';
+	$paymentType = 'payment';
+	$pan = '4111000011110000';
+	$cvc = '111';
+	$expiryMonth = '12';
+	$expiryYear = '2018';
+	/**
+	 * @var $response AltapayReservationResponse
+	 */
+	$response = $api->reservation(
+		$terminal,
+		$orderId,
+		$amount,
+		$currencyCode,
+		$cardToken,
+		$pan,
+		$expiryMonth,
+		$expiryYear,
+		$cvc,
+		$transactionInfo,
+		$paymentType
+	);
+	if($response->wasSuccessful())
+	{
+		/**
+		 * @var $transactionId string
+		 */
+		$transactionId = $response->getPrimaryPayment()->getId();
+		/**
+		 * Capture the amount based on the fetched transaction ID
+		 * @var $captureResponse PensioCaptureResponse
+		 */
+		$captureResponse = $api->captureReservation($transactionId);
+		if ($captureResponse->wasSuccessful())
+		{
+			return $transactionId;
+		}
+		else
+		{
+			throw new Exception('Capture failed: '.$response->getErrorMessage());
+		}
+	}
+	else
+	{
+		throw new Exception('Reservation failed: '.$response->getErrorMessage());
+	}
 }
-else 
+
+/**
+ * @var $response PensioRefundResponse
+ * @var $api PensioMerchantAPI
+ */
+$response = $api->refundCapturedReservation($transactionId, $amount);
+if ($response->wasSuccessful())
 {
-    //getErrorMessage() method returns description about what went wrong
-    print('Error message: '.$response->getErrorMessage());
+	print('Successful refund');
 }
-
-
-
-//helper method to reserve amount for the payment and capture it in order to be refunded
-//method is returning transaction_id value
-function reserveAndCapture($api, $terminal) {
-    $order_id = 'order'.time();
-    $amount = 125.55;
-    $currency_code = 'DKK';
-    $payment_type = 'payment';
-    $pan = '4111000011110000';
-    $cvc = '111';
-    $expiry_month = '12';
-    $expiry_year = '2018';
-    $transaction_info = array();
-    $order_lines = array();
-
-    $response = $api->reservation(
-    $terminal
-        ,$order_id
-        ,$amount
-        ,$currency_code
-        ,NULL
-        ,$pan
-        ,$expiry_month
-        ,$expiry_year
-        ,$cvc
-        ,$transaction_info
-        ,$payment_type
-        ,NULL
-        ,NULL
-        ,NULL
-        ,NULL
-        ,NULL
-        ,NULL
-        ,$order_lines
-    );
-    if($response->wasSuccessful())
-    {
-        $transaction_id = $response->getPrimaryPayment()->getId();
-
-        $response = $api->captureReservation($transaction_id);
-        if ($response->wasSuccessful()) 
-        {
-            return $transaction_id;
-        }
-        else 
-        {
-            print('Error message: '.$response->getErrorMessage());
-        }
-    }
-    else
-    {
-        print("Error message: ".$response->getErrorMessage());
-    }
+else
+{
+	throw new Exception('Refund failed: '.$response->getErrorMessage());
 }

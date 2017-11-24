@@ -1,45 +1,40 @@
 <?php
-require_once(dirname(__FILE__).'/base.php');
+require_once(__DIR__.'/base.php');
 
-
-// Order ID, terminal, amount and currency are mandatory fields for createPaymentRequest method
-$orderid = 'order'.time();
+// Different variables which are used as arguments
+$orderId = 'TestOrder_'.time();
 $amount = 125.55;
-$currencyCode = 'DKK';
-
-//initialize callback URLs
+$currency ='DKK';
 $config = array(
     'callback_form' => 'http://demoshop.pensio.com/Form'
     ,'callback_ok' => 'http://demoshop.pensio.com/Ok'
     ,'callback_fail' => 'http://demoshop.pensio.com/Fail'
-    ,'callback_redirect' => ''     // See documentation if this is needed
-    ,'callback_open' => ''         // See documentation if this is needed
-    ,'callback_notification' => '' // See documentation if this is needed
+    ,'callback_redirect' => ''     // See documentation
+    ,'callback_open' => ''         // See documentation
+    ,'callback_notification' => '' // See documentation
 );
 
-//call createPaymentRequest method
+/**
+ * @var $api PensioMerchantAPI
+ * @var $response PensioCreatePaymentRequestResponse
+ */
 $response = $api->createPaymentRequest(
-			 $terminal
-			,$orderid
-			,$amount
-			,$currencyCode
-			,NULL
-			,NULL
-			,NULL
-			,NULL
-			,$config
+			$terminal,
+			$orderId,
+			$amount,
+			$currency,
+			NULL,
+			NULL,
+			NULL,
+			NULL,
+			$config
 );
-
-//response contains wasSuccessful() method which returns TRUE if request was successful or FALSE if not
 if($response->wasSuccessful())
 {
-	//createPaymentRequest was successful
-	print("Successful createPaymentRequest\n");
-	//URL to the payment form page to redirect user
-    print("Redirection URL: ".$paymentFormURL = $response->getRedirectURL());
+	print('Successful createPaymentRequest' . PHP_EOL);
+    print('Redirect URL: ' . $response->getRedirectURL());
 }
 else
 {
-	//getErrorMessage() method returns description about what went wrong
-    print("Error message: ".$response->getErrorMessage());
+	throw new Exception('Create payment failed: '. $response->getErrorMessage());
 }
