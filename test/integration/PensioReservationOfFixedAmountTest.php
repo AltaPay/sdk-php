@@ -94,14 +94,14 @@ class PensioReservationOfFixedAmountTest extends MockitTestCase
 		$response = $this->merchantApi->reservationOfFixedAmount(
 				PENSIO_INTEGRATION_TERMINAL
 				, 'testorder'
-				, 42.00
+				, 43.00
 				, PENSIO_INTEGRATION_CURRENCY
 				, '4111000011110000' 
 				, '2020'
 				, '12'
 				, '123'
 				, 'eCommerce');
-		
+		$this->assertType('object',$response->getPrimaryPayment());
 		$this->assertEquals('Visa', $response->getPrimaryPayment()->getPaymentSchemeName());
 	}
 }
