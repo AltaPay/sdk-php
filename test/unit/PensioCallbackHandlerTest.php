@@ -47,6 +47,7 @@ class PensioCallbackHandlerTest extends MockitTestCase
                 <CreatedDate>-0001-11-30 00:00:00</CreatedDate>
                 <UpdatedDate>-0001-11-30 00:00:00</UpdatedDate>
                 <PaymentNature>CreditCard</PaymentNature>
+                <PaymentSource>eCommerce</PaymentSource>
                 <PaymentSchemeName>CreditCard</PaymentSchemeName>
                 <PaymentNatureService name="">
                     <SupportsRefunds>false</SupportsRefunds>
@@ -122,6 +123,7 @@ class PensioCallbackHandlerTest extends MockitTestCase
                 <CreatedDate>2017-02-06 11:42:52</CreatedDate>
                 <UpdatedDate>2017-02-06 11:43:10</UpdatedDate>
                 <PaymentNature>EPayment</PaymentNature>
+                <PaymentSource>mobi</PaymentSource>
                 <PaymentSchemeName>TestEPayment</PaymentSchemeName>
                 <PaymentNatureService name="TestAcquirerEPayment">
                     <SupportsRefunds>true</SupportsRefunds>

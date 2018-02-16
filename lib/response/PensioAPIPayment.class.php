@@ -30,6 +30,7 @@ require_once(PENSIO_API_ROOT.'/response/PensioAPIReconciliationIdentifier.class.
            [CreatedDate] =&gt; 2012-01-06 15:23:12
            [UpdatedDate] =&gt; 2012-01-06 15:23:12
            [PaymentNature] =&gt; CreditCard
+           [PaymentSource] = &gt; eCommerce
            [PaymentNatureService] =&gt; SimpleXMLElement Object
                (
                    [@attributes] =&gt; Array
@@ -92,6 +93,7 @@ class PensioAPIPayment
 
 	private $paymentSchemeName;
 	private $paymentNature;
+	private $paymentSource;
 	private $paymentNatureService;
 
 	private $fraudRiskScore;
@@ -143,6 +145,7 @@ class PensioAPIPayment
 		
 		$this->paymentSchemeName = (string)$xml->PaymentSchemeName;
 		$this->paymentNature = (string)$xml->PaymentNature;
+		$this->paymentSource = (string)$xml->PaymentSource;
 		$this->paymentNatureService = new PensioAPIPaymentNatureService($xml->PaymentNatureService);
 
 		$this->fraudRiskScore = (string)$xml->FraudRiskScore;
@@ -233,6 +236,11 @@ class PensioAPIPayment
 	public function getPaymentNature()
 	{
 		return $this->paymentNature;
+	}
+
+	public function getPaymentSource()
+	{
+		return $this->paymentSource;
 	}
 	
 	public function getPaymentSchemeName()

@@ -59,6 +59,7 @@ function reserveAndCapture($api, $terminal, $amount, $orderLines)
 	// Credit card details
 	$currencyCode = 'DKK';
 	$paymentType = 'payment';
+	$paymentSource = 'eCommerce';
 	$pan = '4111000011110000';
 	$cvc = '111';
 	$expiryMonth = '12';
@@ -78,7 +79,7 @@ function reserveAndCapture($api, $terminal, $amount, $orderLines)
 		$cvc,
 		$transactionInfo,
 		$paymentType,
-		null,
+		$paymentSource,
 		null,
 		null,
 		null,

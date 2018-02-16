@@ -38,6 +38,7 @@
                 <CreatedDate>2014-03-21 20:49:38</CreatedDate>
                 <UpdatedDate>2014-03-21 20:49:41</UpdatedDate>
                 <PaymentNature>CreditCard</PaymentNature>
+                <PaymentSource>eCommerce</PaymentSource>
                 <PaymentSchemeName>Visa</PaymentSchemeName>
                 <PaymentNatureService name="ValitorAcquirer">
                     <SupportsRefunds>true</SupportsRefunds>

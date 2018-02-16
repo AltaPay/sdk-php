@@ -22,6 +22,7 @@ function reserveAmount($api, $terminal, $amount)
 	// Credit card details
 	$currencyCode = 'DKK';
 	$paymentType = 'payment';
+	$paymentSource = 'eCommerce';
 	$pan = '4111000011110000';
 	$cvc = '111';
 	$expiryMonth = '12';
@@ -42,7 +43,8 @@ function reserveAmount($api, $terminal, $amount)
 		$expiryYear,
 		$cvc,
 		$transactionInfo,
-		$paymentType
+		$paymentType,
+		$paymentSource
 	);
 	if($response->wasSuccessful())
 	{
