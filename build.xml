@@ -1,18 +1,23 @@
-<project name="phpsdk" default="Build">
-
-    <!-- Release variables -->
-    <!--<property name="pensio.release" value="20130627" />-->
-
-    <target name="-InitializeRelease">
-        <tstamp>
-            <format property="pensio.release" pattern="yyyyMMdd" locale="en,GB"/>
-        </tstamp>
+<project name="PhpSDK" default="Build">
+    <target name="GetGitRevisionHash">
+        <exec executable="git" outputProperty="GitHash">
+            <arg value="rev-list"/>
+            <arg value="--tags"/>
+            <arg value="--max-count=1"/>
+        </exec>
+    </target>
+    <target name="GetGitLastTag" depends="GetGitRevisionHash">
+        <exec executable="git" outputproperty="GitLastTag">
+            <arg value="describe"/>
+            <arg value="--tags"/>
+            <arg value="${GitHash}"/>
+        </exec>
     </target>
 
-    <target name="SetAltaPayVersion" depends="-InitializeRelease">
+    <target name="SetAltaPayVersion" depends="GetGitLastTag">
         <echo file="lib/ALTAPAY_VERSION.php">&lt;?php
-// This file is auto-generated... do not edit by hand
-define('ALTAPAY_VERSION', 'PHPSDK/${pensio.release}');</echo>
+// Update this with the latest GIT tag
+define('ALTAPAY_VERSION', 'PHPSDK/${GitLastTag}');</echo>
     </target>
 
     <target name="-ensureDist">
@@ -20,9 +25,8 @@ define('ALTAPAY_VERSION', 'PHPSDK/${pensio.release}');</echo>
         <mkdir dir="dist"/>
     </target>
 
-    <target name="Build" depends="-InitializeRelease,-ensureDist,SetAltaPayVersion">
-
-        <zip destfile="dist/PHPSDK_${pensio.release}.zip">
+    <target name="Build" depends="-ensureDist,SetAltaPayVersion">
+        <zip destfile="dist/PHPSDK_${GitLastTag}.zip">
             <fileset dir=".">
                 <include name="lib/**/*" />
                 <include name="example/**/*" />

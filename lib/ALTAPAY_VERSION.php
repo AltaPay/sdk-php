@@ -1,3 +1,3 @@
 <?php
-// This file is auto-generated... do not edit by hand
-define('ALTAPAY_VERSION', 'PHPSDK/20180216');
+// Update this with the latest GIT tag
+define('ALTAPAY_VERSION', 'PHPSDK/1.0.0');
