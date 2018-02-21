@@ -9,13 +9,16 @@ $xml = file_get_contents(__DIR__.'/xml/CallbackXML_subscriptionAndCharge_release
 /**
  * @var $response PensioCaptureRecurringResponse
  */
-$response = $callbackHandler->parseXmlResponse($xml);
-
-if($response->wasSubscriptionReleased())
-{
-	print('The subscription was released' . PHP_EOL);
-	if($response->getPrimaryPayment()->getCapturedAmount() > 0)
+try{
+	$response = $callbackHandler->parseXmlResponse($xml);
+	if($response->wasSubscriptionReleased())
 	{
-		print('The capture was successful for the amount '.number_format($response->getPrimaryPayment()->getCapturedAmount(), 2) . PHP_EOL);
+		print('The subscription was released' . PHP_EOL);
+		if($response->getPrimaryPayment()->getCapturedAmount() > 0)
+		{
+			print('The capture was successful for the amount '.number_format($response->getPrimaryPayment()->getCapturedAmount(), 2) . PHP_EOL);
+		}
 	}
+}catch (Exception $e) {
+	echo "Error in the response: ". $e->getMessage();
 }

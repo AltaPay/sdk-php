@@ -3,6 +3,10 @@ Altapay - PHP SDK
 
 == Change log ==
 
+** Version 1.0.1
+
+    * Bugfix: PensioCallbackHandler - xml body response without Transaction element
+
 ** Version 1.0.0
 
     * Set the base for the version number

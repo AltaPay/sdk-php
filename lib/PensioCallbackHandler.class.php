@@ -69,15 +69,21 @@ class PensioCallbackHandler
 		{
 			throw new PensioXmlException("No <Body> in response", $xml);
 		}
-		if(!isset($xml->Body[0]->Transactions))
+
+		if($this->getBodyResult($xml) != 'Error' && !isset($xml->Body[0]->Transactions))
 		{
 			$error = $this->getBodyMerchantErrorMessage($xml);
 			throw new PensioXmlException("No <Transactions> in <Body> of response".($error ? ' ('.$error.')' : ''), $xml);
 		}
-		if(!isset($xml->Body[0]->Transactions[0]->Transaction))
+		if($this->getBodyResult($xml) != 'Error' &&  !isset($xml->Body[0]->Transactions[0]->Transaction))
 		{
 			$error = $this->getBodyMerchantErrorMessage($xml);
 			throw new PensioXmlException("No <Transaction> in <Transactions> of response".($error ? ' ('.$error.')' : ''), $xml);
+		}
+		if ($this->getBodyResult($xml) == 'Error')
+		{
+			$error = $this->getBodyMerchantErrorMessage($xml);
+			throw new PensioXmlException(($error ? ' ('.$error.')' : ''), $xml);
 		}
 	}
 	
@@ -86,6 +92,14 @@ class PensioCallbackHandler
 		if(isset($xml->Body[0]->MerchantErrorMessage))
 		{
 			return (string)$xml->Body[0]->MerchantErrorMessage;
+		}
+		return false;
+	}
+	private function getBodyResult(SimpleXMLElement $xml)
+	{
+		if(isset($xml->Body[0]->Result))
+		{
+			return (string)$xml->Body[0]->Result;
 		}
 		return false;
 	}

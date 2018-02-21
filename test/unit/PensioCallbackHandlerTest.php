@@ -210,13 +210,26 @@ class PensioCallbackHandlerTest extends MockitTestCase
 
 	}
 
+
+	public function testMerchantErrorMessageWithoutTransactionParameter() {
+		$xml = file_get_contents(__DIR__.'/xml/CallbackXML_MobilePayError.xml');
+		try{
+			$this->handler->parseXmlResponse($xml);
+			$this->fail("Expected an exception");
+		}catch (PensioXmlException $e){
+			$this->assertType(SimpleXMLElement::class,$e->getXml());
+			$merchantErrorMessage = (string)$e->getXml()->Body[0]->MerchantErrorMessage;
+			$this->assertEquals('Unable to register MobilePay payment',$merchantErrorMessage);
+		}
+	}
+
 	public function testReadCardHolderErrorMessageMustBeShown() {
 
-		$xml = file_get_contents(dirname(__FILE__).'/xml/CardHolderMessageMustBeShownFalse.xml');
+		$xml = file_get_contents(__DIR__.'/xml/CardHolderMessageMustBeShownFalse.xml');
 		$response = $this->handler->parseXmlResponse($xml);
 		$this->assertEquals('false', $response->getCardHolderMessageMustBeShown());
 
-		$xml = file_get_contents(dirname(__FILE__).'/xml/CardHolderMessageMustBeShownTrue.xml');
+		$xml = file_get_contents(__DIR__.'/xml/CardHolderMessageMustBeShownTrue.xml');
 		$response = $this->handler->parseXmlResponse($xml);
 		$this->assertEquals('true', $response->getCardHolderMessageMustBeShown());
 
@@ -224,7 +237,7 @@ class PensioCallbackHandlerTest extends MockitTestCase
 
 	public function testReadReasonCode() {
 
-		$xml = file_get_contents(dirname(__FILE__).'/xml/ReasonCode.xml');
+		$xml = file_get_contents(__DIR__.'/xml/ReasonCode.xml');
 		$response = $this->handler->parseXmlResponse($xml);
 		$this->assertEquals('NONE', $response->getPrimaryPayment()->getReasonCode());
 
@@ -232,7 +245,7 @@ class PensioCallbackHandlerTest extends MockitTestCase
 
 	public function testReadPaymentId() {
 
-		$xml = file_get_contents(dirname(__FILE__).'/xml/ReasonCode.xml');
+		$xml = file_get_contents(__DIR__.'/xml/ReasonCode.xml');
 		$response = $this->handler->parseXmlResponse($xml);
 		$this->assertEquals('17794956-9bb6-4854-9712-bce5931e6e3a', $response->getPrimaryPayment()->getPaymentId());
 
