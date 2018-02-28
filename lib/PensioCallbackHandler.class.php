@@ -80,7 +80,7 @@ class PensioCallbackHandler
 			$error = $this->getBodyMerchantErrorMessage($xml);
 			throw new PensioXmlException("No <Transaction> in <Transactions> of response".($error ? ' ('.$error.')' : ''), $xml);
 		}
-		if ($this->getBodyResult($xml) == 'Error')
+		if ($this->getBodyResult($xml) == 'Error' && !isset($xml->Body[0]->Transactions[0]->Transaction))
 		{
 			$error = $this->getBodyMerchantErrorMessage($xml);
 			throw new PensioXmlException(($error ? ' ('.$error.')' : ''), $xml);
