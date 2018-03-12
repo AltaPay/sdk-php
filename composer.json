@@ -1,5 +1,5 @@
 {
-    "name": "pensio/pensio-php-api",
+    "name": "pensio/pensio-php-sdk",
     "minimum-stability": "dev",
     "config": {
         "secure-http": false
