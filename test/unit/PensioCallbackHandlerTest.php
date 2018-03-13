@@ -217,7 +217,7 @@ class PensioCallbackHandlerTest extends MockitTestCase
 			$this->handler->parseXmlResponse($xml);
 			$this->fail("Expected an exception");
 		}catch (PensioXmlException $e){
-			$this->assertType(SimpleXMLElement::class,$e->getXml());
+			$this->assertType('SimpleXMLElement',$e->getXml());
 			$merchantErrorMessage = (string)$e->getXml()->Body[0]->MerchantErrorMessage;
 			$this->assertEquals('Unable to register MobilePay payment',$merchantErrorMessage);
 		}
