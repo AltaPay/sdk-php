@@ -3,6 +3,11 @@ Altapay - PHP SDK
 
 == Change log ==
 
+** Version 1.0.3
+
+    * Bugfix: Typo in package name
+    * Improvements: Add composer.lock
+
 ** Version 1.0.2
 
     * Bugfix: PensioCallbackHandler - xml body response with error and Transactions element
