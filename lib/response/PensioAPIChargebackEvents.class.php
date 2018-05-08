@@ -2,10 +2,12 @@
 
 class PensioAPIChargebackEvents
 {
+	private $simpleXmlElement;
 	private $chargebackEvents = array();
 
 	public function __construct(SimpleXmlElement $xml)
 	{
+		$this->simpleXmlElement = $xml;
 		if(isset($xml->ChargebackEvent))
 		{
 			foreach($xml->ChargebackEvent as $chargebackEvent)
@@ -30,5 +32,13 @@ class PensioAPIChargebackEvents
 		}
 
 		return $newest;
+	}
+
+	/**
+	 * @return SimpleXMLElement an XML representation of the object as it was instantiated
+	 */
+	public function getXmlElement()
+	{
+		return $this->simpleXmlElement;
 	}
 }

@@ -66,8 +66,9 @@ require_once(PENSIO_API_ROOT.'/response/PensioAPIReconciliationIdentifier.class.
  */
 class PensioAPIPayment
 {
-	private $xml;
+	private $simpleXmlElement;
 
+	// Remember to reflect additions within this->getCurrentXml()
 	private $transactionId;
 	private $uuid;
 	private $authType;
@@ -99,6 +100,7 @@ class PensioAPIPayment
 	private $fraudRiskScore;
 	private $fraudExplanation;
 	private $fraudRecommendation;
+	// Remember to reflect additions within this->getCurrentXml()
 
 	/**
 	 * @var PensioAPICustomerInfo
@@ -116,10 +118,11 @@ class PensioAPIPayment
 	 * @var PensioAPIChargebackEvents
 	 */
 	private $chargebackEvents;
+	// Remember to reflect additions within this->getCurrentXml()
 	
 	public function __construct(SimpleXmlElement $xml)
 	{
-		$this->xml = $xml->saveXML();
+		$this->simpleXmlElement = $xml->saveXML();
 		$this->transactionId = (string)$xml->TransactionId;
 		$this->uuid = (string)$xml->PaymentId;
 		$this->authType = (string)$xml->AuthType;
@@ -326,9 +329,62 @@ class PensioAPIPayment
 		return $this->chargebackEvents;
 	}
 
+	/**
+	 * Returns an XML representation of the payment as used to instantiate the object. It does not reflect any subsequent changes.
+	 * @see PensioAPIPayment::getCurrentXml() for an up-to-date XML representation of the payment
+	 * @return SimpleXMLElement an XML representation of the object as it was instantiated
+	 */
 	public function getXml()
 	{
-		return $this->xml;
+		return $this->simpleXmlElement;
+	}
+	
+	/**
+	 * Returns an up-to-date XML representation of the payment
+	 * @see PensioAPIPayment::getXml() for an XML representation of the payment as used to instantiate the object
+	 * @return string an up-to-date XML representation of the payment
+	 */
+	public function getCurrentXml()
+	{
+		$simpleXmlElement = new SimpleXMLElement('<PensioAPIPayment></PensioAPIPayment>');
+		
+		$simpleXmlElement->addChild('transactionId', $this->transactionId);
+		$simpleXmlElement->addChild('uuid', $this->uuid);
+		$simpleXmlElement->addChild('authType', $this->authType);
+		$simpleXmlElement->addChild('creditCardMaskedPan', $this->creditCardMaskedPan);
+		$simpleXmlElement->addChild('creditCardExpiryMonth', $this->creditCardExpiryMonth);
+		$simpleXmlElement->addChild('creditCardExpiryYear', $this->creditCardExpiryYear);
+		$simpleXmlElement->addChild('creditCardToken', $this->creditCardToken);
+		$simpleXmlElement->addChild('cardStatus', $this->cardStatus);
+		$simpleXmlElement->addChild('shopOrderId', $this->shopOrderId);
+		$simpleXmlElement->addChild('shop', $this->shop);
+		$simpleXmlElement->addChild('terminal', $this->terminal);
+		$simpleXmlElement->addChild('transactionStatus', $this->transactionStatus);
+		$simpleXmlElement->addChild('reasonCode', $this->reasonCode);
+		$simpleXmlElement->addChild('currency', $this->currency);
+		$simpleXmlElement->addChild('addressVerification', $this->addressVerification);
+		$simpleXmlElement->addChild('addressVerificationDescription', $this->addressVerificationDescription);
+		
+		$simpleXmlElement->addChild('reservedAmount', $this->reservedAmount);
+		$simpleXmlElement->addChild('capturedAmount', $this->capturedAmount);
+		$simpleXmlElement->addChild('refundedAmount', $this->refundedAmount);
+		$simpleXmlElement->addChild('recurringMaxAmount', $this->recurringMaxAmount);
+		$simpleXmlElement->addChild('surchargeAmount', $this->surchargeAmount);
+	
+		$simpleXmlElement->addChild('paymentSchemeName', $this->paymentSchemeName);
+		$simpleXmlElement->addChild('paymentNature', $this->paymentNature);
+		$simpleXmlElement->addChild('paymentSource', $this->paymentSource);
+		$simpleXmlElement->addChild('paymentNatureService', $this->paymentNatureService);
+	
+		$simpleXmlElement->addChild('fraudRiskScore', $this->fraudRiskScore);
+		$simpleXmlElement->addChild('fraudExplanation', $this->fraudExplanation);
+		$simpleXmlElement->addChild('fraudRecommendation', $this->fraudRecommendation);
+	
+		$simpleXmlElement->addChild('PensioAPICustomerInfo', $this->customerInfo->getXmlElement());
+		$simpleXmlElement->addChild('PensioAPIPaymentInfos', $this->paymentInfos->getXmlElement());
+		$simpleXmlElement->addChild('PensioAPIChargebackEvents', $this->chargebackEvents->getXmlElement());
+	
+		return $simpleXmlElement;
 	}
 
 	public function getSurchargeAmount(){

@@ -14,6 +14,7 @@ class PensioAPICustomerInfo
 						<Country></Country><Source>NotSet</Source>
 					</CountryOfOrigin>
 	*/
+	private $simpleXmlElement;
 	private $userAgent;
 	private $ipAddress;
 	private $email;
@@ -30,6 +31,7 @@ class PensioAPICustomerInfo
 
 	public function __construct(SimpleXmlElement $xml)
 	{
+		$this->simpleXmlElement = $xml;
 		$this->userAgent = (string)$xml->UserAgent;
 		$this->ipAddress = (string)$xml->IpAddress;
 		$this->email = (string)$xml->Email;
@@ -115,5 +117,13 @@ class PensioAPICustomerInfo
 	public function getOrganisationNumber()
 	{
 		return $this->organisationNumber;
+	}
+
+	/**
+	 * @return SimpleXMLElement an XML representation of the object as it was instantiated
+	 */
+	public function getXmlElement()
+	{
+		return $this->simpleXmlElement;
 	}
 }
