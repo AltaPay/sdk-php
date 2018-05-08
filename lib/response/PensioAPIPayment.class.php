@@ -342,7 +342,7 @@ class PensioAPIPayment
 	/**
 	 * Returns an up-to-date XML representation of the payment
 	 * @see PensioAPIPayment::getXml() for an XML representation of the payment as used to instantiate the object
-	 * @return string an up-to-date XML representation of the payment
+	 * @return SimpleXMLElement an up-to-date XML representation of the payment
 	 */
 	public function getCurrentXml()
 	{
