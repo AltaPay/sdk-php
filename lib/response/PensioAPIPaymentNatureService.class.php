@@ -7,9 +7,12 @@ class PensioAPIPaymentNatureService
 	private $supportsRelease;
 	private $supportsMultipleCaptures;
 	private $supportsMultipleRefunds;
+	private $simpleXmlElement;
 	
 	public function __construct(SimpleXmlElement $xml)
 	{
+		$this->simpleXmlElement = $xml;
+		
 		$attrs = $xml->attributes();
 
 		$this->name = strval(@$attrs['name']);
@@ -42,5 +45,10 @@ class PensioAPIPaymentNatureService
 	public function getSupportsMultipleRefunds()
 	{
 		return $this->supportsMultipleRefunds;
+	}
+	
+	public function getXmlElement()
+	{
+		return $this->simpleXmlElement;
 	}
 }

@@ -348,42 +348,43 @@ class PensioAPIPayment
 	{
 		$simpleXmlElement = new SimpleXMLElement('<PensioAPIPayment></PensioAPIPayment>');
 		
-		$simpleXmlElement->addChild('transactionId', $this->transactionId);
-		$simpleXmlElement->addChild('uuid', $this->uuid);
-		$simpleXmlElement->addChild('authType', $this->authType);
-		$simpleXmlElement->addChild('creditCardMaskedPan', $this->creditCardMaskedPan);
-		$simpleXmlElement->addChild('creditCardExpiryMonth', $this->creditCardExpiryMonth);
-		$simpleXmlElement->addChild('creditCardExpiryYear', $this->creditCardExpiryYear);
-		$simpleXmlElement->addChild('creditCardToken', $this->creditCardToken);
-		$simpleXmlElement->addChild('cardStatus', $this->cardStatus);
-		$simpleXmlElement->addChild('shopOrderId', $this->shopOrderId);
-		$simpleXmlElement->addChild('shop', $this->shop);
-		$simpleXmlElement->addChild('terminal', $this->terminal);
-		$simpleXmlElement->addChild('transactionStatus', $this->transactionStatus);
-		$simpleXmlElement->addChild('reasonCode', $this->reasonCode);
-		$simpleXmlElement->addChild('currency', $this->currency);
-		$simpleXmlElement->addChild('addressVerification', $this->addressVerification);
-		$simpleXmlElement->addChild('addressVerificationDescription', $this->addressVerificationDescription);
+		$simpleXmlElement->addChild('TransactionId', $this->transactionId);
+		$simpleXmlElement->addChild('PaymentId', $this->uuid);
+		$simpleXmlElement->addChild('AuthType', $this->authType);
+		$simpleXmlElement->addChild('CreditCardMaskedPan', $this->creditCardMaskedPan);
+		$creditCardExpiryXml = $simpleXmlElement->addChild('CreditCardExpiry');
+		$creditCardExpiryXml->addChild('CreditCardExpiryMonth', $this->creditCardExpiryMonth);
+		$creditCardExpiryXml->addChild('CreditCardExpiryYear', $this->creditCardExpiryYear);
+		$simpleXmlElement->addChild('CreditCardToken', $this->creditCardToken);
+		$simpleXmlElement->addChild('CardStatus', $this->cardStatus);
+		$simpleXmlElement->addChild('ShopOrderId', $this->shopOrderId);
+		$simpleXmlElement->addChild('Shop', $this->shop);
+		$simpleXmlElement->addChild('Terminal', $this->terminal);
+		$simpleXmlElement->addChild('TransactionStatus', $this->transactionStatus);
+		$simpleXmlElement->addChild('ReasonCode', $this->reasonCode);
+		$simpleXmlElement->addChild('MerchantCurrency', $this->currency);
+		$simpleXmlElement->addChild('AddressVerification', $this->addressVerification);
+		$simpleXmlElement->addChild('AddressVerificationDescription', $this->addressVerificationDescription);
 		
-		$simpleXmlElement->addChild('reservedAmount', $this->reservedAmount);
-		$simpleXmlElement->addChild('capturedAmount', $this->capturedAmount);
-		$simpleXmlElement->addChild('refundedAmount', $this->refundedAmount);
-		$simpleXmlElement->addChild('recurringMaxAmount', $this->recurringMaxAmount);
-		$simpleXmlElement->addChild('surchargeAmount', $this->surchargeAmount);
-	
-		$simpleXmlElement->addChild('paymentSchemeName', $this->paymentSchemeName);
-		$simpleXmlElement->addChild('paymentNature', $this->paymentNature);
-		$simpleXmlElement->addChild('paymentSource', $this->paymentSource);
-		$simpleXmlElement->addChild('paymentNatureService', $this->paymentNatureService);
-	
-		$simpleXmlElement->addChild('fraudRiskScore', $this->fraudRiskScore);
-		$simpleXmlElement->addChild('fraudExplanation', $this->fraudExplanation);
-		$simpleXmlElement->addChild('fraudRecommendation', $this->fraudRecommendation);
-	
+		$simpleXmlElement->addChild('ReservedAmount', $this->reservedAmount);
+		$simpleXmlElement->addChild('CapturedAmount', $this->capturedAmount);
+		$simpleXmlElement->addChild('RefundedAmount', $this->refundedAmount);
+		$simpleXmlElement->addChild('RecurringMaxAmount', $this->recurringMaxAmount);
+		$simpleXmlElement->addChild('SurchargeAmount', $this->surchargeAmount);
+		
+		$simpleXmlElement->addChild('PaymentSchemeName', $this->paymentSchemeName);
+		$simpleXmlElement->addChild('PaymentNature', $this->paymentNature);
+		$simpleXmlElement->addChild('PaymentSource', $this->paymentSource);
+		$simpleXmlElement->addChild('PaymentNatureService', $this->paymentNatureService->getXmlElement());
+		
+		$simpleXmlElement->addChild('FraudRiskScore', $this->fraudRiskScore);
+		$simpleXmlElement->addChild('FraudExplanation', $this->fraudExplanation);
+		$simpleXmlElement->addChild('FraudRecommendation', $this->fraudRecommendation);
+		
 		$simpleXmlElement->addChild('PensioAPICustomerInfo', $this->customerInfo->getXmlElement());
 		$simpleXmlElement->addChild('PensioAPIPaymentInfos', $this->paymentInfos->getXmlElement());
 		$simpleXmlElement->addChild('PensioAPIChargebackEvents', $this->chargebackEvents->getXmlElement());
-	
+		
 		return $simpleXmlElement;
 	}
 
