@@ -18,6 +18,7 @@ class PensioPaymentTest extends MockitTestCase
                 </CreditCardExpiry>
                 <CreditCardToken>37ad3ff596164142876df477e13336e0aeef0905</CreditCardToken>
                 <CreditCardMaskedPan>424374******7275</CreditCardMaskedPan>
+                <IsTokenized>true</IsTokenized>
                 <ThreeDSecureResult>Disabled</ThreeDSecureResult>
                 <CVVCheckResult>Matched</CVVCheckResult>
                 <BlacklistToken>185c1c823a9b94731d9c6ba035d9b967587187bc</BlacklistToken>
@@ -224,5 +225,11 @@ class PensioPaymentTest extends MockitTestCase
 
 		$this->assertEquals('19.95', $payment->getCapturedAmount());
 	}
+	public function test_IsTokenized()
+	{
+		$payment = new PensioAPIPayment($this->xml);
 
+		$this->assertEquals('true', $payment->isTokenized());
+		$this->assertTrue($payment->isTokenized());
+	}
 }

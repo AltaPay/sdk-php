@@ -15,6 +15,7 @@ require_once(PENSIO_API_ROOT.'/response/PensioAPIReconciliationIdentifier.class.
            [CardStatus] =&gt; Valid
            [CreditCardToken] =&gt; ce657182528301c19032840ba6682bdeb5b342d8
            [CreditCardMaskedPan] =&gt; 555555*****5444
+           [IsTokenized] =&gt; true
            [ThreeDSecureResult] =&gt; Not_Attempted
            [BlacklistToken] =&gt; 9484bac14dfd5dbb27329f81dcb12ceb8ed7703e
            [ShopOrderId] =&gt; qoute_247
@@ -76,6 +77,7 @@ class PensioAPIPayment
 	private $creditCardExpiryMonth;
 	private $creditCardExpiryYear;
 	private $creditCardToken;
+	private $isTokenized;
 	private $cardStatus;
 	private $shopOrderId;
 	private $shop;
@@ -130,6 +132,7 @@ class PensioAPIPayment
 		$this->creditCardExpiryMonth = (string)$xml->CreditCardExpiry->Month;
 		$this->creditCardExpiryYear = (string)$xml->CreditCardExpiry->Year;
 		$this->creditCardToken = (string)$xml->CreditCardToken;
+		$this->isTokenized = (boolean)$xml->IsTokenized;
 		$this->cardStatus = (string)$xml->CardStatus;
 		$this->shopOrderId = (string)$xml->ShopOrderId;
 		$this->shop = (string)$xml->Shop;
@@ -230,7 +233,11 @@ class PensioAPIPayment
 	{
 		return $this->creditCardToken;
 	}
-	
+
+	public function isTokenized()
+	{
+		return $this->isTokenized;
+	}
 	public function getCardStatus()
 	{
 		return $this->cardStatus;

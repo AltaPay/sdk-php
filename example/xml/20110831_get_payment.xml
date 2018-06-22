@@ -22,6 +22,7 @@
 				</CreditCardExpiry>
 				<CreditCardToken>e3bd675aaebda1b7698016439e6d2d1bbbe11227</CreditCardToken>
 				<CreditCardMaskedPan>411111******1111</CreditCardMaskedPan>
+				<IsTokenized>true</IsTokenized>
 				<ThreeDSecureResult>Not_Applicable</ThreeDSecureResult>
 				<BlacklistToken>8eb2e9b803f5fef2dc60bb5201aedc89ceffa4af</BlacklistToken>
 				<ShopOrderId>APISchemaVerificationTests::testPreauthRecurring</ShopOrderId>
