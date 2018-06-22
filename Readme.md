@@ -3,7 +3,7 @@ Altapay - PHP SDK
 
 == Change log ==
 
-** Version 0.1.4
+** Version 1.0.4
 
     * New child element [IsTokenized] in Transaction
 
