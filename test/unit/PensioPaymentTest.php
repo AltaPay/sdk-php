@@ -77,7 +77,21 @@ class PensioPaymentTest extends MockitTestCase
             </Transaction>');
 
 	}
-	
+
+	public function testCreatedDate()
+	{
+		$payment = new PensioAPIPayment($this->xml);
+
+		$this->assertEquals('2014-03-21 20:49:38', $payment->getCreatedDate());
+	}
+
+	public function testUpdatedDate()
+	{
+		$payment = new PensioAPIPayment($this->xml);
+
+		$this->assertEquals('2014-03-21 20:49:41', $payment->getUpdatedDate());
+	}
+
 	public function testParsingOfSimpleXml()
 	{
 		$xml = new SimpleXMLElement('<Transaction><PaymentNatureService /><ReconciliationIdentifiers /></Transaction>');

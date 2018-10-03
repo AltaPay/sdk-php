@@ -102,8 +102,11 @@ class PensioAPIPayment
 	private $fraudRiskScore;
 	private $fraudExplanation;
 	private $fraudRecommendation;
-	// Remember to reflect additions within this->getCurrentXml()
 
+	private $createdDate;
+	private $updatedDate;
+
+	// Remember to reflect additions within this->getCurrentXml()
 	/**
 	 * @var PensioAPICustomerInfo
 	 */
@@ -148,7 +151,10 @@ class PensioAPIPayment
 		$this->refundedAmount = (string)$xml->RefundedAmount;
 		$this->recurringMaxAmount = (string)$xml->RecurringMaxAmount;
 		$this->surchargeAmount = (String)$xml->SurchargeAmount;
-		
+
+		$this->createdDate = (string)$xml->CreatedDate;
+		$this->updatedDate = (string)$xml->UpdatedDate;
+
 		$this->paymentSchemeName = (string)$xml->PaymentSchemeName;
 		$this->paymentNature = (string)$xml->PaymentNature;
 		$this->paymentSource = (string)$xml->PaymentSource;
@@ -328,6 +334,16 @@ class PensioAPIPayment
 		return $this->refundedAmount;
 	}
 
+	public function getCreatedDate()
+	{
+		return $this->createdDate;
+	}
+
+	public function getUpdatedDate()
+	{
+		return $this->updatedDate;
+	}
+
 	/**
 	 * @return PensioAPIChargebackEvents
 	 */
@@ -391,6 +407,8 @@ class PensioAPIPayment
 		$simpleXmlElement->addChild('PensioAPICustomerInfo', $this->customerInfo->getXmlElement());
 		$simpleXmlElement->addChild('PensioAPIPaymentInfos', $this->paymentInfos->getXmlElement());
 		$simpleXmlElement->addChild('PensioAPIChargebackEvents', $this->chargebackEvents->getXmlElement());
+		$simpleXmlElement->addChild("CreatedDate", $this->getCreatedDate());
+		$simpleXmlElement->addChild("UpdatedDate", $this->getUpdatedDate());
 		
 		return $simpleXmlElement;
 	}
