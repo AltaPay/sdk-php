@@ -3,6 +3,10 @@ Altapay - PHP SDK
 
 == Change log ==
 
+** Version 1.0.5
+
+    * Expose CreatedDate and UpdatedDate for payments
+
 ** Version 1.0.4
 
     * New child element [IsTokenized] in Transaction
