@@ -872,13 +872,13 @@ class PensioMerchantAPI
 	public function captureRecurring($subscriptionId, $amount=null)
 	{
 		return $this->chargeSubscription($subscriptionId, $amount);
-	}	
-		
+	}
+
 	/**
 	 * @return PensioCaptureRecurringResponse
 	 * @throws PensioMerchantAPIException
 	 */
-	public function chargeSubscription($subscriptionId, $amount=null)
+	public function chargeSubscriptionWithReconciliationIdentifier($subscriptionId, $reconciliationIdentifier, $amount=null)
 	{
 		$this->checkConnection();
 
@@ -886,11 +886,17 @@ class PensioMerchantAPI
 			$this->callAPIMethod(
 				'chargeSubscription',
 				array(
-					'transaction_id'=>$subscriptionId, 
+					'transaction_id'=>$subscriptionId,
 					'amount'=>$amount,
+					'reconciliation_identifier'=>$reconciliationIdentifier,
 				)
 			)
 		);
+	}
+
+	public function chargeSubscription($subscriptionId,$amount=null)
+	{
+		return $this->chargeSubscriptionWithReconciliationIdentifier($subscriptionId, null, $amount);
 	}
 	
 	/**

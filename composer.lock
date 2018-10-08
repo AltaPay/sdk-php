@@ -4,7 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "af5ba1e35c7f2a5288421b3cc115fa69",
+    "hash": "17c79a40ddd24b63a4701b993481c9fb",
+    "content-hash": "b49e720c404df56d90d07a36edf900d8",
     "packages": [],
     "packages-dev": [
         {
@@ -13,10 +14,10 @@
             "source": {
                 "type": "svn",
                 "url": "svn+ssh://svn.earth.pensio.com/home/subversion/tools/trunk",
-                "reference": "/Mockit/@991"
+                "reference": "/Mockit/@1072"
             },
             "type": "library",
-            "time": "2017-06-28T15:33:04+00:00"
+            "time": "2018-09-17 15:26:56"
         },
         {
             "name": "pensio/phpunit",
@@ -24,10 +25,10 @@
             "source": {
                 "type": "svn",
                 "url": "svn+ssh://svn.earth.pensio.com/home/subversion/tools/trunk",
-                "reference": "/PHPUnit/@947"
+                "reference": "/PHPUnit/@1045"
             },
             "type": "library",
-            "time": "2016-06-30T13:45:57+00:00"
+            "time": "2018-07-19 15:46:00"
         }
     ],
     "aliases": [],
