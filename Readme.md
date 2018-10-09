@@ -3,6 +3,10 @@ Altapay - PHP SDK
 
 == Change log ==
 
+** Version 1.0.6
+
+    * ChargeSubscription can take reconciliationIdentifier
+
 ** Version 1.0.5
 
     * Expose CreatedDate and UpdatedDate for payments
