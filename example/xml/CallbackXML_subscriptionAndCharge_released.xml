@@ -23,7 +23,7 @@
 				<BlacklistToken>af9e9b32e512f4d47ec73a1877aff0e3a8c621ce</BlacklistToken>
 				<ShopOrderId>antontest2</ShopOrderId>
 				<Shop>Danny Kroger</Shop>
-				<Terminal>Pensio Soap Test Terminal</Terminal>
+				<Terminal>Valitor Soap Test Terminal</Terminal>
 				<TransactionStatus>released</TransactionStatus>
 				<MerchantCurrency>978</MerchantCurrency>
 				<CardHolderCurrency>978</CardHolderCurrency>
@@ -68,7 +68,7 @@
 				<BlacklistToken>af9e9b32e512f4d47ec73a1877aff0e3a8c621ce</BlacklistToken>
 				<ShopOrderId>antontest2</ShopOrderId>
 				<Shop>Danny Kroger</Shop>
-				<Terminal>Pensio Soap Test Terminal</Terminal>
+				<Terminal>Valitor Soap Test Terminal</Terminal>
 				<TransactionStatus>captured</TransactionStatus>
 				<MerchantCurrency>978</MerchantCurrency>
 				<CardHolderCurrency>978</CardHolderCurrency>

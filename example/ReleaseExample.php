@@ -1,5 +1,5 @@
 <?php
-require_once(__DIR__.'/base.php');
+require_once(__DIR__ . '/base.php');
 
 // Different variables which are used as arguments
 $amount = 125.55;
@@ -36,7 +36,7 @@ $transactionId = reserveAmount($api, $terminal, $amount, $orderLines);
 
 /**
  * Helper method for reserving the payment amount
- * @param $api PensioMerchantAPI
+ * @param $api ValitorMerchantAPI
  * @param $terminal string
  * @param $amount float
  * @param $orderLines
@@ -45,7 +45,7 @@ $transactionId = reserveAmount($api, $terminal, $amount, $orderLines);
  */
 function reserveAmount($api, $terminal, $amount, $orderLines)
 {
-	$orderId = 'order_'.time();
+	$orderId = 'order_' . time();
 	$transactionInfo = array();
 	$cardToken = null;
 	// Credit card details
@@ -77,25 +77,19 @@ function reserveAmount($api, $terminal, $amount, $orderLines)
 		null,
 		$orderLines
 	);
-	if($response->wasSuccessful())
-	{
+	if ($response->wasSuccessful()) {
 		return $response->getPrimaryPayment()->getId();
-	}
-	else
-	{
-		throw new Exception('Amount reservation failed: '. $response->getErrorMessage());
+	} else {
+		throw new Exception('Amount reservation failed: ' . $response->getErrorMessage());
 	}
 }
 
 /**
- * @var $response PensioReleaseResponse
+ * @var $response ValitorReleaseResponse
  */
 $response = $api->releaseReservation($transactionId);
-if ($response->wasSuccessful()) 
-{
-    print('Successful release');
-}
-else 
-{
-	throw new Exception('Release operation failed: '. $response->getErrorMessage());
+if ($response->wasSuccessful()) {
+	print('Successful release');
+} else {
+	throw new Exception('Release operation failed: ' . $response->getErrorMessage());
 }

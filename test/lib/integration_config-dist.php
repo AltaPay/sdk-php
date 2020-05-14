@@ -1,7 +1,7 @@
 <?php
 
-define('PENSIO_INTEGRATION_INSTALLATION', 'https://testgateway.pensio.com');
-define('PENSIO_INTEGRATION_USERNAME',     'username');
-define('PENSIO_INTEGRATION_PASSWORD',     'secret');
-define('PENSIO_INTEGRATION_TERMINAL',     'AltaPay Test Terminal');
-define('PENSIO_INTEGRATION_CURRENCY',     'EUR');
+define('VALITOR_INTEGRATION_INSTALLATION', 'https://testgateway.valitor.com');
+define('VALITOR_INTEGRATION_USERNAME',     'username');
+define('VALITOR_INTEGRATION_PASSWORD',     'secret');
+define('VALITOR_INTEGRATION_TERMINAL',     'Valitor Test Terminal');
+define('VALITOR_INTEGRATION_CURRENCY',     'EUR');

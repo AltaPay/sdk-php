@@ -1,7 +1,14 @@
-Altapay - PHP SDK
+Valitor - PHP SDK
 =================
 
 == Change log ==
+
+** Version 2.0.0
+
+    * Rebranding from Altapay to Valitor
+    * New paramaters added to the createPaymentRequest and captureReservation endpoints
+    * Improvements on various API endpoints (i.e. getPayment)
+    * Additional customer information sent to the payment gateway
 
 ** Version 1.0.6
 

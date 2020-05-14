@@ -1,17 +1,20 @@
 {
-    "name": "pensio/pensio-php-sdk",
+    "name": "valitor/php-sdk",
+    "license": "MIT",
     "minimum-stability": "dev",
-    "config": {
-        "secure-http": false
-    },
-    "require-dev": {
-        "pensio/mockit": "dev-Mockit",
-        "pensio/phpunit": "dev-PHPUnit"
-    },
-    "repositories": [
+    "authors": [
         {
-            "type": "composer",
-            "url": "http://packages.mars.pensio.com"
+            "name": "Simion Zafiu",
+            "email": "simion.zafiu@valitor.com",
+            "role": "Developer"
         }
-    ]
+    ],
+    "description": "Valitor Omni: we make buying and selling easy",
+    "require-dev": {
+        "valitor/mockit": "dev-Mockit",
+        "valitor/phpunit": "dev-PHPUnit"
+    },
+    "require": {
+        "ext-simplexml": "*"
+    }
 }

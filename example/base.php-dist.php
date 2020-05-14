@@ -1,18 +1,17 @@
 <?php
-require_once(dirname(__DIR__).'/lib/PensioMerchantAPI.class.php');
+require_once(dirname(__DIR__) . '/lib/ValitorMerchantAPI.class.php');
 
-$baseURL = "https://testgateway.pensio.com/";
+$baseURL = "https://testgateway.valitor.com/";
 $username = 'username';
 $password = 'password';
 $terminal = 'Some Terminal'; // change this to one of the test terminals supplied in the welcome email
 /**
- * @param $api PensioMerchantAPI
+ * @param $api ValitorMerchantAPI
  */
-$api = new PensioMerchantAPI($baseURL, $username, $password, /*IPensioCommunicationLogger $logger = */null);
+$api = new ValitorMerchantAPI($baseURL, $username, $password, /*IValitorCommunicationLogger $logger = */ null);
 $response = $api->login();
-if(!$response->wasSuccessful())
-{
-	throw new Exception("Could not login to the Merchant API: ".$response->getErrorMessage());
+if (!$response->wasSuccessful()) {
+	throw new Exception("Could not login to the Merchant API: " . $response->getErrorMessage());
 }
 
 

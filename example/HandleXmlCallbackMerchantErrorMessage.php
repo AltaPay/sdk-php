@@ -1,24 +1,19 @@
 <?php
-require_once(__DIR__.'/../lib/PensioCallbackHandler.class.php');
+require_once(__DIR__ . '/../lib/ValitorCallbackHandler.class.php');
 
-$callbackHandler = new PensioCallbackHandler();
+$callbackHandler = new ValitorCallbackHandler();
 // Load an example of reservation and capture request where Transaction element is not present
-$xml = file_get_contents(__DIR__.'/xml/CallbackXML_MobilePayError.xml');
+$xml = file_get_contents(__DIR__ . '/xml/CallbackXML_MobilePayError.xml');
 
 /**
- * @var $response PensioCaptureRecurringResponse
+ * @var $response ValitorCaptureRecurringResponse
  */
-try{
+try {
 	$response = $callbackHandler->parseXmlResponse($xml);
-	if($response->getPrimaryPayment()->getCapturedAmount() > 0)
-	{
-		print('The capture was successful for the amount '.number_format($response->getPrimaryPayment()->getCapturedAmount(), 2) . PHP_EOL);
+	if ($response->getPrimaryPayment()->getCapturedAmount() > 0) {
+		print('The capture was successful for the amount ' . number_format($response->getPrimaryPayment()->getCapturedAmount(), 2) . PHP_EOL);
 	}
-}catch (Exception $e) {
-		echo "Error in the xml response: ". $e->getMessage();
-		//As suggestion: a new createPayment request can be made from here
+} catch (Exception $e) {
+	echo "Error in the xml response: " . $e->getMessage();
+	//As suggestion: a new createPayment request can be made from here
 }
-
-
-
-

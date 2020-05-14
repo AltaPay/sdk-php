@@ -1,5 +1,5 @@
 <?php
-require_once(__DIR__.'/base.php');
+require_once(__DIR__ . '/base.php');
 
 // Different variables, which are used as arguments
 /**
@@ -15,7 +15,7 @@ $transactionId = reserveAndCapture($api, $terminal, $amount);
  * Helper method for reserving the order amount
  * If success then the amount is captured
  * Obs: the amount cannot be captured if is not reserved firstly
- * @param $api PensioMerchantAPI
+ * @param $api ValitorMerchantAPI
  * @param $terminal string
  * @param $amount float
  * @return mixed
@@ -23,7 +23,7 @@ $transactionId = reserveAndCapture($api, $terminal, $amount);
  */
 function reserveAndCapture($api, $terminal, $amount)
 {
-	$orderId = 'order_'.time();
+	$orderId = 'order_' . time();
 	$transactionInfo = array();
 	$cardToken = null;
 	// Credit card details
@@ -35,7 +35,7 @@ function reserveAndCapture($api, $terminal, $amount)
 	$expiryMonth = '12';
 	$expiryYear = '2018';
 	/**
-	 * @var $response AltapayReservationResponse
+	 * @var $response ValitorReservationResponse
 	 */
 	$response = $api->reservation(
 		$terminal,
@@ -51,42 +51,33 @@ function reserveAndCapture($api, $terminal, $amount)
 		$paymentType,
 		$paymentSource
 	);
-	if($response->wasSuccessful())
-	{
+	if ($response->wasSuccessful()) {
 		/**
 		 * @var $transactionId string
 		 */
 		$transactionId = $response->getPrimaryPayment()->getId();
 		/**
 		 * Capture the amount based on the fetched transaction ID
-		 * @var $captureResponse PensioCaptureResponse
+		 * @var $captureResponse ValitorCaptureResponse
 		 */
 		$captureResponse = $api->captureReservation($transactionId);
-		if ($captureResponse->wasSuccessful())
-		{
+		if ($captureResponse->wasSuccessful()) {
 			return $transactionId;
+		} else {
+			throw new Exception('Capture failed: ' . $response->getErrorMessage());
 		}
-		else
-		{
-			throw new Exception('Capture failed: '.$response->getErrorMessage());
-		}
-	}
-	else
-	{
-		throw new Exception('Reservation failed: '.$response->getErrorMessage());
+	} else {
+		throw new Exception('Reservation failed: ' . $response->getErrorMessage());
 	}
 }
 
 /**
- * @var $response PensioRefundResponse
- * @var $api PensioMerchantAPI
+ * @var $response ValitorRefundResponse
+ * @var $api ValitorMerchantAPI
  */
 $response = $api->refundCapturedReservation($transactionId, $amount);
-if ($response->wasSuccessful())
-{
+if ($response->wasSuccessful()) {
 	print('Successful refund');
-}
-else
-{
-	throw new Exception('Refund failed: '.$response->getErrorMessage());
+} else {
+	throw new Exception('Refund failed: ' . $response->getErrorMessage());
 }
