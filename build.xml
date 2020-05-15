@@ -16,7 +16,6 @@
 
     <target name="SetValitorVersion" depends="GetGitLastTag">
         <echo file="lib/VALITOR_VERSION.php">&lt;?php
-// Update this with the latest GIT tag
 define('VALITOR_VERSION', 'PHPSDK/${GitLastTag}');</echo>
     </target>
 
@@ -30,6 +29,7 @@ define('VALITOR_VERSION', 'PHPSDK/${GitLastTag}');</echo>
             <fileset dir=".">
                 <include name="lib/**/*" />
                 <include name="example/**/*" />
+                <include name="*.md" />
 
                 <exclude name=".idea/*" />
                 <exclude name=".settings/*" />
@@ -39,7 +39,9 @@ define('VALITOR_VERSION', 'PHPSDK/${GitLastTag}');</echo>
                 <exclude name="external/**/*" />
                 <exclude name="test/**/*" />
                 <exclude name="dist/**/*" />
-                <exclude name="*.*" />
+                <exclude name="*.xml" />
+                <exclude name="*.json" />
+
             </fileset>
         </zip>
     </target>

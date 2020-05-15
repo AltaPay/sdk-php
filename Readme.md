@@ -3,6 +3,13 @@ Valitor - PHP SDK
 
 == Change log ==
 
+** Version 2.1.0
+
+    * Added new parameters, according to the payment gateway Klarna Payments updates, for the following:
+	    - Create payment request
+	    - Capture and refund
+    * Code refactored according to latest coding standards
+
 ** Version 2.0.0
 
     * Rebranding from Altapay to Valitor

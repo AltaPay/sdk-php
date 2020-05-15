@@ -11,8 +11,8 @@
     ],
     "description": "Valitor Omni: we make buying and selling easy",
     "require-dev": {
-        "valitor/mockit": "dev-Mockit",
-        "valitor/phpunit": "dev-PHPUnit"
+        "pensio/mockit": "dev-Mockit",
+        "pensio/phpunit": "dev-PHPUnit"
     },
     "require": {
         "ext-simplexml": "*"
