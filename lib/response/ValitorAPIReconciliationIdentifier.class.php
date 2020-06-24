@@ -21,9 +21,9 @@ class ValitorAPIReconciliationIdentifier
     /**
      * ValitorAPIReconciliationIdentifier constructor.
      *
-     * @param SimpleXmlElement $xml
+     * @param SimpleXMLElement $xml
      */
-    public function __construct(SimpleXmlElement $xml)
+    public function __construct(SimpleXMLElement $xml)
     {
         $this->id = (string)$xml->Id;
         $this->amount = (string)$xml->Amount;

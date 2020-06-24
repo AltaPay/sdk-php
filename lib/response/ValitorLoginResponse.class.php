@@ -10,9 +10,9 @@ class ValitorLoginResponse extends ValitorAbstractResponse
     /**
      * ValitorLoginResponse constructor.
      *
-     * @param SimpleXmlElement $xml
+     * @param SimpleXMLElement $xml
      */
-    public function __construct(SimpleXmlElement $xml)
+    public function __construct(SimpleXMLElement $xml)
     {
         parent::__construct($xml);
         if ($this->getErrorCode() === '0') {

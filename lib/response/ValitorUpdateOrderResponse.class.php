@@ -5,19 +5,19 @@ class ValitorUpdateOrderResponse extends ValitorAbstractPaymentResponse
     /**
      * ValitorUpdateOrderResponse constructor.
      *
-     * @param SimpleXmlElement $xml
+     * @param SimpleXMLElement $xml
      */
-    public function __construct(SimpleXmlElement $xml)
+    public function __construct(SimpleXMLElement $xml)
     {
         parent::__construct($xml);
     }
 
     /**
-     * @param SimpleXmlElement $body
+     * @param SimpleXMLElement $body
      *
      * @return mixed|void
      */
-    protected function parseBody(SimpleXmlElement $body)
+    protected function parseBody(SimpleXMLElement $body)
     {
     }
 }

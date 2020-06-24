@@ -10,8 +10,11 @@ class ValitorHttpResponse
     const CONNECTION_READ_TIMEOUT = 'CONNECTION_READ_TIMEOUT';
     const CONNECTION_OKAY = 'CONNECTION_OKAY';
 
+    /** @var string */
     private $requestHeader = '';
+    /** @var string */
     private $header = '';
+    /** @var string */
     private $content = '';
     private $info;
     private $errorMessage;
@@ -55,7 +58,7 @@ class ValitorHttpResponse
     }
 
     /**
-     * @param $header
+     * @param string[] $header
      *
      * @return void
      */
@@ -68,7 +71,7 @@ class ValitorHttpResponse
     }
 
     /**
-     * @param $content
+     * @param string $content
      *
      * @return void
      */
@@ -86,7 +89,7 @@ class ValitorHttpResponse
     }
 
     /**
-     * @param $requestHeader
+     * @param string $requestHeader
      *
      * @return void
      */
@@ -104,7 +107,7 @@ class ValitorHttpResponse
     }
 
     /**
-     * @param $info
+     * @param mixed $info
      *
      * @return void
      */
@@ -114,7 +117,7 @@ class ValitorHttpResponse
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getErrorMessage()
     {
@@ -122,7 +125,7 @@ class ValitorHttpResponse
     }
 
     /**
-     * @param $errorMessage
+     * @param string $errorMessage
      *
      * @return void
      */
@@ -140,7 +143,7 @@ class ValitorHttpResponse
     }
 
     /**
-     * @param $errorNumber
+     * @param int $errorNumber
      *
      * @return void
      */
@@ -150,7 +153,7 @@ class ValitorHttpResponse
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getConnectionResult()
     {
@@ -158,7 +161,7 @@ class ValitorHttpResponse
     }
 
     /**
-     * @param $connectionResult
+     * @param string $connectionResult
      *
      * @return void
      */
@@ -168,7 +171,7 @@ class ValitorHttpResponse
     }
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getHttpCode()
     {
@@ -176,8 +179,8 @@ class ValitorHttpResponse
     }
 
     /**
-     * @param $curl
-     * @param $header
+     * @param resource $curl
+     * @param string   $header
      *
      * @return int
      */
@@ -189,8 +192,8 @@ class ValitorHttpResponse
     }
 
     /**
-     * @param $curl
-     * @param $content
+     * @param resource $curl
+     * @param string   $content
      *
      * @return int
      */

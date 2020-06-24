@@ -32,9 +32,9 @@ class ValitorAPICustomerInfo
     /**
      * ValitorAPICustomerInfo constructor.
      *
-     * @param SimpleXmlElement $xml
+     * @param SimpleXMLElement $xml
      */
-    public function __construct(SimpleXmlElement $xml)
+    public function __construct(SimpleXMLElement $xml)
     {
         $this->simpleXmlElement = $xml;
         $this->userAgent = (string)$xml->UserAgent;

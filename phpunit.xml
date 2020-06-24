@@ -21,10 +21,6 @@
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">./lib</directory>
-            <exclude>
-                <directory suffix=".php">./lib/manager/templates</directory>
-                <directory suffix=".php">./lib/node/down_template/web</directory>
-            </exclude>
         </whitelist>
     </filter>
     <listeners>

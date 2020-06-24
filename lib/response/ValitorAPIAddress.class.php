@@ -24,9 +24,9 @@ class ValitorAPIAddress
     /**
      * ValitorAPIAddress constructor.
      *
-     * @param SimpleXmlElement $xml
+     * @param SimpleXMLElement $xml
      */
-    public function __construct(SimpleXmlElement $xml)
+    public function __construct(SimpleXMLElement $xml)
     {
         $attrs = $xml->attributes();
 

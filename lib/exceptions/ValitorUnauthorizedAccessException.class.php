@@ -5,8 +5,8 @@ class ValitorUnauthorizedAccessException extends ValitorMerchantAPIException
     /**
      * ValitorUnauthorizedAccessException constructor.
      *
-     * @param $url
-     * @param $username
+     * @param string $url
+     * @param string $username
      */
     public function __construct($url, $username)
     {

@@ -15,9 +15,9 @@ class ValitorAPIPaymentNatureService
     /**
      * ValitorAPIPaymentNatureService constructor.
      *
-     * @param SimpleXmlElement $xml
+     * @param SimpleXMLElement $xml
      */
-    public function __construct(SimpleXmlElement $xml)
+    public function __construct(SimpleXMLElement $xml)
     {
         $this->simpleXmlElement = $xml;
 
@@ -71,7 +71,7 @@ class ValitorAPIPaymentNatureService
     }
 
     /**
-     * @return SimpleXmlElement
+     * @return SimpleXMLElement
      */
     public function getXmlElement()
     {

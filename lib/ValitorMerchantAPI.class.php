@@ -10,6 +10,11 @@ class ValitorMerchantAPI
     private $logger;
     private $httpUtil;
 
+    /**
+     * @param string $baseURL
+     * @param string $username
+     * @param string $password
+     */
     public function __construct($baseURL, $username, $password, IValitorCommunicationLogger $logger = null, IValitorHttpUtils $httpUtil = null)
     {
         $this->connected = false;
@@ -73,8 +78,8 @@ class ValitorMerchantAPI
     /**
      * Check API connection response and return the status.
      *
-     * @param $method
-     * @param array $args
+     * @param string   $method
+     * @param string[] $args
      *
      * @throws ValitorConnectionFailedException
      * @throws ValitorInvalidResponseException
@@ -535,13 +540,13 @@ class ValitorMerchantAPI
 
     /**
      * @param $paymentId
-     * @param float|null  $amount
-     * @param array $orderLines
-     * @param float|null  $salesTax
-     * @param null  $reconciliationIdentifier
-     * @param null  $invoiceNumber
-     * @param null  $shippingCompany
-     * @param null  $trackingNumber
+     * @param float|null $amount
+     * @param array      $orderLines
+     * @param float|null $salesTax
+     * @param null       $reconciliationIdentifier
+     * @param null       $invoiceNumber
+     * @param null       $shippingCompany
+     * @param null       $trackingNumber
      *
      * @throws ValitorConnectionFailedException
      * @throws ValitorInvalidResponseException
@@ -663,8 +668,8 @@ class ValitorMerchantAPI
     }
 
     /**
-     * @param $paymentId
-     * @param array $multipleParams
+     * @param string   $paymentId
+     * @param string[] $multipleParams
      *
      * @throws ValitorConnectionFailedException
      * @throws ValitorInvalidResponseException

@@ -17,7 +17,7 @@ class ValitorHttpRequest
     private $headers = array();
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getUrl()
     {
@@ -49,7 +49,7 @@ class ValitorHttpRequest
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getUser()
     {
@@ -57,7 +57,7 @@ class ValitorHttpRequest
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getPass()
     {
@@ -89,7 +89,7 @@ class ValitorHttpRequest
     }
 
     /**
-     * @return array
+     * @return string[]
      */
     public function getHeaders()
     {
@@ -97,7 +97,7 @@ class ValitorHttpRequest
     }
 
     /**
-     * @param $x
+     * @param string $x
      *
      * @return void
      */
@@ -107,7 +107,7 @@ class ValitorHttpRequest
     }
 
     /**
-     * @param $x
+     * @param string $x
      *
      * @return void
      */
@@ -117,7 +117,7 @@ class ValitorHttpRequest
     }
 
     /**
-     * @param $x
+     * @param string[] $x
      *
      * @return void
      */
@@ -137,7 +137,7 @@ class ValitorHttpRequest
     }
 
     /**
-     * @param $x
+     * @param string $x
      *
      * @return void
      */
@@ -147,7 +147,7 @@ class ValitorHttpRequest
     }
 
     /**
-     * @param $x
+     * @param string $x
      *
      * @return void
      */
@@ -187,7 +187,7 @@ class ValitorHttpRequest
     }
 
     /**
-     * @param $header
+     * @param string $header
      *
      * @return void
      */

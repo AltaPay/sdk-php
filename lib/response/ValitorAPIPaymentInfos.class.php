@@ -13,9 +13,9 @@ class ValitorAPIPaymentInfos
     /**
      * ValitorAPIPaymentInfos constructor.
      *
-     * @param SimpleXmlElement $xml
+     * @param SimpleXMLElement $xml
      */
-    public function __construct(SimpleXmlElement $xml)
+    public function __construct(SimpleXMLElement $xml)
     {
         $this->simpleXmlElement = $xml;
         if (isset($xml->PaymentInfo)) {
@@ -35,9 +35,9 @@ class ValitorAPIPaymentInfos
     }
 
     /**
-     * @param $key
+     * @param string $key
      *
-     * @return mixed
+     * @return string
      */
     public function getInfo($key)
     {

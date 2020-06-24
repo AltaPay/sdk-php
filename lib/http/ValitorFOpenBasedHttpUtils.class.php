@@ -77,12 +77,12 @@ class ValitorFOpenBasedHttpUtils implements IValitorHttpUtils
     }
 
     /**
-     * @param $notification_code
-     * @param $severity
-     * @param $message
-     * @param $message_code
-     * @param $bytes_transferred
-     * @param $bytes_max
+     * @param int         $notification_code
+     * @param int         $severity
+     * @param string|null $message
+     * @param int         $message_code
+     * @param int         $bytes_transferred
+     * @param int         $bytes_max
      *
      * @return void
      */
@@ -104,15 +104,15 @@ class ValitorFOpenBasedHttpUtils implements IValitorHttpUtils
     }
 
     /**
-     * @param $http_response_header
+     * @param string[] $http_response_header
      *
-     * @return int|mixed
+     * @return int
      */
     private function getHttpCodeFromHeader($http_response_header)
     {
         if (is_array($http_response_header) && isset($http_response_header[0])) {
             if (preg_match('/HTTP\/[0-9\.]+ ([0-9]{3}) .*/', $http_response_header[0], $matches)) {
-                return $matches[1];
+                return (int)$matches[1];
             }
         }
         return 0;

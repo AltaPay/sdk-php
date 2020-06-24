@@ -72,7 +72,7 @@ class ValitorAPIPayment
     /**
      * ValitorAPIPayment constructor.
      *
-     * @param SimpleXmlElement $xml
+     * @param SimpleXMLElement $xml
      *
      * @throws Exception
      */
@@ -303,9 +303,9 @@ class ValitorAPIPayment
     }
 
     /**
-     * @param $keyName
+     * @param string $keyName
      *
-     * @return mixed
+     * @return string
      */
     public function getPaymentInfo($keyName)
     {

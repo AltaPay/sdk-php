@@ -8,7 +8,7 @@ class ValitorXmlException extends Exception
     /**
      * ValitorXmlException constructor.
      *
-     * @param string $message
+     * @param string           $message
      * @param SimpleXMLElement $xml
      */
     public function __construct($message, SimpleXMLElement $xml)

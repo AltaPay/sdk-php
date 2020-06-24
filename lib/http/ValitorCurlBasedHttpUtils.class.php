@@ -127,9 +127,9 @@ class ValitorCurlBasedHttpUtils implements IValitorHttpUtils
     }
 
     /**
-     * @param $curl
+     * @param resource $curl
      *
-     * @return array
+     * @return string[]
      */
     private function getCharsetAndMime(&$curl)
     {

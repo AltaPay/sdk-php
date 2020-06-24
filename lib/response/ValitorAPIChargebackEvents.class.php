@@ -12,11 +12,11 @@ class ValitorAPIChargebackEvents
     /**
      * ValitorAPIChargebackEvents constructor.
      *
-     * @param SimpleXmlElement $xml
+     * @param SimpleXMLElement $xml
      *
      * @throws Exception
      */
-    public function __construct(SimpleXmlElement $xml)
+    public function __construct(SimpleXMLElement $xml)
     {
         $this->simpleXmlElement = $xml;
         if (isset($xml->ChargebackEvent)) {
@@ -32,8 +32,7 @@ class ValitorAPIChargebackEvents
     public function getNewest()
     {
         $newest = null;
-        foreach ($this->chargebackEvents as $chargebackEvent)
-        {
+        foreach ($this->chargebackEvents as $chargebackEvent) {
             if ($newest === null || $newest->getDate()->getTimestamp() < $chargebackEvent->getDate()->getTimestamp()) {
                 $newest = $chargebackEvent;
             }
