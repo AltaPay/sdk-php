@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Class ValitorCalculateSurchargeResponse
+ * Class ValitorCalculateSurchargeResponse.
  */
 class ValitorCalculateSurchargeResponse extends ValitorAbstractResponse
 {
@@ -10,13 +10,14 @@ class ValitorCalculateSurchargeResponse extends ValitorAbstractResponse
 
     /**
      * ValitorCalculateSurchargeResponse constructor.
+     *
      * @param SimpleXmlElement $xml
      */
     public function __construct(SimpleXmlElement $xml)
     {
         parent::__construct($xml);
-        
-        if($this->getErrorCode() === '0') {
+
+        if ($this->getErrorCode() === '0') {
             $this->result = (string)$xml->Body->Result;
             $this->surchargeAmount = (string)$xml->Body->SurchageAmount;
         }

@@ -9,11 +9,12 @@ class ValitorUnknownMerchantAPIException extends ValitorMerchantAPIException
 
     /**
      * ValitorUnknownMerchantAPIException constructor.
+     *
      * @param Exception|null $cause
      */
     public function __construct(Exception $cause = null)
     {
-        parent::__construct("Unknown error".(!is_null($cause) ? ' caused by: '.$cause->getMessage() : ''));
+        parent::__construct('Unknown error'.($cause !== null ? ' caused by: '.$cause->getMessage() : ''));
         $this->cause = $cause;
     }
 

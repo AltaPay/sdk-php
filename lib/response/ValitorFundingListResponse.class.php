@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Class ValitorFundingListResponse
+ * Class ValitorFundingListResponse.
  */
 class ValitorFundingListResponse extends ValitorAbstractResponse
 {
@@ -10,19 +10,19 @@ class ValitorFundingListResponse extends ValitorAbstractResponse
 
     /**
      * ValitorFundingListResponse constructor.
+     *
      * @param SimpleXmlElement $xml
      */
     public function __construct(SimpleXmlElement $xml)
     {
         parent::__construct($xml);
-        if($this->getErrorCode() === '0') {
+        if ($this->getErrorCode() === '0') {
             $attr = $xml->Body->Fundings->attributes();
             $this->numberOfPages = (string)$attr['numberOfPages'];
-            foreach($xml->Body->Fundings->Funding as $funding)
-            {
+            foreach ($xml->Body->Fundings->Funding as $funding) {
                 $this->fundings[] = new ValitorAPIFunding($funding);
             }
-        }        
+        }
     }
 
     /**

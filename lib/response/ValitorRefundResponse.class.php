@@ -9,10 +9,10 @@ class ValitorRefundResponse extends ValitorAbstractPaymentResponse
 
     /**
      * @param SimpleXmlElement $body
+     *
      * @return mixed|void
      */
     protected function parseBody(SimpleXmlElement $body)
     {
-        
     }
 }

@@ -1,5 +1,5 @@
 <?php
-require_once(__DIR__ . '/base.php');
+require_once __DIR__.'/base.php';
 
 // Different variables used as arguments
 $subscriptionId = 2;
@@ -11,42 +11,46 @@ $terminalName = 'Valitor Surcharge Test Terminal';
 // Example 1
 /**
  * @return ValitorCalculateSurchargeResponse
- * @var $api ValitorMerchantAPI
+ *
+ * @var ValitorMerchantAPI $api
  */
 $response = $api->calculateSurchargeForSubscription($subscriptionId, $amount);
 if (!$response->wasSuccessful()) {
-	throw new Exception("Could not calculate surcharge amount: " . $response->getErrorMessage());
+    throw new Exception('Could not calculate surcharge amount: '.$response->getErrorMessage());
 }
-print("[Case 1] Surcharge Amount: " . $response->getSurchargeAmount() . "\n");
+echo '[Case 1] Surcharge Amount: '.$response->getSurchargeAmount()."\n";
 
 /**
  * @return ValitorCaptureRecurringResponse
- * @var $api ValitorMerchantAPI
+ *
+ * @var ValitorMerchantAPI $api
  */
 $response = $api->chargeSubscription($subscriptionId, bcadd($amount, $response->getSurchargeAmount(), 2));
 if (!$response->wasSuccessful()) {
-	throw new Exception("Could not capture including surcharge amount: " . $response->getErrorMessage());
+    throw new Exception('Could not capture including surcharge amount: '.$response->getErrorMessage());
 }
-print("[Case 1] Captured Amount: " . $response->getPrimaryPayment()->getCapturedAmount() . "\n");
+echo '[Case 1] Captured Amount: '.$response->getPrimaryPayment()->getCapturedAmount()."\n";
 
 // Example 2
 $currency = 'XXX';
 /**
  * @return ValitorCalculateSurchargeResponse
- * @var $api ValitorMerchantAPI
+ *
+ * @var ValitorMerchantAPI $api
  */
 $response = $api->calculateSurcharge($terminalName, $cardToken, $amount, $currency);
 if (!$response->wasSuccessful()) {
-	throw new Exception("Could not get surcharge amount: " . $response->getErrorMessage());
+    throw new Exception('Could not get surcharge amount: '.$response->getErrorMessage());
 }
-print("[Case 2] Surcharge Amount: " . $response->getSurchargeAmount() . "\n");
+echo '[Case 2] Surcharge Amount: '.$response->getSurchargeAmount()."\n";
 
 /**
  * @return ValitorCaptureRecurringResponse
- * @var $api ValitorMerchantAPI
+ *
+ * @var ValitorMerchantAPI $api
  */
 $response = $api->chargeSubscription($subscriptionId, bcadd($amount, $response->getSurchargeAmount(), 2));
 if (!$response->wasSuccessful()) {
-	throw new Exception("Could not capture including surcharge amount: " . $response->getErrorMessage());
+    throw new Exception('Could not capture including surcharge amount: '.$response->getErrorMessage());
 }
-print("[Case 2] Captured Amount: " . $response->getPrimaryPayment()->getCapturedAmount() . "\n");
+echo '[Case 2] Captured Amount: '.$response->getPrimaryPayment()->getCapturedAmount()."\n";

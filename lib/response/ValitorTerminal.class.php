@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Class ValitorTerminal
+ * Class ValitorTerminal.
  */
 class ValitorTerminal
 {
@@ -60,14 +60,14 @@ class ValitorTerminal
 
     /**
      * @param $currency
+     *
      * @return bool
      */
     public function hasCurrency($currency)
     {
         if (!empty($this->currencies)) {
             return in_array('XXX', $this->currencies) || in_array($currency, $this->currencies);
-        }
-        else {
+        } else {
             return true;
         }
     }

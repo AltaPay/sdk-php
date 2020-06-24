@@ -2,5 +2,4 @@
 
 class ValitorMerchantAPIException extends Exception
 {
-    
 }

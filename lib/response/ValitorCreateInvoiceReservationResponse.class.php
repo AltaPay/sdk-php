@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Class ValitorCreateInvoiceReservationResponse
+ * Class ValitorCreateInvoiceReservationResponse.
  */
 class ValitorCreateInvoiceReservationResponse extends ValitorAbstractResponse
 {
@@ -9,13 +9,14 @@ class ValitorCreateInvoiceReservationResponse extends ValitorAbstractResponse
 
     /**
      * ValitorCreateInvoiceReservationResponse constructor.
+     *
      * @param SimpleXmlElement $xml
      */
     public function __construct(SimpleXmlElement $xml)
     {
         parent::__construct($xml);
-        
-        if($this->getErrorCode() === '0') {
+
+        if ($this->getErrorCode() === '0') {
             $this->result = (string)$xml->Body->Result;
         }
     }

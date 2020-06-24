@@ -1,11 +1,10 @@
 <?php
 
 /**
- * Class ValitorAPICountryOfOrigin
+ * Class ValitorAPICountryOfOrigin.
  */
 class ValitorAPICountryOfOrigin
 {
-
     const NotSet = 'NotSet';
     const CardNumber = 'CardNumber';
     const BankAccount = 'BankAccount';
@@ -19,6 +18,7 @@ class ValitorAPICountryOfOrigin
 
     /**
      * ValitorAPICountryOfOrigin constructor.
+     *
      * @param SimpleXmlElement $xml
      */
     public function __construct(SimpleXmlElement $xml)

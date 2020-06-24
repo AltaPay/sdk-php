@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Class ValitorAPIPaymentNatureService
+ * Class ValitorAPIPaymentNatureService.
  */
 class ValitorAPIPaymentNatureService
 {
@@ -14,15 +14,16 @@ class ValitorAPIPaymentNatureService
 
     /**
      * ValitorAPIPaymentNatureService constructor.
+     *
      * @param SimpleXmlElement $xml
      */
     public function __construct(SimpleXmlElement $xml)
     {
         $this->simpleXmlElement = $xml;
-        
+
         $attrs = $xml->attributes();
 
-        $this->name = strval(@$attrs['name']);
+        $this->name = (string)(@$attrs['name']);
         $this->supportsRefunds = (string)$xml->SupportsRefunds;
         $this->supportsRelease = (string)$xml->SupportsRelease;
         $this->supportsMultipleCaptures = (string)$xml->SupportsMultipleCaptures;

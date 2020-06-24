@@ -20,7 +20,7 @@ class ValitorMerchantAPI
         $this->password = $password;
         $this->logger = $logger;
 
-        if (is_null($httpUtil)) {
+        if ($httpUtil === null) {
             if (function_exists('curl_init')) {
                 $httpUtil = new ValitorCurlBasedHttpUtils();
             } elseif (ini_get('allow_url_fopen')) {
@@ -33,18 +33,20 @@ class ValitorMerchantAPI
     }
 
     /**
-     * Check api connection
+     * Check api connection.
+     *
      * @throws Exception
      */
     private function checkConnection()
     {
         if (!$this->connected) {
-            throw new Exception("Not Connected, invoke login() before using any API calls");
+            throw new Exception('Not Connected, invoke login() before using any API calls');
         }
     }
 
     /**
-     * Check the state of api connection
+     * Check the state of api connection.
+     *
      * @return bool
      */
     public function isConnected()
@@ -53,35 +55,40 @@ class ValitorMerchantAPI
     }
 
     /**
-     * Generated the masked pan for provided string
+     * Generated the masked pan for provided string.
+     *
      * @param $pan
+     *
      * @return string
      */
     private function maskPan($pan)
     {
         if (strlen($pan) >= 10) {
-            return substr($pan, 0, 6) . str_repeat('x', strlen($pan) - 10) . substr($pan, -4);
+            return substr($pan, 0, 6).str_repeat('x', strlen($pan) - 10).substr($pan, -4);
         } else {
             return $pan;
         }
     }
 
     /**
-     * Check API connection response and return the status
+     * Check API connection response and return the status.
+     *
      * @param $method
      * @param array $args
-     * @return SimpleXMLElement|string
+     *
      * @throws ValitorConnectionFailedException
      * @throws ValitorInvalidResponseException
      * @throws ValitorRequestTimeoutException
      * @throws ValitorUnauthorizedAccessException
      * @throws ValitorUnknownMerchantAPIException
+     *
+     * @return SimpleXMLElement|string
      */
     private function callAPIMethod($method, array $args = array())
     {
-        $absoluteUrl = $this->baseURL . "/merchant/API/" . $method;
+        $absoluteUrl = $this->baseURL.'/merchant/API/'.$method;
 
-        if (!is_null($this->logger)) {
+        if ($this->logger !== null) {
             $loggedArgs = $args;
             if (isset($loggedArgs['cardnum'])) {
                 $loggedArgs['cardnum'] = $this->maskPan($loggedArgs['cardnum']);
@@ -89,7 +96,7 @@ class ValitorMerchantAPI
             if (isset($loggedArgs['cvc'])) {
                 $loggedArgs['cvc'] = str_repeat('x', strlen($loggedArgs['cvc']));
             }
-            $logId = $this->logger->logRequest($absoluteUrl . '?' . http_build_query($loggedArgs));
+            $logId = $this->logger->logRequest($absoluteUrl.'?'.http_build_query($loggedArgs));
         }
 
         $request = new ValitorHttpRequest();
@@ -98,34 +105,34 @@ class ValitorMerchantAPI
         $request->setUser($this->username);
         $request->setPass($this->password);
         $request->setMethod('POST');
-        $request->addHeader('x-valitor-client-version: ' . VALITOR_VERSION);
+        $request->addHeader('x-valitor-client-version: '.VALITOR_VERSION);
 
         $response = $this->httpUtil->requestURL($request);
 
-        if (!is_null($this->logger)) {
+        if ($this->logger !== null) {
             $this->logger->logResponse($logId, print_r($response, true));
         }
 
         if ($response->getConnectionResult() == ValitorHttpResponse::CONNECTION_OKAY) {
             if ($response->getHttpCode() == 200) {
-                if (stripos($response->getContentType(), "text/xml") !== false) {
+                if (stripos($response->getContentType(), 'text/xml') !== false) {
                     try {
                         return new SimpleXMLElement($response->getContent());
                     } catch (Exception $e) {
                         if ($e->getMessage() == 'String could not be parsed as XML') {
-                            throw new ValitorInvalidResponseException("Unparsable XML Content in response");
+                            throw new ValitorInvalidResponseException('Unparsable XML Content in response');
                         }
                         throw new ValitorUnknownMerchantAPIException($e);
                     }
-                } elseif (stripos($response->getContentType(), "text/csv") !== false) {
+                } elseif (stripos($response->getContentType(), 'text/csv') !== false) {
                     return $response->getContent();
                 } else {
-                    throw new ValitorInvalidResponseException("Non XML ContentType (was: " . $response->getContentType() . ")");
+                    throw new ValitorInvalidResponseException('Non XML ContentType (was: '.$response->getContentType().')');
                 }
             } elseif ($response->getHttpCode() == 401) {
                 throw new ValitorUnauthorizedAccessException($absoluteUrl, $this->username);
             } else {
-                throw new ValitorInvalidResponseException("Non HTTP 200 Response: " . $response->getHttpCode());
+                throw new ValitorInvalidResponseException('Non HTTP 200 Response: '.$response->getHttpCode());
             }
         } elseif ($response->getConnectionResult() == ValitorHttpResponse::CONNECTION_REFUSED) {
             throw new ValitorConnectionFailedException($absoluteUrl, 'Connection refused');
@@ -139,8 +146,9 @@ class ValitorMerchantAPI
     }
 
     /**
-     * @return ValitorFundingListResponse
      * @throws ValitorMerchantAPIException
+     *
+     * @return ValitorFundingListResponse
      */
     public function getFundingList($page = 0)
     {
@@ -150,8 +158,9 @@ class ValitorMerchantAPI
     }
 
     /**
-     * @return string|boolean
      * @throws Exception
+     *
+     * @return bool|string
      */
     public function downloadFundingCSV(ValitorAPIFunding $funding)
     {
@@ -174,8 +183,10 @@ class ValitorMerchantAPI
 
     /**
      * @param $downloadLink
-     * @return string|boolean
+     *
      * @throws Exception
+     *
+     * @return bool|string
      */
     public function downloadFundingCSVByLink($downloadLink)
     {
@@ -212,20 +223,19 @@ class ValitorMerchantAPI
         $paymentSource,
         array $customerInfo,
         array $transactionInfo
-    )
-    {
+    ) {
         $this->checkConnection();
 
         $args = array(
-            'terminal' => $terminal,
-            'shop_orderid' => $shopOrderId,
-            'amount' => $amount,
-            'currency' => $currency,
-            'cvc' => $cvc,
-            'type' => $type,
-            'payment_source' => $paymentSource
+            'terminal'       => $terminal,
+            'shop_orderid'   => $shopOrderId,
+            'amount'         => $amount,
+            'currency'       => $currency,
+            'cvc'            => $cvc,
+            'type'           => $type,
+            'payment_source' => $paymentSource,
         );
-        if (!is_null($creditCardToken)) {
+        if ($creditCardToken !== null) {
             $args['credit_card_token'] = $creditCardToken;
         } else {
             $args['cardnum'] = $creditCardNumber;
@@ -233,7 +243,7 @@ class ValitorMerchantAPI
             $args['eyear'] = $creditCardExpiryYear;
         }
 
-        if (!is_null($customerInfo) && is_array($customerInfo)) {
+        if ($customerInfo !== null && is_array($customerInfo)) {
             $this->addCustomerInfo($customerInfo, $args);
         }
 
@@ -257,9 +267,9 @@ class ValitorMerchantAPI
         );
     }
 
-
     /**
-     * Fixed amount reservation
+     * Fixed amount reservation.
+     *
      * @param $terminal
      * @param $shopOrderId
      * @param $amount
@@ -271,6 +281,7 @@ class ValitorMerchantAPI
      * @param $paymentSource
      * @param array $customerInfo
      * @param array $transactionInfo
+     *
      * @return ValitorOmniReservationResponse
      */
     public function reservationOfFixedAmount(
@@ -285,8 +296,7 @@ class ValitorMerchantAPI
         $paymentSource,
         array $customerInfo = array(),
         array $transactionInfo = array()
-    )
-    {
+    ) {
         return $this->reservationInternal(
             'reservationOfFixedAmountMOTO',
             $terminal,
@@ -312,10 +322,11 @@ class ValitorMerchantAPI
      * @param $amount
      * @param $currency
      * @param $creditCardToken
-     * @param null $cvc
+     * @param null   $cvc
      * @param string $paymentSource
-     * @param array $customerInfo
-     * @param array $transactionInfo
+     * @param array  $customerInfo
+     * @param array  $transactionInfo
+     *
      * @return ValitorOmniReservationResponse
      */
     public function reservationOfFixedAmountMOTOWithToken(
@@ -328,8 +339,7 @@ class ValitorMerchantAPI
         $paymentSource = 'moto',
         array $customerInfo = array(),
         array $transactionInfo = array()
-    )
-    {
+    ) {
         return $this->reservationInternal(
             'reservationOfFixedAmountMOTO',
             $terminal,
@@ -360,6 +370,7 @@ class ValitorMerchantAPI
      * @param $paymentSource
      * @param array $customerInfo
      * @param array $transactionInfo
+     *
      * @return ValitorOmniReservationResponse
      */
     public function setupSubscription(
@@ -374,8 +385,7 @@ class ValitorMerchantAPI
         $paymentSource,
         array $customerInfo = array(),
         array $transactionInfo = array()
-    )
-    {
+    ) {
         return $this->reservationInternal(
             'setupSubscription',
             $terminal,
@@ -401,10 +411,11 @@ class ValitorMerchantAPI
      * @param $amount
      * @param $currency
      * @param $creditCardToken
-     * @param null $cvc
+     * @param null   $cvc
      * @param string $paymentSource
-     * @param array $customerInfo
-     * @param array $transactionInfo
+     * @param array  $customerInfo
+     * @param array  $transactionInfo
+     *
      * @return ValitorOmniReservationResponse
      */
     public function setupSubscriptionWithToken(
@@ -417,8 +428,7 @@ class ValitorMerchantAPI
         $paymentSource = 'moto',
         array $customerInfo = array(),
         array $transactionInfo = array()
-    )
-    {
+    ) {
         return $this->reservationInternal(
             'setupSubscription',
             $terminal,
@@ -448,6 +458,7 @@ class ValitorMerchantAPI
      * @param $paymentSource
      * @param array $customerInfo
      * @param array $transactionInfo
+     *
      * @return ValitorOmniReservationResponse
      */
     public function verifyCard(
@@ -461,8 +472,7 @@ class ValitorMerchantAPI
         $paymentSource,
         array $customerInfo = array(),
         array $transactionInfo = array()
-    )
-    {
+    ) {
         return $this->reservationInternal(
             'reservationOfFixedAmountMOTO',
             $terminal,
@@ -487,10 +497,11 @@ class ValitorMerchantAPI
      * @param $shopOrderId
      * @param $currency
      * @param $creditCardToken
-     * @param null $cvc
+     * @param null   $cvc
      * @param string $paymentSource
-     * @param array $customerInfo
-     * @param array $transactionInfo
+     * @param array  $customerInfo
+     * @param array  $transactionInfo
+     *
      * @return ValitorOmniReservationResponse
      */
     public function verifyCardWithToken(
@@ -502,8 +513,7 @@ class ValitorMerchantAPI
         $paymentSource = 'moto',
         array $customerInfo = array(),
         array $transactionInfo = array()
-    )
-    {
+    ) {
         return $this->reservationInternal(
             'reservationOfFixedAmountMOTO',
             $terminal,
@@ -522,24 +532,25 @@ class ValitorMerchantAPI
         );
     }
 
-
     /**
      * @param $paymentId
-     * @param null $amount
+     * @param null  $amount
      * @param array $orderLines
-     * @param null $salesTax
-     * @param null $reconciliationIdentifier
-     * @param null $invoiceNumber
-     * @param null $shippingCompany
-     * @param null $trackingNumber
-     * @return ValitorCaptureResponse
+     * @param null  $salesTax
+     * @param null  $reconciliationIdentifier
+     * @param null  $invoiceNumber
+     * @param null  $shippingCompany
+     * @param null  $trackingNumber
+     *
      * @throws ValitorConnectionFailedException
      * @throws ValitorInvalidResponseException
      * @throws ValitorRequestTimeoutException
      * @throws ValitorUnauthorizedAccessException
      * @throws ValitorUnknownMerchantAPIException
+     *
+     * @return ValitorCaptureResponse
      */
-    public function captureReservation($paymentId, $amount = null, array $orderLines = array(), $salesTax = null, $reconciliationIdentifier = null, $invoiceNumber = null, $shippingCompany=null, $trackingNumber= null)
+    public function captureReservation($paymentId, $amount = null, array $orderLines = array(), $salesTax = null, $reconciliationIdentifier = null, $invoiceNumber = null, $shippingCompany = null, $trackingNumber = null)
     {
         $this->checkConnection();
 
@@ -547,16 +558,16 @@ class ValitorMerchantAPI
             $this->callAPIMethod(
                 'captureReservation',
                 array(
-                    'transaction_id' => $paymentId,
-                    'amount' => $amount,
-                    'orderLines' => $orderLines,
-                    'sales_tax' => $salesTax,
+                    'transaction_id'            => $paymentId,
+                    'amount'                    => $amount,
+                    'orderLines'                => $orderLines,
+                    'sales_tax'                 => $salesTax,
                     'reconciliation_identifier' => $reconciliationIdentifier,
-                    'invoice_number' => $invoiceNumber,
-                    'shippingTrackingInfo' => array(
+                    'invoice_number'            => $invoiceNumber,
+                    'shippingTrackingInfo'      => array(
                         'shippingCompany' => $shippingCompany,
-                        'trackingNumber' => $trackingNumber
-                    )
+                        'trackingNumber'  => $trackingNumber,
+                    ),
                 )
             )
         );
@@ -569,12 +580,14 @@ class ValitorMerchantAPI
      * @param null $reconciliationIdentifier
      * @param null $allowOverRefund
      * @param null $invoiceNumber
-     * @return ValitorRefundResponse
+     *
      * @throws ValitorConnectionFailedException
      * @throws ValitorInvalidResponseException
      * @throws ValitorRequestTimeoutException
      * @throws ValitorUnauthorizedAccessException
      * @throws ValitorUnknownMerchantAPIException
+     *
+     * @return ValitorRefundResponse
      */
     public function refundCapturedReservation($paymentId, $amount = null, $orderLines = null, $reconciliationIdentifier = null, $allowOverRefund = null, $invoiceNumber = null)
     {
@@ -584,12 +597,12 @@ class ValitorMerchantAPI
             $this->callAPIMethod(
                 'refundCapturedReservation',
                 array(
-                    'transaction_id' => $paymentId,
-                    'amount' => $amount,
-                    'orderLines' => $orderLines,
+                    'transaction_id'            => $paymentId,
+                    'amount'                    => $amount,
+                    'orderLines'                => $orderLines,
                     'reconciliation_identifier' => $reconciliationIdentifier,
-                    'allow_over_refund' => $allowOverRefund,
-                    'invoice_number' => $invoiceNumber
+                    'allow_over_refund'         => $allowOverRefund,
+                    'invoice_number'            => $invoiceNumber,
                 )
             )
         );
@@ -598,13 +611,15 @@ class ValitorMerchantAPI
     /**
      * @param $paymentId string
      * @param $orderLines array
-     * @return ValitorUpdateOrderResponse
+     *
      * @throws ValitorMerchantAPIException
+     *
+     * @return ValitorUpdateOrderResponse
      */
     public function updateOrder($paymentId, $orderLines)
     {
         if ($orderLines == null || count($orderLines) != 2) {
-            throw new ValitorMerchantAPIException("orderLines must contain exactly two elements");
+            throw new ValitorMerchantAPIException('orderLines must contain exactly two elements');
         }
 
         $this->checkConnection();
@@ -614,7 +629,7 @@ class ValitorMerchantAPI
                 'updateOrder',
                 array(
                     'payment_id' => $paymentId,
-                    'orderLines' => $orderLines
+                    'orderLines' => $orderLines,
                 )
             )
         );
@@ -623,12 +638,14 @@ class ValitorMerchantAPI
     /**
      * @param $paymentId
      * @param null $amount
-     * @return ValitorReleaseResponse
+     *
      * @throws ValitorConnectionFailedException
      * @throws ValitorInvalidResponseException
      * @throws ValitorRequestTimeoutException
      * @throws ValitorUnauthorizedAccessException
      * @throws ValitorUnknownMerchantAPIException
+     *
+     * @return ValitorReleaseResponse
      */
     public function releaseReservation($paymentId, $amount = null)
     {
@@ -638,7 +655,7 @@ class ValitorMerchantAPI
             $this->callAPIMethod(
                 'releaseReservation',
                 array(
-                    'transaction_id' => $paymentId
+                    'transaction_id' => $paymentId,
                 )
             )
         );
@@ -647,12 +664,14 @@ class ValitorMerchantAPI
     /**
      * @param $paymentId
      * @param array $multipleParams
-     * @return ValitorGetPaymentResponse
+     *
      * @throws ValitorConnectionFailedException
      * @throws ValitorInvalidResponseException
      * @throws ValitorRequestTimeoutException
      * @throws ValitorUnauthorizedAccessException
      * @throws ValitorUnknownMerchantAPIException
+     *
+     * @return ValitorGetPaymentResponse
      */
     public function getPayment($paymentId, $multipleParams = array())
     {
@@ -668,17 +687,19 @@ class ValitorMerchantAPI
             $requestBody = $multipleParams;
         } else {
             $requestBody = array(
-                'transaction' => $paymentId
+                'transaction' => $paymentId,
             );
         }
         return new ValitorGetPaymentResponse($this->callAPIMethod(
-            'payments', $requestBody
+            'payments',
+            $requestBody
         ));
     }
 
     /**
-     * @return ValitorGetTerminalsResponse
      * @throws ValitorMerchantAPIException
+     *
+     * @return ValitorGetTerminalsResponse
      */
     public function getTerminals()
     {
@@ -688,8 +709,9 @@ class ValitorMerchantAPI
     }
 
     /**
-     * @return ValitorLoginResponse
      * @throws ValitorMerchantAPIException
+     *
+     * @return ValitorLoginResponse
      */
     public function login()
     {
@@ -724,15 +746,17 @@ class ValitorMerchantAPI
      * @param array $config
      * @param array $transactionInfo
      * @param array $orderLines
-     * @param bool $accountOffer
-     * @param null $ccToken
-     * @return ValitorCreatePaymentRequestResponse
+     * @param bool  $accountOffer
+     * @param null  $ccToken
+     *
      * @throws ValitorConnectionFailedException
      * @throws ValitorInvalidResponseException
      * @throws ValitorMerchantAPIException
      * @throws ValitorRequestTimeoutException
      * @throws ValitorUnauthorizedAccessException
      * @throws ValitorUnknownMerchantAPIException
+     *
+     * @return ValitorCreatePaymentRequestResponse
      */
     public function createPaymentRequest(
         $terminal,
@@ -756,24 +780,23 @@ class ValitorMerchantAPI
         $customerCreatedDate = null,
         $organizationNumber = null,
         $salesTax = null
-    )
-    {
+    ) {
         $args = array(
-            'terminal' => $terminal,
+            'terminal'     => $terminal,
             'shop_orderid' => $orderId,
-            'amount' => $amount,
-            'currency' => $currencyCode,
-            'type' => $paymentType
+            'amount'       => $amount,
+            'currency'     => $currencyCode,
+            'type'         => $paymentType,
         );
 
-        if (!is_null($customerInfo) && is_array($customerInfo)) {
+        if ($customerInfo !== null && is_array($customerInfo)) {
             $this->addCustomerInfo($customerInfo, $args);
         }
 
-        if (!is_null($cookie)) {
+        if ($cookie !== null) {
             $args['cookie'] = $cookie;
         }
-        if (!is_null($language)) {
+        if ($language !== null) {
             $args['language'] = $language;
         }
         if (count($transactionInfo) > 0) {
@@ -782,36 +805,36 @@ class ValitorMerchantAPI
         if (count($orderLines) > 0) {
             $args['orderLines'] = $orderLines;
         }
-        if (in_array($accountOffer, array("required", "disabled"))) {
+        if (in_array($accountOffer, array('required', 'disabled'))) {
             $args['account_offer'] = $accountOffer;
         }
-        if (!is_null($ccToken)) {
+        if ($ccToken !== null) {
             $args['ccToken'] = $ccToken;
         }
-        if (!is_null($invoiceNumber) && is_string($invoiceNumber)) {
+        if ($invoiceNumber !== null && is_string($invoiceNumber)) {
             $args['sale_invoice_number'] = $invoiceNumber;
         }
-        if (!is_null($fraudService)) {
+        if ($fraudService !== null) {
             $args['fraud_service'] = $fraudService;
         }
-        if (!is_null($paymentSource)) {
+        if ($paymentSource !== null) {
             $args['payment_source'] = $paymentSource;
-        } else if (is_null($paymentSource)) {
+        } elseif ($paymentSource === null) {
             $args['payment_source'] = 'eCommerce';
         }
-        if (!is_null($reconciliationIdentifier) && $paymentType == 'paymentAndCapture' && is_string($reconciliationIdentifier)) {
+        if ($reconciliationIdentifier !== null && $paymentType == 'paymentAndCapture' && is_string($reconciliationIdentifier)) {
             $args['sale_reconciliation_identifier'] = $reconciliationIdentifier;
         }
-        if (!is_null($shippingMethod)) {
+        if ($shippingMethod !== null) {
             $args['shipping_method'] = $shippingMethod;
         }
-        if (!is_null($customerCreatedDate)) {
+        if ($customerCreatedDate !== null) {
             $args['customer_created_date'] = $customerCreatedDate;
         }
-        if (!is_null($organizationNumber)) {
+        if ($organizationNumber !== null) {
             $args['organization_number'] = $organizationNumber;
         }
-        if (!is_null($salesTax)) {
+        if ($salesTax !== null) {
             $args['sales_tax'] = $salesTax;
         }
 
@@ -825,24 +848,26 @@ class ValitorMerchantAPI
      * @param $shopOrderId
      * @param $amount
      * @param $currencyCode
-     * @param null $paymentType
-     * @param null $customerInfo
+     * @param null  $paymentType
+     * @param null  $customerInfo
      * @param array $transactionInfo
-     * @param null $accountNumber
-     * @param null $bankCode
-     * @param null $fraud_service
-     * @param null $paymentSource
+     * @param null  $accountNumber
+     * @param null  $bankCode
+     * @param null  $fraud_service
+     * @param null  $paymentSource
      * @param array $orderLines
-     * @param null $organisationNumber
-     * @param null $personalIdentifyNumber
-     * @param null $birthDate
-     * @return ValitorCreateInvoiceReservationResponse
+     * @param null  $organisationNumber
+     * @param null  $personalIdentifyNumber
+     * @param null  $birthDate
+     *
      * @throws ValitorConnectionFailedException
      * @throws ValitorInvalidResponseException
      * @throws ValitorMerchantAPIException
      * @throws ValitorRequestTimeoutException
      * @throws ValitorUnauthorizedAccessException
      * @throws ValitorUnknownMerchantAPIException
+     *
+     * @return ValitorCreateInvoiceReservationResponse
      */
     public function createInvoiceReservation(
         $terminal,
@@ -860,46 +885,45 @@ class ValitorMerchantAPI
         $organisationNumber = null,
         $personalIdentifyNumber = null,
         $birthDate = null
-    )
-    {
+    ) {
         $args = array(
-            'terminal' => $terminal,
+            'terminal'     => $terminal,
             'shop_orderid' => $shopOrderId,
-            'amount' => $amount,
-            'currency' => $currencyCode
+            'amount'       => $amount,
+            'currency'     => $currencyCode,
         );
 
-        if (!is_null($paymentType)) {
+        if ($paymentType !== null) {
             $args['type'] = $paymentType;
         }
-        if (!is_null($customerInfo) && is_array($customerInfo)) {
+        if ($customerInfo !== null && is_array($customerInfo)) {
             $this->addCustomerInfo($customerInfo, $args); // just checks and saves $customerInfo inside $args
         }
         if (count($transactionInfo) > 0) {
             $args['transaction_info'] = $transactionInfo;
         }
-        if (!is_null($accountNumber)) {
+        if ($accountNumber !== null) {
             $args['accountNumber'] = $accountNumber;
         }
-        if (!is_null($bankCode)) {
+        if ($bankCode !== null) {
             $args['bankCode'] = $bankCode;
         }
-        if (!is_null($fraud_service)) {
+        if ($fraud_service !== null) {
             $args['fraud_service'] = $fraud_service;
         }
-        if (!is_null($paymentSource)) {
+        if ($paymentSource !== null) {
             $args['payment_source'] = $paymentSource;
         }
         if (count($orderLines) > 0) {
             $args['orderLines'] = $orderLines;
         }
-        if (!is_null($organisationNumber)) {
+        if ($organisationNumber !== null) {
             $args['organisationNumber'] = $organisationNumber;
         }
-        if (!is_null($personalIdentifyNumber)) {
+        if ($personalIdentifyNumber !== null) {
             $args['personalIdentifyNumber'] = $personalIdentifyNumber;
         }
-        if (!is_null($birthDate)) {
+        if ($birthDate !== null) {
             $args['birthDate'] = $birthDate;
         }
 
@@ -911,27 +935,29 @@ class ValitorMerchantAPI
      * @param $shopOrderId
      * @param $amount
      * @param $currencyCode
-     * @param null $creditCardToken
-     * @param null $pan
-     * @param null $expiryMonth
-     * @param null $expiryYear
-     * @param null $cvc
+     * @param null  $creditCardToken
+     * @param null  $pan
+     * @param null  $expiryMonth
+     * @param null  $expiryYear
+     * @param null  $cvc
      * @param array $transactionInfo
-     * @param null $paymentType
-     * @param null $paymentSource
-     * @param null $fraudService
-     * @param null $surcharge
-     * @param null $customerCreatedDate
-     * @param null $shippingMethod
-     * @param null $customerInfo
+     * @param null  $paymentType
+     * @param null  $paymentSource
+     * @param null  $fraudService
+     * @param null  $surcharge
+     * @param null  $customerCreatedDate
+     * @param null  $shippingMethod
+     * @param null  $customerInfo
      * @param array $orderLines
-     * @return ValitorReservationResponse
+     *
      * @throws ValitorConnectionFailedException
      * @throws ValitorInvalidResponseException
      * @throws ValitorMerchantAPIException
      * @throws ValitorRequestTimeoutException
      * @throws ValitorUnauthorizedAccessException
      * @throws ValitorUnknownMerchantAPIException
+     *
+     * @return ValitorReservationResponse
      */
     public function reservation(
         $terminal,
@@ -952,52 +978,51 @@ class ValitorMerchantAPI
         $shippingMethod = null,
         $customerInfo = null,
         array $orderLines = array()
-    )
-    {
+    ) {
         $args = array(
-            'terminal' => $terminal,
+            'terminal'     => $terminal,
             'shop_orderid' => $shopOrderId,
-            'amount' => $amount,
-            'currency' => $currencyCode
+            'amount'       => $amount,
+            'currency'     => $currencyCode,
         );
 
-        if (!is_null($creditCardToken)) {
+        if ($creditCardToken !== null) {
             $args['credit_card_token'] = $creditCardToken;
         }
-        if (!is_null($pan)) {
+        if ($pan !== null) {
             $args['cardnum'] = $pan;
         }
-        if (!is_null($expiryMonth)) {
+        if ($expiryMonth !== null) {
             $args['emonth'] = $expiryMonth;
         }
-        if (!is_null($expiryYear)) {
+        if ($expiryYear !== null) {
             $args['eyear'] = $expiryYear;
         }
-        if (!is_null($cvc)) {
+        if ($cvc !== null) {
             $args['cvc'] = $cvc;
         }
         if (count($transactionInfo) > 0) {
             $args['transaction_info'] = $transactionInfo;
         }
-        if (!is_null($paymentType)) {
+        if ($paymentType !== null) {
             $args['type'] = $paymentType;
         }
-        if (!is_null($paymentSource)) {
+        if ($paymentSource !== null) {
             $args['payment_source'] = $paymentSource;
         }
-        if (!is_null($fraudService)) {
+        if ($fraudService !== null) {
             $args['fraud_service'] = $fraudService;
         }
-        if (!is_null($surcharge)) {
+        if ($surcharge !== null) {
             $args['surcharge'] = $surcharge;
         }
-        if (!is_null($customerCreatedDate)) {
+        if ($customerCreatedDate !== null) {
             $args['customer_created_date'] = $customerCreatedDate;
         }
-        if (!is_null($shippingMethod)) {
+        if ($shippingMethod !== null) {
             $args['shipping_method'] = $shippingMethod;
         }
-        if (!is_null($customerInfo) && is_array($customerInfo)) {
+        if ($customerInfo !== null && is_array($customerInfo)) {
             $this->addCustomerInfo($customerInfo, $args); // just checks and saves $customerInfo inside $args
         }
         if (count($orderLines) > 0) {
@@ -1010,13 +1035,16 @@ class ValitorMerchantAPI
     /**
      * @param $subscriptionId
      * @param null $amount
-     * @return ValitorCaptureRecurringResponse
+     *
      * @throws ValitorConnectionFailedException
      * @throws ValitorInvalidResponseException
      * @throws ValitorRequestTimeoutException
      * @throws ValitorUnauthorizedAccessException
      * @throws ValitorUnknownMerchantAPIException
-     * @deprecated - use chargeSubscription instead.
+     *
+     * @return ValitorCaptureRecurringResponse
+     *
+     * @deprecated - use chargeSubscription instead
      */
     public function captureRecurring($subscriptionId, $amount = null)
     {
@@ -1027,12 +1055,14 @@ class ValitorMerchantAPI
      * @param $subscriptionId
      * @param $reconciliationIdentifier
      * @param null $amount
-     * @return ValitorCaptureRecurringResponse
+     *
      * @throws ValitorConnectionFailedException
      * @throws ValitorInvalidResponseException
      * @throws ValitorRequestTimeoutException
      * @throws ValitorUnauthorizedAccessException
      * @throws ValitorUnknownMerchantAPIException
+     *
+     * @return ValitorCaptureRecurringResponse
      */
     public function chargeSubscriptionWithReconciliationIdentifier($subscriptionId, $reconciliationIdentifier, $amount = null)
     {
@@ -1042,8 +1072,8 @@ class ValitorMerchantAPI
             $this->callAPIMethod(
                 'chargeSubscription',
                 array(
-                    'transaction_id' => $subscriptionId,
-                    'amount' => $amount,
+                    'transaction_id'            => $subscriptionId,
+                    'amount'                    => $amount,
                     'reconciliation_identifier' => $reconciliationIdentifier,
                 )
             )
@@ -1053,12 +1083,14 @@ class ValitorMerchantAPI
     /**
      * @param $subscriptionId
      * @param null $amount
-     * @return ValitorCaptureRecurringResponse
+     *
      * @throws ValitorConnectionFailedException
      * @throws ValitorInvalidResponseException
      * @throws ValitorRequestTimeoutException
      * @throws ValitorUnauthorizedAccessException
      * @throws ValitorUnknownMerchantAPIException
+     *
+     * @return ValitorCaptureRecurringResponse
      */
     public function chargeSubscription($subscriptionId, $amount = null)
     {
@@ -1068,8 +1100,11 @@ class ValitorMerchantAPI
     /**
      * @param $subscriptionId
      * @param null $amount
-     * @return ValitorPreauthRecurringResponse
+     *
      * @throws ValitorMerchantAPIException
+     *
+     * @return ValitorPreauthRecurringResponse
+     *
      * @deprecated - use reserveSubscriptionCharge instead
      */
     public function preauthRecurring($subscriptionId, $amount = null)
@@ -1077,16 +1112,17 @@ class ValitorMerchantAPI
         return $this->reserveSubscriptionCharge($subscriptionId, $amount);
     }
 
-
     /**
      * @param $subscriptionId
      * @param null $amount
-     * @return ValitorPreauthRecurringResponse
+     *
      * @throws ValitorConnectionFailedException
      * @throws ValitorInvalidResponseException
      * @throws ValitorRequestTimeoutException
      * @throws ValitorUnauthorizedAccessException
      * @throws ValitorUnknownMerchantAPIException
+     *
+     * @return ValitorPreauthRecurringResponse
      */
     public function reserveSubscriptionCharge($subscriptionId, $amount = null)
     {
@@ -1097,7 +1133,7 @@ class ValitorMerchantAPI
                 'reserveSubscriptionCharge',
                 array(
                     'transaction_id' => $subscriptionId,
-                    'amount' => $amount,
+                    'amount'         => $amount,
                 )
             )
         );
@@ -1108,12 +1144,14 @@ class ValitorMerchantAPI
      * @param $cardToken
      * @param $amount
      * @param $currency
-     * @return ValitorCalculateSurchargeResponse
+     *
      * @throws ValitorConnectionFailedException
      * @throws ValitorInvalidResponseException
      * @throws ValitorRequestTimeoutException
      * @throws ValitorUnauthorizedAccessException
      * @throws ValitorUnknownMerchantAPIException
+     *
+     * @return ValitorCalculateSurchargeResponse
      */
     public function calculateSurcharge($terminal, $cardToken, $amount, $currency)
     {
@@ -1123,10 +1161,10 @@ class ValitorMerchantAPI
             $this->callAPIMethod(
                 'calculateSurcharge',
                 array(
-                    'terminal' => $terminal,
+                    'terminal'          => $terminal,
                     'credit_card_token' => $cardToken,
-                    'amount' => $amount,
-                    'currency' => $currency,
+                    'amount'            => $amount,
+                    'currency'          => $currency,
                 )
             )
         );
@@ -1135,12 +1173,14 @@ class ValitorMerchantAPI
     /**
      * @param $subscriptionId
      * @param $amount
-     * @return ValitorCalculateSurchargeResponse
+     *
      * @throws ValitorConnectionFailedException
      * @throws ValitorInvalidResponseException
      * @throws ValitorRequestTimeoutException
      * @throws ValitorUnauthorizedAccessException
      * @throws ValitorUnknownMerchantAPIException
+     *
+     * @return ValitorCalculateSurchargeResponse
      */
     public function calculateSurchargeForSubscription($subscriptionId, $amount)
     {
@@ -1151,7 +1191,7 @@ class ValitorMerchantAPI
                 'calculateSurcharge',
                 array(
                     'payment_id' => $subscriptionId,
-                    'amount' => $amount,
+                    'amount'     => $amount,
                 )
             )
         );
@@ -1159,12 +1199,14 @@ class ValitorMerchantAPI
 
     /**
      * @param $args
-     * @return string|boolean
+     *
      * @throws ValitorConnectionFailedException
      * @throws ValitorInvalidResponseException
      * @throws ValitorRequestTimeoutException
      * @throws ValitorUnauthorizedAccessException
      * @throws ValitorUnknownMerchantAPIException
+     *
+     * @return bool|string
      */
     public function getCustomReport($args)
     {
@@ -1175,12 +1217,14 @@ class ValitorMerchantAPI
 
     /**
      * @param ValitorAPITransactionsRequest $transactionsRequest
-     * @return string|boolean
+     *
      * @throws ValitorConnectionFailedException
      * @throws ValitorInvalidResponseException
      * @throws ValitorRequestTimeoutException
      * @throws ValitorUnauthorizedAccessException
      * @throws ValitorUnknownMerchantAPIException
+     *
+     * @return bool|string
      */
     public function getTransactions(ValitorAPITransactionsRequest $transactionsRequest)
     {
@@ -1191,6 +1235,7 @@ class ValitorMerchantAPI
     /**
      * @param $customerInfo
      * @param $args
+     *
      * @throws ValitorMerchantAPIException
      */
     private function addCustomerInfo($customerInfo, &$args)
@@ -1219,7 +1264,7 @@ class ValitorMerchantAPI
             }
         }
         if (count($errors) > 0) {
-            throw new ValitorMerchantAPIException("Failed to create customer_info variable: \n" . print_r($errors, true));
+            throw new ValitorMerchantAPIException("Failed to create customer_info variable: \n".print_r($errors, true));
         }
         $args['customer_info'] = $customerInfo;
     }

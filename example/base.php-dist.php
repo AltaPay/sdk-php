@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__.'/../../vendor/autoload.php';
 
-$baseURL = "https://testgateway.valitor.com/";
+$baseURL = 'https://testgateway.valitor.com/';
 $username = 'username';
 $password = 'password';
 $terminal = 'Some Terminal'; // change this to one of the test terminals supplied in the welcome email
@@ -11,11 +11,10 @@ $terminal = 'Some Terminal'; // change this to one of the test terminals supplie
 $api = new ValitorMerchantAPI($baseURL, $username, $password, /*IValitorCommunicationLogger $logger = */ null);
 $response = $api->login();
 if (!$response->wasSuccessful()) {
-	throw new Exception("Could not login to the Merchant API: " . $response->getErrorMessage());
+    throw new Exception('Could not login to the Merchant API: '.$response->getErrorMessage());
 }
 
-
-/**
+/*
  * If you get the following error when trying to login...
  * SSL certificate problem: unable to get local issuer certificate
  *

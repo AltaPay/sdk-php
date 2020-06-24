@@ -12,14 +12,14 @@ class ValitorAPIPaymentInfos
 
     /**
      * ValitorAPIPaymentInfos constructor.
+     *
      * @param SimpleXmlElement $xml
      */
     public function __construct(SimpleXmlElement $xml)
     {
         $this->simpleXmlElement = $xml;
-        if(isset($xml->PaymentInfo)) {
-            foreach($xml->PaymentInfo as $paymentInfo)
-            {
+        if (isset($xml->PaymentInfo)) {
+            foreach ($xml->PaymentInfo as $paymentInfo) {
                 $attrs = $paymentInfo->attributes();
                 $this->infos[(string)$attrs['name']] = (string)$paymentInfo;
             }
@@ -36,6 +36,7 @@ class ValitorAPIPaymentInfos
 
     /**
      * @param $key
+     *
      * @return mixed
      */
     public function getInfo($key)

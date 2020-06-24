@@ -1,12 +1,13 @@
 <?php
 
 /**
- * Class ValitorGetPaymentResponse
+ * Class ValitorGetPaymentResponse.
  */
 class ValitorGetPaymentResponse extends ValitorAbstractPaymentResponse
 {
     /**
      * ValitorGetPaymentResponse constructor.
+     *
      * @param SimpleXmlElement $xml
      */
     public function __construct(SimpleXmlElement $xml)
@@ -19,7 +20,6 @@ class ValitorGetPaymentResponse extends ValitorAbstractPaymentResponse
      */
     protected function parseBody(SimpleXmlElement $body)
     {
-        
     }
 
     /**
@@ -27,8 +27,6 @@ class ValitorGetPaymentResponse extends ValitorAbstractPaymentResponse
      */
     public function wasSuccessful()
     {
-        return $this->getErrorCode() === '0' && !is_null($this->getPrimaryPayment());
+        return $this->getErrorCode() === '0' && $this->getPrimaryPayment() !== null;
     }
-
-
 }

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Class ValitorHttpRequest
+ * Class ValitorHttpRequest.
  */
 class ValitorHttpRequest
 {
@@ -21,7 +21,7 @@ class ValitorHttpRequest
      */
     public function getUrl()
     {
-        return $this->url; 
+        return $this->url;
     }
 
     /**
@@ -29,7 +29,7 @@ class ValitorHttpRequest
      */
     public function getMethod()
     {
-        return $this->method; 
+        return $this->method;
     }
 
     /**
@@ -37,7 +37,7 @@ class ValitorHttpRequest
      */
     public function getParameters()
     {
-        return $this->parameters; 
+        return $this->parameters;
     }
 
     /**
@@ -45,7 +45,7 @@ class ValitorHttpRequest
      */
     public function getPostContent()
     {
-        return $this->postContent; 
+        return $this->postContent;
     }
 
     /**
@@ -53,7 +53,7 @@ class ValitorHttpRequest
      */
     public function getUser()
     {
-        return $this->user; 
+        return $this->user;
     }
 
     /**
@@ -61,7 +61,7 @@ class ValitorHttpRequest
      */
     public function getPass()
     {
-        return $this->pass; 
+        return $this->pass;
     }
 
     /**
@@ -69,7 +69,7 @@ class ValitorHttpRequest
      */
     public function getLogPaymentId()
     {
-        return $this->logPaymentId; 
+        return $this->logPaymentId;
     }
 
     /**
@@ -77,7 +77,7 @@ class ValitorHttpRequest
      */
     public function getLogPaymentRequestId()
     {
-        return $this->logPaymentRequestId; 
+        return $this->logPaymentRequestId;
     }
 
     /**
@@ -85,7 +85,7 @@ class ValitorHttpRequest
      */
     public function getCookie()
     {
-        return $this->cookie; 
+        return $this->cookie;
     }
 
     /**
@@ -93,7 +93,7 @@ class ValitorHttpRequest
      */
     public function getHeaders()
     {
-        return $this->headers; 
+        return $this->headers;
     }
 
     /**
@@ -101,7 +101,7 @@ class ValitorHttpRequest
      */
     public function setUrl($x)
     {
-        $this->url = $x; 
+        $this->url = $x;
     }
 
     /**
@@ -109,7 +109,7 @@ class ValitorHttpRequest
      */
     public function setMethod($x)
     {
-        $this->method = $x; 
+        $this->method = $x;
     }
 
     /**
@@ -117,7 +117,7 @@ class ValitorHttpRequest
      */
     public function setParameters($x)
     {
-        $this->parameters = $x; 
+        $this->parameters = $x;
     }
 
     /**
@@ -125,7 +125,7 @@ class ValitorHttpRequest
      */
     public function setPostContent($x)
     {
-        $this->postContent = $x; 
+        $this->postContent = $x;
     }
 
     /**
@@ -133,7 +133,7 @@ class ValitorHttpRequest
      */
     public function setUser($x)
     {
-        $this->user = $x; 
+        $this->user = $x;
     }
 
     /**
@@ -141,7 +141,7 @@ class ValitorHttpRequest
      */
     public function setPass($x)
     {
-        $this->pass = $x; 
+        $this->pass = $x;
     }
 
     /**
@@ -149,7 +149,7 @@ class ValitorHttpRequest
      */
     public function setLogPaymentId($x)
     {
-        $this->logPaymentId = $x; 
+        $this->logPaymentId = $x;
     }
 
     /**
@@ -157,7 +157,7 @@ class ValitorHttpRequest
      */
     public function setLogPaymentRequestId($x)
     {
-        $this->logPaymentRequestId = $x; 
+        $this->logPaymentRequestId = $x;
     }
 
     /**
@@ -165,7 +165,7 @@ class ValitorHttpRequest
      */
     public function setCookie($x)
     {
-        $this->cookie = $x; 
+        $this->cookie = $x;
     }
 
     /**

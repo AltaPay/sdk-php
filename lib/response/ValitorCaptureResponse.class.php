@@ -6,10 +6,8 @@ class ValitorCaptureResponse extends ValitorAbstractPaymentResponse
     {
         parent::__construct($xml);
     }
-    
+
     protected function parseBody(SimpleXmlElement $body)
     {
-        
     }
-    
 }

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Class ValitorFOpenBasedHttpUtils
+ * Class ValitorFOpenBasedHttpUtils.
  */
 class ValitorFOpenBasedHttpUtils implements IValitorHttpUtils
 {
@@ -11,10 +11,11 @@ class ValitorFOpenBasedHttpUtils implements IValitorHttpUtils
 
     /**
      * ValitorFOpenBasedHttpUtils constructor.
+     *
      * @param int $timeoutSeconds
      * @param int $connectionTimeout
      */
-    public function __construct($timeoutSeconds=60, $connectionTimeout=30)
+    public function __construct($timeoutSeconds = 60, $connectionTimeout = 30)
     {
         $this->timeout = $timeoutSeconds;
         $this->connectionTimeout = $connectionTimeout;
@@ -22,54 +23,52 @@ class ValitorFOpenBasedHttpUtils implements IValitorHttpUtils
 
     /**
      * @param ValitorHttpRequest $request
+     *
      * @return ValitorHttpResponse
      */
     public function requestURL(ValitorHttpRequest $request)
     {
         $this->streamState = 'NOT_CONNECTED';
-        
+
         global $http_response_header;
         $context = $this->createContext($request);
-        
-        $url = ($request->getMethod() == 'GET') ? $this->appendToUrl($request->getUrl(), $request->getParameters()) : $request->getUrl(); 
+
+        $url = ($request->getMethod() == 'GET') ? $this->appendToUrl($request->getUrl(), $request->getParameters()) : $request->getUrl();
         $content = @file_get_contents($url, false, $context);
         $response = new ValitorHttpResponse();
-        $response->setInfo(array('http_code'=>$this->getHttpCodeFromHeader($http_response_header)));
-        if($content !== false) {
+        $response->setInfo(array('http_code' => $this->getHttpCodeFromHeader($http_response_header)));
+        if ($content !== false) {
             $response->setHeader($http_response_header);
             $response->setContent($content);
             $response->setConnectionResult(ValitorHttpResponse::CONNECTION_OKAY);
-        }
-        else
-        {
-            if($this->streamState == 'NOT_CONNECTED') {
+        } else {
+            if ($this->streamState == 'NOT_CONNECTED') {
                 $response->setConnectionResult(ValitorHttpResponse::CONNECTION_REFUSED);
-            }
-            else
-            {
+            } else {
                 $response->setConnectionResult(ValitorHttpResponse::CONNECTION_READ_TIMEOUT);
             }
         }
-        
+
         return $response;
     }
 
     /**
      * @param ValitorHttpRequest $request
+     *
      * @return resource
      */
     private function createContext(ValitorHttpRequest $request)
     {
         $args = array(
-        'http' => array(
-        'method'  => $request->getMethod(),
-        'header'  => sprintf("Authorization: Basic %s\r\n", base64_encode($request->getUser().':'.$request->getPass())).
-        "Content-type: application/x-www-form-urlencoded\r\n",
-        'timeout' => $this->timeout,
-        'ignore_errors' => true,
-        ),
+            'http' => array(
+                'method' => $request->getMethod(),
+                'header' => sprintf("Authorization: Basic %s\r\n", base64_encode($request->getUser().':'.$request->getPass())).
+                "Content-type: application/x-www-form-urlencoded\r\n",
+                'timeout'       => $this->timeout,
+                'ignore_errors' => true,
+            ),
         );
-        if($request->getMethod() == 'POST') {
+        if ($request->getMethod() == 'POST') {
             $args['http']['content'] = http_build_query($request->getParameters());
         }
         $context = stream_context_create($args);
@@ -87,9 +86,9 @@ class ValitorFOpenBasedHttpUtils implements IValitorHttpUtils
      */
     public function stream_notification_callback($notification_code, $severity, $message, $message_code, $bytes_transferred, $bytes_max)
     {
-        switch($notification_code) {
+        switch ($notification_code) {
         case STREAM_NOTIFY_FAILURE:
-            if(strpos($message, '401 Unauthorized')) {
+            if (strpos($message, '401 Unauthorized')) {
                 $this->streamState = 'AUTH_FAILED';
             }
             break;
@@ -104,30 +103,32 @@ class ValitorFOpenBasedHttpUtils implements IValitorHttpUtils
 
     /**
      * @param $http_response_header
+     *
      * @return int|mixed
      */
     private function getHttpCodeFromHeader($http_response_header)
     {
-        if(is_array($http_response_header) && isset($http_response_header[0])) {
-            if(preg_match('/HTTP\/[0-9\.]+ ([0-9]{3}) .*/', $http_response_header[0], $matches)) {
+        if (is_array($http_response_header) && isset($http_response_header[0])) {
+            if (preg_match('/HTTP\/[0-9\.]+ ([0-9]{3}) .*/', $http_response_header[0], $matches)) {
                 return $matches[1];
             }
         }
         return 0;
     }
-    
+
     /**
-     * This method will append the given parameters to the URL. Using a ? or a & depending on the url
+     * This method will append the given parameters to the URL. Using a ? or a & depending on the url.
      *
-     * @param  string $url
-     * @param  array  $parameters
+     * @param string $url
+     * @param array  $parameters
+     *
      * @return string - the URL with the new parameters appended
      */
     public function appendToUrl($url, array $parameters)
     {
-        if(count($parameters) > 0) {
+        if (count($parameters) > 0) {
             $append = http_build_query($parameters);
-            return $url.(strstr($url, "?") ? "&" : "?").$append;
+            return $url.(strstr($url, '?') ? '&' : '?').$append;
         }
         return $url;
     }

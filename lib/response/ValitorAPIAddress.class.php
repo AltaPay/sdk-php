@@ -23,6 +23,7 @@ class ValitorAPIAddress
 
     /**
      * ValitorAPIAddress constructor.
+     *
      * @param SimpleXmlElement $xml
      */
     public function __construct(SimpleXmlElement $xml)

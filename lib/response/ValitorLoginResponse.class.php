@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Class ValitorLoginResponse
+ * Class ValitorLoginResponse.
  */
 class ValitorLoginResponse extends ValitorAbstractResponse
 {
@@ -9,12 +9,13 @@ class ValitorLoginResponse extends ValitorAbstractResponse
 
     /**
      * ValitorLoginResponse constructor.
+     *
      * @param SimpleXmlElement $xml
      */
     public function __construct(SimpleXmlElement $xml)
     {
         parent::__construct($xml);
-        if($this->getErrorCode() === '0') {
+        if ($this->getErrorCode() === '0') {
             $this->result = (string)$xml->Body->Result;
         }
     }
@@ -25,5 +26,5 @@ class ValitorLoginResponse extends ValitorAbstractResponse
     public function wasSuccessful()
     {
         return $this->getErrorCode() === '0' && $this->result == 'OK';
-    }    
+    }
 }

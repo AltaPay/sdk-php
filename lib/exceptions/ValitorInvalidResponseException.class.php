@@ -2,5 +2,4 @@
 
 class ValitorInvalidResponseException extends ValitorMerchantAPIException
 {
-    
 }

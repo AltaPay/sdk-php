@@ -21,16 +21,19 @@ class ValitorAPICustomerInfo
     private $username;
     private $phone;
     private $organisationNumber;
-    
+
     /**
      * @var ValitorAPIAddress
      */
-    private $billingAddress,$shippingAddress,$registeredAddress;
+    private $billingAddress;
+    private $shippingAddress;
+    private $registeredAddress;
 
     private $countryOfOrigin;
 
     /**
      * ValitorAPICustomerInfo constructor.
+     *
      * @param SimpleXmlElement $xml
      */
     public function __construct(SimpleXmlElement $xml)
@@ -43,20 +46,20 @@ class ValitorAPICustomerInfo
         $this->phone = (string)$xml->CustomerPhone;
         $this->organisationNumber = (string)$xml->OrganisationNumber;
 
-        if(isset($xml->CountryOfOrigin)) {
+        if (isset($xml->CountryOfOrigin)) {
             $this->countryOfOrigin = new ValitorAPICountryOfOrigin($xml->CountryOfOrigin);
         }
-        if(isset($xml->BillingAddress)) {
+        if (isset($xml->BillingAddress)) {
             $this->billingAddress = new ValitorAPIAddress($xml->BillingAddress);
         }
-        if(isset($xml->ShippingAddress)) {
+        if (isset($xml->ShippingAddress)) {
             $this->shippingAddress = new ValitorAPIAddress($xml->ShippingAddress);
         }
-        if(isset($xml->RegisteredAddress)) {
+        if (isset($xml->RegisteredAddress)) {
             $this->registeredAddress = new ValitorAPIAddress($xml->RegisteredAddress);
         }
     }
-    
+
     /**
      * @return ValitorAPIAddress
      */
@@ -72,7 +75,7 @@ class ValitorAPICustomerInfo
     {
         return $this->shippingAddress;
     }
-    
+
     /**
      * @return ValitorAPIAddress
      */

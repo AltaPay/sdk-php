@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Class ValitorAPITransactionsRequest
+ * Class ValitorAPITransactionsRequest.
  */
 class ValitorAPITransactionsRequest
 {
@@ -148,28 +148,28 @@ class ValitorAPITransactionsRequest
     public function asArray()
     {
         $array = array();
-        if (!is_null($this->shop)) {
+        if ($this->shop !== null) {
             $array['shop'] = $this->shop;
         }
-        if (!is_null($this->terminal)) {
+        if ($this->terminal !== null) {
             $array['terminal'] = $this->terminal;
         }
-        if (!is_null($this->transaction)) {
+        if ($this->transaction !== null) {
             $array['transaction'] = $this->transaction;
         }
-        if (!is_null($this->transactionId)) {
+        if ($this->transactionId !== null) {
             $array['transaction_id'] = $this->transactionId;
         }
-        if (!is_null($this->shopOrderId)) {
+        if ($this->shopOrderId !== null) {
             $array['shop_orderid'] = $this->shopOrderId;
         }
-        if (!is_null($this->paymentStatus)) {
+        if ($this->paymentStatus !== null) {
             $array['payment_status'] = $this->paymentStatus;
         }
-        if (!is_null($this->reconciliationIdentifier)) {
+        if ($this->reconciliationIdentifier !== null) {
             $array['reconciliation_identifier'] = $this->reconciliationIdentifier;
         }
-        if (!is_null($this->acquirerReconciliationIdentifier)) {
+        if ($this->acquirerReconciliationIdentifier !== null) {
             $array['acquirer_reconciliation_identifier'] = $this->acquirerReconciliationIdentifier;
         }
 

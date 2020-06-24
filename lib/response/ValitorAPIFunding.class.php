@@ -1,22 +1,21 @@
 <?php
 
-
 /**
-SimpleXMLElement Object
-(
-    [Filename] => fundingDownloadTest
-    [ContractIdentifier] => FunctionalTestContractID
-    [Shops] => SimpleXMLElement Object
-        (
-            [Shop] => Valitor Functional Test Shop
-        )
-
-    [Acquirer] => TestAcquirer
-    [FundingDate] => 2010-12-24
-    [Amount] => 0.00 EUR
-    [CreatedDate] => 2013-01-19
-    [DownloadLink] => http://gateway.dev.valitor.com/merchant.php/API/fundingDownload?id=1
-)
+ * SimpleXMLElement Object
+ * (
+ * [Filename] => fundingDownloadTest
+ * [ContractIdentifier] => FunctionalTestContractID
+ * [Shops] => SimpleXMLElement Object
+ * (
+ * [Shop] => Valitor Functional Test Shop
+ * )
+ *
+ * [Acquirer] => TestAcquirer
+ * [FundingDate] => 2010-12-24
+ * [Amount] => 0.00 EUR
+ * [CreatedDate] => 2013-01-19
+ * [DownloadLink] => http://gateway.dev.valitor.com/merchant.php/API/fundingDownload?id=1
+ * )
  *
  * @author emanuel
  */
@@ -35,19 +34,19 @@ class ValitorAPIFunding
 
     /**
      * ValitorAPIFunding constructor.
+     *
      * @param SimpleXmlElement $xml
      */
     public function __construct(SimpleXmlElement $xml)
     {
         $this->filename = (string)$xml->Filename;
         $this->contractIdentifier = (string)$xml->ContractIdentifier;
-        foreach($xml->Shops->Shop as $shop)
-        {
+        foreach ($xml->Shops->Shop as $shop) {
             $this->shops[] = (string)$shop;
         }
         $this->acquirer = (string)$xml->Acquirer;
         $this->fundingDate = (string)$xml->FundingDate;
-        list($this->amount, $this->currency) = explode(" ", (string)$xml->Amount, 2);
+        list($this->amount, $this->currency) = explode(' ', (string)$xml->Amount, 2);
         $this->createdDate = (string)$xml->CreatedDate;
         $this->downloadLink = (string)$xml->DownloadLink;
         $this->referenceText = (string)$xml->ReferenceText;

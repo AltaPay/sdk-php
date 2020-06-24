@@ -6,9 +6,9 @@ class ValitorCaptureRecurringResponse extends ValitorPreauthRecurringResponse
     {
         parent::__construct($xml);
     }
-    
+
     /**
-     * @return boolean
+     * @return bool
      */
     public function wasSubscriptionReleased()
     {

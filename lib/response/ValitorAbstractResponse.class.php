@@ -27,6 +27,7 @@ abstract class ValitorAbstractResponse
 
     /**
      * ValitorAbstractResponse constructor.
+     *
      * @param SimpleXmlElement $xml
      */
     public function __construct(SimpleXmlElement $xml)
@@ -90,5 +91,5 @@ abstract class ValitorAbstractResponse
     /**
      * @return mixed
      */
-    public abstract function wasSuccessful();
+    abstract public function wasSuccessful();
 }

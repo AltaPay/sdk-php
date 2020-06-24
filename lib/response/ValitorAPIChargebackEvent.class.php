@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Class ValitorAPIChargebackEvent
+ * Class ValitorAPIChargebackEvent.
  */
 class ValitorAPIChargebackEvent
 {
@@ -15,12 +15,14 @@ class ValitorAPIChargebackEvent
 
     /**
      * ValitorAPIChargebackEvent constructor.
+     *
      * @param SimpleXmlElement $xml
+     *
      * @throws Exception
      */
     public function __construct(SimpleXmlElement $xml)
     {
-        $this->date =  new DateTime((string)$xml->Date);
+        $this->date = new DateTime((string)$xml->Date);
         $this->type = (string)$xml->Type;
         $this->reasonCode = (string)$xml->ReasonCode;
         $this->reason = (string)$xml->Reason;
@@ -28,8 +30,7 @@ class ValitorAPIChargebackEvent
         $this->currency = (string)$xml->Currency;
 
         $additionalInfoXml = @simplexml_load_string((string)$xml->AdditionalInfo);
-        foreach($additionalInfoXml->info_element as $infoElement)
-        {
+        foreach ($additionalInfoXml->info_element as $infoElement) {
             $this->additionalInfo[(string)$infoElement->key] = (string)$infoElement->value;
         }
     }
@@ -44,6 +45,7 @@ class ValitorAPIChargebackEvent
 
     /**
      * @param $date
+     *
      * @return mixed
      */
     public function setDate($date)
@@ -61,6 +63,7 @@ class ValitorAPIChargebackEvent
 
     /**
      * @param $type
+     *
      * @return mixed
      */
     public function setType($type)
@@ -78,6 +81,7 @@ class ValitorAPIChargebackEvent
 
     /**
      * @param $reasonCode
+     *
      * @return mixed
      */
     public function setReasonCode($reasonCode)
@@ -95,6 +99,7 @@ class ValitorAPIChargebackEvent
 
     /**
      * @param $reason
+     *
      * @return mixed
      */
     public function setReason($reason)
@@ -112,6 +117,7 @@ class ValitorAPIChargebackEvent
 
     /**
      * @param $amount
+     *
      * @return mixed
      */
     public function setAmount($amount)
@@ -129,6 +135,7 @@ class ValitorAPIChargebackEvent
 
     /**
      * @param $currency
+     *
      * @return mixed
      */
     public function setCurrency($currency)
@@ -146,6 +153,7 @@ class ValitorAPIChargebackEvent
 
     /**
      * @param array $additionalInfo
+     *
      * @return array
      */
     public function setAdditionalInfo(array $additionalInfo)
@@ -153,4 +161,3 @@ class ValitorAPIChargebackEvent
         return $this->additionalInfo = $additionalInfo;
     }
 }
-

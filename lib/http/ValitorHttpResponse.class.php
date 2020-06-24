@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Class ValitorHttpResponse
+ * Class ValitorHttpResponse.
  */
 class ValitorHttpResponse
 {
@@ -9,7 +9,7 @@ class ValitorHttpResponse
     const CONNECTION_TIMEOUT = 'CONNECTION_TIMEOUT';
     const CONNECTION_READ_TIMEOUT = 'CONNECTION_READ_TIMEOUT';
     const CONNECTION_OKAY = 'CONNECTION_OKAY';
-    
+
     private $requestHeader = '';
     private $header = '';
     private $content = '';
@@ -31,7 +31,7 @@ class ValitorHttpResponse
      */
     public function getContentType()
     {
-        if(preg_match('/^Content-Type: (.+)$/m', $this->header, $matches)) {
+        if (preg_match('/^Content-Type: (.+)$/m', $this->header, $matches)) {
             return trim($matches[1]);
         }
     }
@@ -41,7 +41,7 @@ class ValitorHttpResponse
      */
     public function getLocationHeader()
     {
-        if(preg_match('/^Location: (.+)$/m', $this->header, $matches)) {
+        if (preg_match('/^Location: (.+)$/m', $this->header, $matches)) {
             return trim($matches[1]);
         }
     }
@@ -59,9 +59,9 @@ class ValitorHttpResponse
      */
     public function setHeader($header)
     {
-        if(is_array($header)) {
+        if (is_array($header)) {
             $header = implode("\r\n", $header);
-        }        
+        }
         $this->header = $header;
     }
 
@@ -164,24 +164,26 @@ class ValitorHttpResponse
     /**
      * @param $curl
      * @param $header
+     *
      * @return int
      */
     public function curlReadHeader(&$curl, $header)
     {
         $this->header .= $header;
-        
+
         return strlen($header);
     }
 
     /**
      * @param $curl
      * @param $content
+     *
      * @return int
      */
     public function curlReadContent(&$curl, $content)
     {
         $this->content .= $content;
-        
+
         return strlen($content);
     }
 }
