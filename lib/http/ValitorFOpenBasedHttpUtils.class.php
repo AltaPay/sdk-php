@@ -6,6 +6,8 @@
 class ValitorFOpenBasedHttpUtils implements IValitorHttpUtils
 {
     private $streamState;
+    private $timeout;
+    private $connectionTimeout;
 
     /**
      * ValitorFOpenBasedHttpUtils constructor.
