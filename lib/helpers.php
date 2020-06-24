@@ -4,8 +4,10 @@ spl_autoload_register('autoLoader');
 /**
  * Method for autoload all the classes within directory.
  *
- * @param $class
- * @param null $dir
+ * @param class-string $class
+ * @param string|null  $dir
+ *
+ * @return void
  */
 function autoLoader($class, $dir = null)
 {
@@ -24,7 +26,7 @@ function autoLoader($class, $dir = null)
     include_once $dir.DIRECTORY_SEPARATOR.'VALITOR_VERSION.php';
 
     $listDir = scandir(realpath($dir));
-    if (isset($listDir) && !empty($listDir)) {
+    if (!empty($listDir)) {
         foreach ($listDir as $listDirkey => $subDir) {
             if ($subDir == '.' || $subDir == '..') {
                 continue;

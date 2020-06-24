@@ -57,21 +57,15 @@ class ValitorAPIPayment
     private $updatedDate;
 
     // Remember to reflect additions within this->getCurrentXml()
-    /**
-     * @var ValitorAPICustomerInfo
-     */
+    /** @var ValitorAPICustomerInfo */
     private $customerInfo;
 
-    /**
-     * @var ValitorAPIPaymentInfos
-     */
+    /** @var ValitorAPIPaymentInfos */
     private $paymentInfos;
 
     private $reconciliationIdentifiers = array();
 
-    /**
-     * @var ValitorAPIChargebackEvents
-     */
+    /** @var ValitorAPIChargebackEvents */
     private $chargebackEvents;
     // Remember to reflect additions within this->getCurrentXml()
 

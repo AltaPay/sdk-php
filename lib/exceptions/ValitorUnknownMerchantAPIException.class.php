@@ -2,9 +2,7 @@
 
 class ValitorUnknownMerchantAPIException extends ValitorMerchantAPIException
 {
-    /**
-     * @var Exception
-     */
+    /** @var Exception|null */
     private $cause;
 
     /**

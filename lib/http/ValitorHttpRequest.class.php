@@ -98,6 +98,8 @@ class ValitorHttpRequest
 
     /**
      * @param $x
+     *
+     * @return void
      */
     public function setUrl($x)
     {
@@ -106,6 +108,8 @@ class ValitorHttpRequest
 
     /**
      * @param $x
+     *
+     * @return void
      */
     public function setMethod($x)
     {
@@ -114,6 +118,8 @@ class ValitorHttpRequest
 
     /**
      * @param $x
+     *
+     * @return void
      */
     public function setParameters($x)
     {
@@ -122,6 +128,8 @@ class ValitorHttpRequest
 
     /**
      * @param $x
+     *
+     * @return void
      */
     public function setPostContent($x)
     {
@@ -130,6 +138,8 @@ class ValitorHttpRequest
 
     /**
      * @param $x
+     *
+     * @return void
      */
     public function setUser($x)
     {
@@ -138,6 +148,8 @@ class ValitorHttpRequest
 
     /**
      * @param $x
+     *
+     * @return void
      */
     public function setPass($x)
     {
@@ -146,6 +158,8 @@ class ValitorHttpRequest
 
     /**
      * @param $x
+     *
+     * @return void
      */
     public function setLogPaymentId($x)
     {
@@ -154,6 +168,8 @@ class ValitorHttpRequest
 
     /**
      * @param $x
+     *
+     * @return void
      */
     public function setLogPaymentRequestId($x)
     {
@@ -162,6 +178,8 @@ class ValitorHttpRequest
 
     /**
      * @param $x
+     *
+     * @return void
      */
     public function setCookie($x)
     {
@@ -170,6 +188,8 @@ class ValitorHttpRequest
 
     /**
      * @param $header
+     *
+     * @return void
      */
     public function addHeader($header)
     {

@@ -22,7 +22,7 @@ class ValitorLoginTest extends TestCase
      * @throws PHPUnit_Framework_AssertionFailedError
      * @throws ValitorMerchantAPIException
      */
-    public function testSuccessfullLogin()
+    public function testSuccessfullLogin(): void
     {
         $response = $this->merchantApi->login();
 

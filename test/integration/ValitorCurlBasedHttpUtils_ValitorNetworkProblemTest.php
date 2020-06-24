@@ -7,18 +7,12 @@ class ValitorCurlBasedHttpUtils_ValitorNetworkProblemTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    /**
-     * ArrayCachingLogger.
-     */
+    /** @var ArrayCachingLogger */
     private $logger;
 
-    /**
-     * @var ValitorMerchantAPI
-     */
+    /** @var ValitorMerchantAPI */
     private $merchantApi;
-    /**
-     * @var ValitorCurlBasedHttpUtils
-     */
+    /** @var ValitorCurlBasedHttpUtils */
     private $httpUtils;
 
     protected function setUp(): void
@@ -27,11 +21,10 @@ class ValitorCurlBasedHttpUtils_ValitorNetworkProblemTest extends TestCase
         $this->httpUtils = new ValitorCurlBasedHttpUtils(5, 3, false);
     }
 
-    /**
-     * @expectedException \ValitorConnectionFailedException
-     */
-    public function testConnectionRefused()
+    public function testConnectionRefused(): void
     {
+        $this->expectException(ValitorConnectionFailedException::class);
+
         $this->merchantApi = new ValitorMerchantAPI(
             'http://localhost:28888/',
             'username',
@@ -42,11 +35,10 @@ class ValitorCurlBasedHttpUtils_ValitorNetworkProblemTest extends TestCase
         $response = $this->merchantApi->login();
     }
 
-    /**
-     * @expectedException \ValitorConnectionFailedException
-     */
-    public function testNoConnection()
+    public function testNoConnection(): void
     {
+        $this->expectException(ValitorConnectionFailedException::class);
+
         $this->merchantApi = new ValitorMerchantAPI(
             'http://testgateway.valitor.com:28888/',
             'username',
@@ -57,11 +49,10 @@ class ValitorCurlBasedHttpUtils_ValitorNetworkProblemTest extends TestCase
         $response = $this->merchantApi->login();
     }
 
-    /**
-     * @expectedException \ValitorRequestTimeoutException
-     */
-    public function testRequestTimeout()
+    public function testRequestTimeout(): void
     {
+        $this->expectException(ValitorRequestTimeoutException::class);
+
         $this->merchantApi = new ValitorMerchantAPI(
             'https://testbank.valitor.com/Sleep?time=21&',
             'username',
@@ -72,11 +63,10 @@ class ValitorCurlBasedHttpUtils_ValitorNetworkProblemTest extends TestCase
         $this->merchantApi->login();
     }
 
-    /**
-     * @expectedException \ValitorInvalidResponseException
-     */
-    public function testNonXMLResponse()
+    public function testNonXMLResponse(): void
     {
+        $this->expectException(ValitorInvalidResponseException::class);
+
         $this->merchantApi = new ValitorMerchantAPI(
             'https://testbank.valitor.com',
             'username',
@@ -87,11 +77,10 @@ class ValitorCurlBasedHttpUtils_ValitorNetworkProblemTest extends TestCase
         $response = $this->merchantApi->login();
     }
 
-    /**
-     * @expectedException \ValitorUnauthorizedAccessException
-     */
-    public function testUnauthorizedResponse()
+    public function testUnauthorizedResponse(): void
     {
+        $this->expectException(ValitorUnauthorizedAccessException::class);
+
         $this->merchantApi = new ValitorMerchantAPI(
             'https://testgateway.valitor.com/',
             'username',
@@ -102,11 +91,10 @@ class ValitorCurlBasedHttpUtils_ValitorNetworkProblemTest extends TestCase
         $response = $this->merchantApi->login();
     }
 
-    /**
-     * @expectedException \ValitorInvalidResponseException
-     */
-    public function testNonHTTP200Response()
+    public function testNonHTTP200Response(): void
     {
+        $this->expectException(ValitorInvalidResponseException::class);
+
         $this->merchantApi = new ValitorMerchantAPI(
             'http://www.valitor.com/',
             'username',

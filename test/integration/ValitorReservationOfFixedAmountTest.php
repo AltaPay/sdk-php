@@ -22,7 +22,7 @@ class ValitorReservationOfFixedAmountTest extends TestCase
     /**
      * @throws PHPUnit_Framework_AssertionFailedError
      */
-    public function testSimplePayment()
+    public function testSimplePayment(): void
     {
         $response = $this->merchantApi->reservationOfFixedAmount(
             VALITOR_INTEGRATION_TERMINAL,
@@ -42,7 +42,7 @@ class ValitorReservationOfFixedAmountTest extends TestCase
     /**
      * @throws PHPUnit_Framework_AssertionFailedError
      */
-    public function testPaymentWithCustomerInfo()
+    public function testPaymentWithCustomerInfo(): void
     {
         $customerInfo = array(
             'billing_postal'    => '2860',
@@ -83,7 +83,7 @@ class ValitorReservationOfFixedAmountTest extends TestCase
     /**
      * @throws PHPUnit_Framework_AssertionFailedError
      */
-    public function testPaymentWithPaymentInfo()
+    public function testPaymentWithPaymentInfo(): void
     {
         $transaction_info = array('auxkey' => 'aux data (<æøå>)', 'otherkey' => 'MyValue');
 
@@ -106,7 +106,7 @@ class ValitorReservationOfFixedAmountTest extends TestCase
         static::assertEquals('MyValue', $response->getPrimaryPayment()->getPaymentInfo('otherkey'));
     }
 
-    public function testPaymentSchemeNameIsVisa()
+    public function testPaymentSchemeNameIsVisa(): void
     {
         $response = $this->merchantApi->reservationOfFixedAmount(
             VALITOR_INTEGRATION_TERMINAL,

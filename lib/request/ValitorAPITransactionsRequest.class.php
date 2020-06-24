@@ -24,6 +24,8 @@ class ValitorAPITransactionsRequest
 
     /**
      * @param $shop
+     *
+     * @return void
      */
     public function setShop($shop)
     {
@@ -40,6 +42,8 @@ class ValitorAPITransactionsRequest
 
     /**
      * @param $terminal
+     *
+     * @return void
      */
     public function setTerminal($terminal)
     {
@@ -56,6 +60,8 @@ class ValitorAPITransactionsRequest
 
     /**
      * @param $transaction
+     *
+     * @return void
      */
     public function setTransaction($transaction)
     {
@@ -72,6 +78,8 @@ class ValitorAPITransactionsRequest
 
     /**
      * @param $transactionId
+     *
+     * @return void
      */
     public function setTransactionId($transactionId)
     {
@@ -88,6 +96,8 @@ class ValitorAPITransactionsRequest
 
     /**
      * @param $shopOrderId
+     *
+     * @return void
      */
     public function setShopOrderId($shopOrderId)
     {
@@ -104,6 +114,8 @@ class ValitorAPITransactionsRequest
 
     /**
      * @param $paymentStatus
+     *
+     * @return void
      */
     public function setPaymentStatus($paymentStatus)
     {
@@ -120,6 +132,8 @@ class ValitorAPITransactionsRequest
 
     /**
      * @param $reconciliationIdentifier
+     *
+     * @return void
      */
     public function setReconciliationIdentifier($reconciliationIdentifier)
     {
@@ -136,6 +150,8 @@ class ValitorAPITransactionsRequest
 
     /**
      * @param $acquirerReconciliationIdentifier
+     *
+     * @return void
      */
     public function setAcquirerReconciliationIdentifier($acquirerReconciliationIdentifier)
     {

@@ -8,7 +8,7 @@
  * [Shops] => SimpleXMLElement Object
  * (
  * [Shop] => Valitor Functional Test Shop
- * )
+ * ).
  *
  * [Acquirer] => TestAcquirer
  * [FundingDate] => 2010-12-24

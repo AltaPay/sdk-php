@@ -5,9 +5,7 @@
  */
 class ValitorCurlBasedHttpUtils implements IValitorHttpUtils
 {
-    /**
-     * @var int
-     */
+    /** @var int */
     private $timeout;
     private $connectionTimeout;
     private $sslVerifyPeer;

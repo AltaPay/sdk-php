@@ -27,7 +27,7 @@ class ValitorRefundTest extends TestCase
      * @throws ValitorUnauthorizedAccessException
      * @throws ValitorUnknownMerchantAPIException
      */
-    public function testReservationCaptureRefund()
+    public function testReservationCaptureRefund(): void
     {
         $testReconciliationIdentifier = 'reconrecon';
         $testAllowOverRefunding = true;

@@ -11,9 +11,7 @@ class ValitorFOpenBasedHttpUtils_ValitorNetworkProblemTest extends TestCase
     private $logger;
     private $httpUtils;
 
-    /**
-     * @var ValitorMerchantAPI
-     */
+    /** @var ValitorMerchantAPI */
     private $merchantApi;
 
     protected function setUp(): void
@@ -22,11 +20,10 @@ class ValitorFOpenBasedHttpUtils_ValitorNetworkProblemTest extends TestCase
         $this->httpUtils = new ValitorFOpenBasedHttpUtils(5, 3);
     }
 
-    /**
-     * @expectedException \ValitorConnectionFailedException
-     */
-    public function testConnectionRefused()
+    public function testConnectionRefused(): void
     {
+        $this->expectException(ValitorConnectionFailedException::class);
+
         $this->merchantApi = new ValitorMerchantAPI(
             'http://localhost:28888/',
             'username',
@@ -37,11 +34,10 @@ class ValitorFOpenBasedHttpUtils_ValitorNetworkProblemTest extends TestCase
         $response = $this->merchantApi->login();
     }
 
-    /**
-     * @expectedException \ValitorConnectionFailedException
-     */
-    public function testNoConnection()
+    public function testNoConnection(): void
     {
+        $this->expectException(ValitorConnectionFailedException::class);
+
         $this->merchantApi = new ValitorMerchantAPI(
             'http://testgateway.valitor.com:28888/',
             'username',
@@ -53,11 +49,12 @@ class ValitorFOpenBasedHttpUtils_ValitorNetworkProblemTest extends TestCase
     }
 
     /**
-     * @expectedException \ValitorRequestTimeoutException
-     * Disabled due to the unstable nature of the php fopen timeout code. DHAKA DHAKA DHAKA
+     * Disabled due to the unstable nature of the php fopen timeout code. DHAKA DHAKA DHAKA.
      */
-    public function _testRequestTimeout()
+    public function _testRequestTimeout(): void
     {
+        $this->expectException(ValitorRequestTimeoutException::class);
+
         $this->merchantApi = new ValitorMerchantAPI(
             'https://testbank.valitor.com/Sleep?time=21&',
             'username',
@@ -75,11 +72,10 @@ class ValitorFOpenBasedHttpUtils_ValitorNetworkProblemTest extends TestCase
         }
     }
 
-    /**
-     * @expectedException \ValitorInvalidResponseException
-     */
-    public function testNonXMLResponse()
+    public function testNonXMLResponse(): void
     {
+        $this->expectException(ValitorInvalidResponseException::class);
+
         $this->merchantApi = new ValitorMerchantAPI(
             'https://testbank.valitor.com',
             'username',
@@ -90,11 +86,10 @@ class ValitorFOpenBasedHttpUtils_ValitorNetworkProblemTest extends TestCase
         $this->merchantApi->login();
     }
 
-    /**
-     * @expectedException \ValitorUnauthorizedAccessException
-     */
-    public function testUnauthorizedResponse()
+    public function testUnauthorizedResponse(): void
     {
+        $this->expectException(ValitorUnauthorizedAccessException::class);
+
         $this->merchantApi = new ValitorMerchantAPI(
             'https://testgateway.valitor.com/',
             'username',
@@ -105,11 +100,10 @@ class ValitorFOpenBasedHttpUtils_ValitorNetworkProblemTest extends TestCase
         $response = $this->merchantApi->login();
     }
 
-    /**
-     * @expectedException \ValitorInvalidResponseException
-     */
-    public function testNonHTTP200Response()
+    public function testNonHTTP200Response(): void
     {
+        $this->expectException(ValitorInvalidResponseException::class);
+
         $this->merchantApi = new ValitorMerchantAPI(
             'http://www.valitor.com/',
             'username',

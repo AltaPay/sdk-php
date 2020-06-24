@@ -7,7 +7,7 @@
  * [Amount] => 105
  * [Type] => captured
  * [Date] => 2011-08-31T23:36:14+02:00
- * )
+ * ).
  *
  * @author emanuel
  */

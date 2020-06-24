@@ -24,6 +24,9 @@ abstract class ValitorAbstractPaymentResponse extends ValitorAbstractResponse
         $this->initFromXml($xml);
     }
 
+    /**
+     * @return void
+     */
     public function __wakeup()
     {
         $this->initFromXml(new SimpleXmlElement($this->xml));
@@ -33,6 +36,8 @@ abstract class ValitorAbstractPaymentResponse extends ValitorAbstractResponse
      * @param SimpleXmlElement $xml
      *
      * @throws Exception
+     *
+     * @return void
      */
     private function initFromXml(SimpleXmlElement $xml)
     {
@@ -55,6 +60,8 @@ abstract class ValitorAbstractPaymentResponse extends ValitorAbstractResponse
 
     /**
      * @param ValitorAPIPayment $payment
+     *
+     * @return void
      */
     private function addPayment(ValitorAPIPayment $payment)
     {

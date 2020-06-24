@@ -83,6 +83,8 @@ class ValitorFOpenBasedHttpUtils implements IValitorHttpUtils
      * @param $message_code
      * @param $bytes_transferred
      * @param $bytes_max
+     *
+     * @return void
      */
     public function stream_notification_callback($notification_code, $severity, $message, $message_code, $bytes_transferred, $bytes_max)
     {

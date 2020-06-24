@@ -28,7 +28,7 @@ class ValitorCreatePaymentRequestTest extends TestCase
      * @throws ValitorUnauthorizedAccessException
      * @throws ValitorUnknownMerchantAPIException
      */
-    public function testCreatePaymentRequest()
+    public function testCreatePaymentRequest(): void
     {
         $customerInfo = array(
             'type'               => 'private',
@@ -70,7 +70,7 @@ class ValitorCreatePaymentRequestTest extends TestCase
      * @throws ValitorUnauthorizedAccessException
      * @throws ValitorUnknownMerchantAPIException
      */
-    public function testCreatePaymentRequestWithMoreData()
+    public function testCreatePaymentRequestWithMoreData(): void
     {
         $customerInfo = array(
             'billing_postal'     => '2860',

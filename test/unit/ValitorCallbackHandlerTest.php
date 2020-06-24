@@ -7,9 +7,7 @@ class ValitorCallbackHandlerTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    /**
-     * @var ValitorCallbackHandler
-     */
+    /** @var ValitorCallbackHandler */
     private $handler;
 
     protected function setUp(): void
@@ -17,7 +15,7 @@ class ValitorCallbackHandlerTest extends TestCase
         $this->handler = new ValitorCallbackHandler();
     }
 
-    public function testErrorCaseDueToTooLongCardNumber()
+    public function testErrorCaseDueToTooLongCardNumber(): void
     {
         $response = $this->handler->parseXmlResponse('<'.'?xml version="1.0" ?>
 <APIResponse version="20121016">
@@ -84,7 +82,7 @@ class ValitorCallbackHandlerTest extends TestCase
         static::assertFalse($response->wasSuccessful());
     }
 
-    public function testEpaymentCancelled()
+    public function testEpaymentCancelled(): void
     {
         $response = $this->handler->parseXmlResponse('<'.'?xml version="1.0"?>
 <APIResponse version="20160719">
@@ -215,7 +213,7 @@ class ValitorCallbackHandlerTest extends TestCase
     /**
      * @throws PHPUnit_Framework_AssertionFailedError
      */
-    public function testMerchantErrorMessageWithoutTransactionParameter()
+    public function testMerchantErrorMessageWithoutTransactionParameter(): void
     {
         $xml = file_get_contents(__DIR__.'/xml/CallbackXML_MobilePayError.xml');
         try {
@@ -231,7 +229,7 @@ class ValitorCallbackHandlerTest extends TestCase
     /**
      * @throws ValitorXmlException
      */
-    public function testReadCardHolderErrorMessageMustBeShown()
+    public function testReadCardHolderErrorMessageMustBeShown(): void
     {
         $xml = file_get_contents(__DIR__.'/xml/CardHolderMessageMustBeShownFalse.xml');
         $response = $this->handler->parseXmlResponse($xml);
@@ -245,7 +243,7 @@ class ValitorCallbackHandlerTest extends TestCase
     /**
      * @throws ValitorXmlException
      */
-    public function testReadReasonCode()
+    public function testReadReasonCode(): void
     {
         $xml = file_get_contents(__DIR__.'/xml/ReasonCode.xml');
         $response = $this->handler->parseXmlResponse($xml);
@@ -255,7 +253,7 @@ class ValitorCallbackHandlerTest extends TestCase
     /**
      * @throws ValitorXmlException
      */
-    public function testReadPaymentId()
+    public function testReadPaymentId(): void
     {
         $xml = file_get_contents(__DIR__.'/xml/ReasonCode.xml');
         $response = $this->handler->parseXmlResponse($xml);

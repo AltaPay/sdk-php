@@ -15,7 +15,7 @@ for ($page = 1; $page <= $pageCount; $page++) {
         foreach ($response->getFundings() as $funding) {
             echo 'There is a funding of '.$funding->getAmount().' '.$funding->getCurrency().', made on '.$funding->getFundingDate().PHP_EOL;
             /**
-             * @var boolean|string $csv
+             * @var bool|string $csv
              */
             $csv = $api->downloadFundingCSV($funding);
             if (!$csv) {

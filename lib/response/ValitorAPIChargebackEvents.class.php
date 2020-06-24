@@ -6,6 +6,7 @@
 class ValitorAPIChargebackEvents
 {
     private $simpleXmlElement;
+    /** @var ValitorAPIChargebackEvent[] */
     private $chargebackEvents = array();
 
     /**
@@ -30,8 +31,8 @@ class ValitorAPIChargebackEvents
      */
     public function getNewest()
     {
-        $newest = null; /* @var $newest ValitorAPIChargebackEvent */
-        foreach ($this->chargebackEvents as $chargebackEvent) /* @var $chargebackEvent ValitorAPIChargebackEvent */
+        $newest = null;
+        foreach ($this->chargebackEvents as $chargebackEvent)
         {
             if ($newest === null || $newest->getDate()->getTimestamp() < $chargebackEvent->getDate()->getTimestamp()) {
                 $newest = $chargebackEvent;

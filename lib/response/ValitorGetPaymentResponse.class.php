@@ -17,6 +17,8 @@ class ValitorGetPaymentResponse extends ValitorAbstractPaymentResponse
 
     /**
      * @param SimpleXmlElement $body
+     *
+     * @return void
      */
     protected function parseBody(SimpleXmlElement $body)
     {

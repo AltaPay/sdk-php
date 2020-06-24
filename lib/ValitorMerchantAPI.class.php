@@ -6,9 +6,7 @@ class ValitorMerchantAPI
     private $username;
     private $password;
     private $connected = false;
-    /**
-     * @var IValitorCommunicationLogger
-     */
+    /** @var IValitorCommunicationLogger */
     private $logger;
     private $httpUtil;
 
@@ -36,6 +34,8 @@ class ValitorMerchantAPI
      * Check api connection.
      *
      * @throws Exception
+     *
+     * @return void
      */
     private function checkConnection()
     {
@@ -88,6 +88,7 @@ class ValitorMerchantAPI
     {
         $absoluteUrl = $this->baseURL.'/merchant/API/'.$method;
 
+        $logId = null;
         if ($this->logger !== null) {
             $loggedArgs = $args;
             if (isset($loggedArgs['cardnum'])) {
@@ -534,9 +535,9 @@ class ValitorMerchantAPI
 
     /**
      * @param $paymentId
-     * @param null  $amount
+     * @param float|null  $amount
      * @param array $orderLines
-     * @param null  $salesTax
+     * @param float|null  $salesTax
      * @param null  $reconciliationIdentifier
      * @param null  $invoiceNumber
      * @param null  $shippingCompany
@@ -1237,6 +1238,8 @@ class ValitorMerchantAPI
      * @param $args
      *
      * @throws ValitorMerchantAPIException
+     *
+     * @return void
      */
     private function addCustomerInfo($customerInfo, &$args)
     {
@@ -1249,9 +1252,7 @@ class ValitorMerchantAPI
         if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
             $customerInfo['client_accept_language'] = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
         }
-        if (isset($sessionId)) {
-            $customerInfo['client_session_id'] = md5($sessionId);
-        }
+        $customerInfo['client_session_id'] = md5($sessionId);
         if (isset($_SERVER['REMOTE_ADDR'])) {
             $customerInfo['client_ip'] = $_SERVER['REMOTE_ADDR'];
         }

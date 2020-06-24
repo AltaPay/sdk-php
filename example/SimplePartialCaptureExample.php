@@ -32,7 +32,6 @@ function reserveAmount($api, $terminal, $amount)
     $expiryYear = '2018';
 
     /**
-     * @var ValitorMerchantAPI                  $api
      * @var ValitorCreatePaymentRequestResponse $response
      */
     $response = $api->reservation(

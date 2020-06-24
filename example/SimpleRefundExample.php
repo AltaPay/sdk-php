@@ -2,13 +2,7 @@
 require_once __DIR__.'/base.php';
 
 // Different variables, which are used as arguments
-/**
- * @var float $amount
- */
 $amount = 215.00;
-/**
- * @var string $transactionId
- */
 $transactionId = reserveAndCapture($api, $terminal, $amount);
 
 /**
@@ -22,7 +16,7 @@ $transactionId = reserveAndCapture($api, $terminal, $amount);
  *
  * @throws Exception
  *
- * @return mixed
+ * @return string
  */
 function reserveAndCapture($api, $terminal, $amount)
 {
@@ -55,9 +49,6 @@ function reserveAndCapture($api, $terminal, $amount)
         $paymentSource
     );
     if ($response->wasSuccessful()) {
-        /**
-         * @var string $transactionId
-         */
         $transactionId = $response->getPrimaryPayment()->getId();
         /**
          * Capture the amount based on the fetched transaction ID.

@@ -29,7 +29,7 @@ class ValitorSubscriptionTest extends TestCase
     /**
      * @throws PHPUnit_Framework_AssertionFailedError
      */
-    public function testSuccessfullSetupSubscription()
+    public function testSuccessfullSetupSubscription(): void
     {
         $response = $this->merchantApi->setupSubscription(
             VALITOR_INTEGRATION_TERMINAL,
@@ -49,7 +49,7 @@ class ValitorSubscriptionTest extends TestCase
     /**
      * @throws PHPUnit_Framework_AssertionFailedError
      */
-    public function testDeclinedSetupSubscription()
+    public function testDeclinedSetupSubscription(): void
     {
         $response = $this->merchantApi->setupSubscription(
             VALITOR_INTEGRATION_TERMINAL,
@@ -69,7 +69,7 @@ class ValitorSubscriptionTest extends TestCase
     /**
      * @throws PHPUnit_Framework_AssertionFailedError
      */
-    public function testErroneousSetupSubscription()
+    public function testErroneousSetupSubscription(): void
     {
         $response = $this->merchantApi->setupSubscription(
             VALITOR_INTEGRATION_TERMINAL,
@@ -94,7 +94,7 @@ class ValitorSubscriptionTest extends TestCase
      * @throws ValitorUnauthorizedAccessException
      * @throws ValitorUnknownMerchantAPIException
      */
-    public function testSuccessfulChargeSubscription()
+    public function testSuccessfulChargeSubscription(): void
     {
         $subscriptionResponse = $this->merchantApi->setupSubscription(
             VALITOR_INTEGRATION_TERMINAL,
@@ -116,7 +116,7 @@ class ValitorSubscriptionTest extends TestCase
     /**
      * @throws PHPUnit_Framework_AssertionFailedError
      */
-    public function testSuccessfulChargeSubscriptionWithToken()
+    public function testSuccessfulChargeSubscriptionWithToken(): void
     {
         $verifyCardResponse = $this->merchantApi->verifyCard(
             VALITOR_INTEGRATION_TERMINAL,

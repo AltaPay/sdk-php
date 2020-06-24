@@ -46,6 +46,8 @@ class ValitorCallbackHandler
      * @param SimpleXMLElement $xml
      *
      * @throws ValitorXmlException
+     *
+     * @return void
      */
     private function verifyXml(SimpleXMLElement $xml)
     {

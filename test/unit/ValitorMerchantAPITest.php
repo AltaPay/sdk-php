@@ -30,7 +30,7 @@ class ValitorMerchantAPITest extends TestCase
         $this->merchantAPI = new ValitorMerchantAPI('http://base.url', 'username', 'password', $this->logger, $this->httpUtils);
     }
 
-    public function testHandlesNonXmlNicely()
+    public function testHandlesNonXmlNicely(): void
     {
         $this->expectException(ValitorInvalidResponseException::class);
 
@@ -48,7 +48,7 @@ class ValitorMerchantAPITest extends TestCase
         static::assertEquals('Error: String could not be parsed as XML', $loginResponse->getErrorMessage());
     }
 
-    public function testNon200ReturnCodeIsHandled()
+    public function testNon200ReturnCodeIsHandled(): void
     {
         $this->expectException(ValitorInvalidResponseException::class);
 
@@ -58,7 +58,7 @@ class ValitorMerchantAPITest extends TestCase
         $loginResponse = $this->merchantAPI->login();
     }
 
-    public function testUnAuthorizedReturnCodeIsHandled()
+    public function testUnAuthorizedReturnCodeIsHandled(): void
     {
         $this->expectException(ValitorUnauthorizedAccessException::class);
 
@@ -77,7 +77,7 @@ class ValitorMerchantAPITest extends TestCase
      * @throws ValitorUnauthorizedAccessException
      * @throws ValitorUnknownMerchantAPIException
      */
-    public function testGetPaymentParses20110831XmlCorrectly()
+    public function testGetPaymentParses20110831XmlCorrectly(): void
     {
         $this->response->shouldReceive('getHttpCode')->andReturn(200);
         $this->response->shouldReceive('getContent')->andReturn(file_get_contents(dirname(__DIR__, 2).'/example/xml/20110831_get_payment.xml'));
@@ -98,7 +98,7 @@ class ValitorMerchantAPITest extends TestCase
      * @throws ValitorUnauthorizedAccessException
      * @throws ValitorUnknownMerchantAPIException
      */
-    public function testGetPaymentParses20130430XmlCorrectly()
+    public function testGetPaymentParses20130430XmlCorrectly(): void
     {
         $this->response->shouldReceive('getHttpCode')->andReturn(200);
         $this->response->shouldReceive('getContent')->andReturn(file_get_contents(dirname(__DIR__, 2).'/example/xml/20130430_get_payment.xml'));
@@ -119,7 +119,7 @@ class ValitorMerchantAPITest extends TestCase
      * @throws ValitorUnauthorizedAccessException
      * @throws ValitorUnknownMerchantAPIException
      */
-    public function testGetPaymentParses20130430XmlWithShopOrderIDCorrectly()
+    public function testGetPaymentParses20130430XmlWithShopOrderIDCorrectly(): void
     {
         $this->response->shouldReceive('getHttpCode')->andReturn(200);
         $this->response->shouldReceive('getContent')->andReturn(file_get_contents(dirname(__DIR__, 2).'/example/xml/20130430_get_payment.xml'));
@@ -140,7 +140,7 @@ class ValitorMerchantAPITest extends TestCase
      * @throws ValitorUnauthorizedAccessException
      * @throws ValitorUnknownMerchantAPIException
      */
-    public function testGetPaymentWithNoPaymentIsNotSuccessful()
+    public function testGetPaymentWithNoPaymentIsNotSuccessful(): void
     {
         $this->response->shouldReceive('getHttpCode')->andReturn(200);
         $this->response->shouldReceive('getContent')->andReturn(file_get_contents(dirname(__DIR__, 2).'/example/xml/20130430_get_payment_empty.xml'));

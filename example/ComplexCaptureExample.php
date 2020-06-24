@@ -60,9 +60,6 @@ function reserveAmount($api, $terminal, $amount, $orderLines)
     $cvc = '111';
     $expiryMonth = '12';
     $expiryYear = '2018';
-    /**
-     * @var ValitorMerchantAPI $api
-     */
     $response = $api->reservation(
         $terminal,
         $orderId,

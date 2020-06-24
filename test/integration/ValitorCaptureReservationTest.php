@@ -27,7 +27,7 @@ class ValitorCaptureReservationTest extends TestCase
      * @throws ValitorUnauthorizedAccessException
      * @throws ValitorUnknownMerchantAPIException
      */
-    public function testCapture()
+    public function testCapture(): void
     {
         $testReconciliationIdentifier = 'reconrecon';
         $testInvoiceNumber = 'invoiceinvoice';

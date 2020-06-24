@@ -56,6 +56,8 @@ class ValitorHttpResponse
 
     /**
      * @param $header
+     *
+     * @return void
      */
     public function setHeader($header)
     {
@@ -67,6 +69,8 @@ class ValitorHttpResponse
 
     /**
      * @param $content
+     *
+     * @return void
      */
     public function setContent($content)
     {
@@ -83,6 +87,8 @@ class ValitorHttpResponse
 
     /**
      * @param $requestHeader
+     *
+     * @return void
      */
     public function setRequestHeader($requestHeader)
     {
@@ -99,6 +105,8 @@ class ValitorHttpResponse
 
     /**
      * @param $info
+     *
+     * @return void
      */
     public function setInfo($info)
     {
@@ -115,6 +123,8 @@ class ValitorHttpResponse
 
     /**
      * @param $errorMessage
+     *
+     * @return void
      */
     public function setErrorMessage($errorMessage)
     {
@@ -131,6 +141,8 @@ class ValitorHttpResponse
 
     /**
      * @param $errorNumber
+     *
+     * @return void
      */
     public function setErrorNumber($errorNumber)
     {
@@ -147,6 +159,8 @@ class ValitorHttpResponse
 
     /**
      * @param $connectionResult
+     *
+     * @return void
      */
     public function setConnectionResult($connectionResult)
     {

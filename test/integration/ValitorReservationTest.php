@@ -28,7 +28,7 @@ class ValitorReservationTest extends TestCase
      * @throws ValitorUnauthorizedAccessException
      * @throws ValitorUnknownMerchantAPIException
      */
-    public function testSuccessfulReservation()
+    public function testSuccessfulReservation(): void
     {
         $response = $this->merchantApi->reservation(
             VALITOR_INTEGRATION_TERMINAL,
@@ -54,7 +54,7 @@ class ValitorReservationTest extends TestCase
      * @throws ValitorUnauthorizedAccessException
      * @throws ValitorUnknownMerchantAPIException
      */
-    public function testFailedReservation()
+    public function testFailedReservation(): void
     {
         $response = $this->merchantApi->reservation(
             VALITOR_INTEGRATION_TERMINAL,
@@ -80,7 +80,7 @@ class ValitorReservationTest extends TestCase
      * @throws ValitorUnauthorizedAccessException
      * @throws ValitorUnknownMerchantAPIException
      */
-    public function testErroneousReservation()
+    public function testErroneousReservation(): void
     {
         $response = $this->merchantApi->reservation(
             VALITOR_INTEGRATION_TERMINAL,
@@ -106,7 +106,7 @@ class ValitorReservationTest extends TestCase
      * @throws ValitorUnauthorizedAccessException
      * @throws ValitorUnknownMerchantAPIException
      */
-    public function testSuccessfulReservationUsingToken()
+    public function testSuccessfulReservationUsingToken(): void
     {
         $response = $this->merchantApi->reservation(
             VALITOR_INTEGRATION_TERMINAL,
@@ -144,7 +144,7 @@ class ValitorReservationTest extends TestCase
      * @throws ValitorUnauthorizedAccessException
      * @throws ValitorUnknownMerchantAPIException
      */
-    public function testReservationUsingAllParameters()
+    public function testReservationUsingAllParameters(): void
     {
         $orderLines = array(
             array('description' => 'SomeDescription', 'itemId' => 'KungFuBoy', 'quantity' => 1.00, 'unitPrice' => 21.12, 'taxAmount' => 0.00, 'unitCode' => 'kg', 'discount' => 0.00, 'goodsType' => 'item'),

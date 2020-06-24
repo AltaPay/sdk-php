@@ -4,9 +4,6 @@ require_once __DIR__.'/base.php';
 // Different variables, which are used as arguments
 $fullAmount = 1290.00;
 $partialAmount = 560.00;
-/**
- * @var string $transactionId
- */
 $transactionId = reserveAndCapture($api, $terminal, $fullAmount);
 
 /**
@@ -20,7 +17,7 @@ $transactionId = reserveAndCapture($api, $terminal, $fullAmount);
  *
  * @throws Exception
  *
- * @return mixed
+ * @return string
  */
 function reserveAndCapture($api, $terminal, $amount)
 {
@@ -36,7 +33,6 @@ function reserveAndCapture($api, $terminal, $amount)
     $expiryMonth = '12';
     $expiryYear = '2018';
     /**
-     * @var ValitorMerchantAPI         $api
      * @var ValitorReservationResponse $response
      */
     $response = $api->reservation(
@@ -54,15 +50,11 @@ function reserveAndCapture($api, $terminal, $amount)
         $paymentSource
     );
     if ($response->wasSuccessful()) {
-        /**
-         * @var string $transactionId
-         */
         $transactionId = $response->getPrimaryPayment()->getId();
         /**
          * Capture the amount based on the fetched transaction ID.
          *
          * @var ValitorCaptureResponse $captureResponse
-         * @var ValitorMerchantAPI     $api
          */
         $captureResponse = $api->captureReservation($transactionId);
         if ($captureResponse->wasSuccessful()) {

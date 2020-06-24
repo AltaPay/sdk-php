@@ -22,9 +22,7 @@ class ValitorAPICustomerInfo
     private $phone;
     private $organisationNumber;
 
-    /**
-     * @var ValitorAPIAddress
-     */
+    /** @var ValitorAPIAddress */
     private $billingAddress;
     private $shippingAddress;
     private $registeredAddress;

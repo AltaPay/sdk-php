@@ -84,7 +84,7 @@ class ValitorPaymentTest extends TestCase
     /**
      * @throws Exception
      */
-    public function testCreatedDate()
+    public function testCreatedDate(): void
     {
         $payment = new ValitorAPIPayment($this->xml);
 
@@ -94,7 +94,7 @@ class ValitorPaymentTest extends TestCase
     /**
      * @throws Exception
      */
-    public function testUpdatedDate()
+    public function testUpdatedDate(): void
     {
         $payment = new ValitorAPIPayment($this->xml);
 
@@ -104,7 +104,7 @@ class ValitorPaymentTest extends TestCase
     /**
      * @throws Exception
      */
-    public function testParsingOfSimpleXml()
+    public function testParsingOfSimpleXml(): void
     {
         $xml = new SimpleXMLElement('<Transaction><PaymentNatureService /><ReconciliationIdentifiers /></Transaction>');
         $payment = new ValitorAPIPayment($xml);
@@ -115,7 +115,7 @@ class ValitorPaymentTest extends TestCase
     /**
      * @throws Exception
      */
-    public function testParsingOfCurrentStatus()
+    public function testParsingOfCurrentStatus(): void
     {
         $payment = new ValitorAPIPayment($this->xml);
 
@@ -125,7 +125,7 @@ class ValitorPaymentTest extends TestCase
     /**
      * @throws Exception
      */
-    public function testParsingOfId()
+    public function testParsingOfId(): void
     {
         $payment = new ValitorAPIPayment($this->xml);
 
@@ -135,7 +135,7 @@ class ValitorPaymentTest extends TestCase
     /**
      * @throws Exception
      */
-    public function testParsingOfAuthType()
+    public function testParsingOfAuthType(): void
     {
         $payment = new ValitorAPIPayment($this->xml);
 
@@ -145,7 +145,7 @@ class ValitorPaymentTest extends TestCase
     /**
      * @throws Exception
      */
-    public function testParsingOfShopOrderId()
+    public function testParsingOfShopOrderId(): void
     {
         $payment = new ValitorAPIPayment($this->xml);
 
@@ -155,7 +155,7 @@ class ValitorPaymentTest extends TestCase
     /**
      * @throws Exception
      */
-    public function testParsingOfMaskedPan()
+    public function testParsingOfMaskedPan(): void
     {
         $payment = new ValitorAPIPayment($this->xml);
 
@@ -165,7 +165,7 @@ class ValitorPaymentTest extends TestCase
     /**
      * @throws Exception
      */
-    public function testParsingOfCreditCardToken()
+    public function testParsingOfCreditCardToken(): void
     {
         $payment = new ValitorAPIPayment($this->xml);
 
@@ -175,7 +175,7 @@ class ValitorPaymentTest extends TestCase
     /**
      * @throws Exception
      */
-    public function testParsingOfCardStatus()
+    public function testParsingOfCardStatus(): void
     {
         $payment = new ValitorAPIPayment($this->xml);
 
@@ -185,7 +185,7 @@ class ValitorPaymentTest extends TestCase
     /**
      * @throws Exception
      */
-    public function testParsingOfPaymentNature()
+    public function testParsingOfPaymentNature(): void
     {
         $payment = new ValitorAPIPayment($this->xml);
 
@@ -195,7 +195,7 @@ class ValitorPaymentTest extends TestCase
     /**
      * @throws Exception
      */
-    public function testParsingOfPaymentSchemeName()
+    public function testParsingOfPaymentSchemeName(): void
     {
         $payment = new ValitorAPIPayment($this->xml);
 
@@ -205,7 +205,7 @@ class ValitorPaymentTest extends TestCase
     /**
      * @throws Exception
      */
-    public function testParsingOfPaymentNatureService()
+    public function testParsingOfPaymentNatureService(): void
     {
         $payment = new ValitorAPIPayment($this->xml);
 
@@ -220,7 +220,7 @@ class ValitorPaymentTest extends TestCase
     /**
      * @throws Exception
      */
-    public function testParsingOfFraudRiskScore()
+    public function testParsingOfFraudRiskScore(): void
     {
         $payment = new ValitorAPIPayment($this->xml);
 
@@ -230,7 +230,7 @@ class ValitorPaymentTest extends TestCase
     /**
      * @throws Exception
      */
-    public function testParsingOfFraudExplanation()
+    public function testParsingOfFraudExplanation(): void
     {
         $payment = new ValitorAPIPayment($this->xml);
 
@@ -240,7 +240,7 @@ class ValitorPaymentTest extends TestCase
     /**
      * @throws Exception
      */
-    public function testParsingOfFraudRecommendation()
+    public function testParsingOfFraudRecommendation(): void
     {
         $payment = new ValitorAPIPayment($this->xml);
 
@@ -250,7 +250,7 @@ class ValitorPaymentTest extends TestCase
     /**
      * @throws Exception
      */
-    public function testParsingOfCustomerInfo()
+    public function testParsingOfCustomerInfo(): void
     {
         $payment = new ValitorAPIPayment($this->xml);
         $customerInfo = $payment->getCustomerInfo();
@@ -267,7 +267,7 @@ class ValitorPaymentTest extends TestCase
     /**
      * @throws Exception
      */
-    public function testParsingOfPaymentInfo()
+    public function testParsingOfPaymentInfo(): void
     {
         $payment = new ValitorAPIPayment($this->xml);
 
@@ -281,7 +281,7 @@ class ValitorPaymentTest extends TestCase
     /**
      * @throws Exception
      */
-    public function testParsingOfCurrency()
+    public function testParsingOfCurrency(): void
     {
         $payment = new ValitorAPIPayment($this->xml);
 
@@ -291,7 +291,7 @@ class ValitorPaymentTest extends TestCase
     /**
      * @throws Exception
      */
-    public function testParsingOfReservedAmount()
+    public function testParsingOfReservedAmount(): void
     {
         $payment = new ValitorAPIPayment($this->xml);
 
@@ -301,7 +301,7 @@ class ValitorPaymentTest extends TestCase
     /**
      * @throws Exception
      */
-    public function testParsingOfCapturedAmount()
+    public function testParsingOfCapturedAmount(): void
     {
         $payment = new ValitorAPIPayment($this->xml);
 
@@ -311,7 +311,7 @@ class ValitorPaymentTest extends TestCase
     /**
      * @throws PHPUnit_Framework_AssertionFailedError
      */
-    public function testIsTokenized()
+    public function testIsTokenized(): void
     {
         $payment = new ValitorAPIPayment($this->xml);
 

@@ -35,9 +35,6 @@ $orderLines = array(
         'goodsType'   => 'shipping',
     ),
 );
-/**
- * @var string $transactionId
- */
 $transactionId = reserveAndCapture($api, $terminal, $amount, $orderLines);
 
 /**
@@ -52,7 +49,7 @@ $transactionId = reserveAndCapture($api, $terminal, $amount, $orderLines);
  *
  * @throws Exception
  *
- * @return mixed
+ * @return string
  */
 function reserveAndCapture($api, $terminal, $amount, $orderLines)
 {
@@ -91,9 +88,6 @@ function reserveAndCapture($api, $terminal, $amount, $orderLines)
         $orderLines
     );
     if ($response->wasSuccessful()) {
-        /**
-         * @var string $transactionId
-         */
         $transactionId = $response->getPrimaryPayment()->getId();
         /**
          * Capture the amount based on the fetched transaction ID.
