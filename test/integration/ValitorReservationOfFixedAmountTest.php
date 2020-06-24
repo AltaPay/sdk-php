@@ -2,9 +2,7 @@
 
 class ValitorReservationOfFixedAmountTest extends MockitTestCase
 {
-	/**
-	 * @var ValitorMerchantAPI
-	 */
+	/** @var ValitorMerchantAPI */
 	private $merchantApi;
 
     /**

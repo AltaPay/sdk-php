@@ -3,22 +3,14 @@ require_once(dirname(__FILE__) . '/../lib/bootstrap.php');
 
 class ValitorMerchantAPITest extends MockitTestCase
 {
-	/**
-	 * @var ValitorMerchantAPI
-	 */
+	/** @var ValitorMerchantAPI */
 	private $merchantAPI;
 
-	/**
-	 * @var Mock_IValitorCommunicationLogger
-	 */
+	/** @var Mock_IValitorCommunicationLogger */
 	private $logger;
-	/**
-	 * @var Mock_IValitorHttpUtils
-	 */
+	/** @var Mock_IValitorHttpUtils */
 	private $httpUtils;
-	/**
-	 * @var Mock_ValitorHttpResponse
-	 */
+	/** @var Mock_ValitorHttpResponse */
 	private $response;
 
 	public function setup()

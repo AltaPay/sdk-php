@@ -2,9 +2,7 @@
 
 class ValitorRefundTest extends MockitTestCase
 {
-	/**
-	 * @var ValitorMerchantAPI
-	 */
+	/** @var ValitorMerchantAPI */
 	private $merchantApi;
 
     /**

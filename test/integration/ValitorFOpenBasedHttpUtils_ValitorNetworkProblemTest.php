@@ -2,9 +2,7 @@
 
 class ValitorFOpenBasedHttpUtils_ValitorNetworkProblemTest extends MockitTestCase
 {
-	/**
-	 * @var ArrayCachingLogger
-	 */
+	/** @var ArrayCachingLogger */
 	private $logger;
 
 	/**

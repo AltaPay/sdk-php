@@ -2,9 +2,7 @@
 
 class ValitorCaptureReservationTest extends MockitTestCase
 {
-	/**
-	 * @var ValitorMerchantAPI
-	 */
+	/** @var ValitorMerchantAPI */
 	private $merchantApi;
 
     /**

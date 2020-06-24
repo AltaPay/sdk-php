@@ -2,9 +2,7 @@
 
 class ValitorCreatePaymentRequestTest extends MockitTestCase
 {
-	/**
-	 * @var ValitorMerchantAPI
-	 */
+	/** @var ValitorMerchantAPI */
 	private $merchantApi;
 
     /**
