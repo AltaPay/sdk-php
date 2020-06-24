@@ -1,12 +1,5 @@
 <?php
 
-if (!defined('VALITOR_API_ROOT')) {
-    define('VALITOR_API_ROOT', __DIR__);
-}
-
-require_once(VALITOR_API_ROOT . DIRECTORY_SEPARATOR . 'helpers.php');
-
-
 class ValitorMerchantAPI
 {
     private $baseURL;

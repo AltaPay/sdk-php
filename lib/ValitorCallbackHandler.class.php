@@ -1,11 +1,5 @@
 <?php
 
-if(!defined('VALITOR_API_ROOT')) {
-    define('VALITOR_API_ROOT', __DIR__);
-}
-
-require_once VALITOR_API_ROOT.'/ValitorMerchantAPI.class.php';
-
 /**
  * The purpose of this class is to parse the callback parameters and return
  * a usefull response object from which your business logic can get information

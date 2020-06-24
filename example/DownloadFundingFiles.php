@@ -1,5 +1,6 @@
 <?php
 require_once(__DIR__ . '/base.php');
+
 // For the purpose of this example will be assumed that there is one page
 $pageCount = 1;
 for ($page = 1; $page <= $pageCount; $page++) {

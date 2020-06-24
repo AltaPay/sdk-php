@@ -1,11 +1,5 @@
 <?php
 
-if(!defined('VALITOR_API_ROOT')) {
-    define('VALITOR_API_ROOT', dirname(__DIR__));
-}
-
-require_once VALITOR_API_ROOT. DIRECTORY_SEPARATOR .'http'. DIRECTORY_SEPARATOR .'IValitorHttpUtils.class.php';
-
 /**
  * Class ValitorFOpenBasedHttpUtils
  */

@@ -1,5 +1,5 @@
 <?php
-require_once(dirname(__DIR__) . '/lib/ValitorMerchantAPI.class.php');
+require_once __DIR__.'/../../vendor/autoload.php';
 
 $baseURL = "https://testgateway.valitor.com/";
 $username = 'username';

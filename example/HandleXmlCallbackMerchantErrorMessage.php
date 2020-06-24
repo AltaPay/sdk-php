@@ -1,5 +1,4 @@
 <?php
-require_once(__DIR__ . '/../lib/ValitorCallbackHandler.class.php');
 
 $callbackHandler = new ValitorCallbackHandler();
 // Load an example of reservation and capture request where Transaction element is not present
