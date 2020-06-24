@@ -1,14 +1,20 @@
 <?php
 
-class ValitorSubscriptionTest extends MockitTestCase
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\TestCase;
+
+class ValitorSubscriptionTest extends TestCase
 {
+    use MockeryPHPUnitIntegration;
+
 	/** @var ValitorMerchantAPI */
 	private $merchantApi;
+	private $logger;
 
     /**
      * @throws ValitorMerchantAPIException
      */
-    public function setup()
+    protected function setUp(): void
 	{
 		$this->logger = new ArrayCachingLogger();
 		$this->merchantApi = new ValitorMerchantAPI(

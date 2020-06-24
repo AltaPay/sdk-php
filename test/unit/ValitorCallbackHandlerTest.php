@@ -1,14 +1,18 @@
 <?php
-require_once(dirname(__FILE__) . '/../lib/bootstrap.php');
 
-class ValitorCallbackHandlerTest extends MockitTestCase
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\TestCase;
+
+class ValitorCallbackHandlerTest extends TestCase
 {
+    use MockeryPHPUnitIntegration;
+
     /**
      * @var ValitorCallbackHandler
      */
     private $handler;
 
-    public function setup()
+    protected function setUp(): void
     {
         $this->handler = new ValitorCallbackHandler();
     }
@@ -220,7 +224,7 @@ class ValitorCallbackHandlerTest extends MockitTestCase
             $this->handler->parseXmlResponse($xml);
             $this->fail("Expected an exception");
         } catch (ValitorXmlException $e) {
-            $this->assertType('SimpleXMLElement', $e->getXml());
+            static::assertInstanceOf('SimpleXMLElement', $e->getXml());
             $merchantErrorMessage = (string) $e->getXml()->Body[0]->MerchantErrorMessage;
             $this->assertEquals('Unable to register MobilePay payment', $merchantErrorMessage);
         }

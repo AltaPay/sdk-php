@@ -1,14 +1,19 @@
 <?php
 
-class ValitorReservationOfFixedAmountTest extends MockitTestCase
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\TestCase;
+
+class ValitorReservationOfFixedAmountTest extends TestCase
 {
+    use MockeryPHPUnitIntegration;
+
 	/** @var ValitorMerchantAPI */
 	private $merchantApi;
 
     /**
      * @throws ValitorMerchantAPIException
      */
-    public function setup()
+    protected function setUp(): void
 	{
 		$this->merchantApi = new ValitorMerchantAPI(VALITOR_INTEGRATION_INSTALLATION, VALITOR_INTEGRATION_USERNAME, VALITOR_INTEGRATION_PASSWORD);
 		$this->merchantApi->login();
@@ -117,7 +122,7 @@ class ValitorReservationOfFixedAmountTest extends MockitTestCase
 			'123',
 			'eCommerce'
 		);
-		$this->assertType('object', $response->getPrimaryPayment());
+		$this->assertTrue(is_object($response->getPrimaryPayment()));
 		$this->assertEquals('Visa', $response->getPrimaryPayment()->getPaymentSchemeName());
 	}
 }

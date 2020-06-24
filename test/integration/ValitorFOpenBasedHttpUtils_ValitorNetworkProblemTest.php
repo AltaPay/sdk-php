@@ -1,16 +1,22 @@
 <?php
 
-class ValitorFOpenBasedHttpUtils_ValitorNetworkProblemTest extends MockitTestCase
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\TestCase;
+
+class ValitorFOpenBasedHttpUtils_ValitorNetworkProblemTest extends TestCase
 {
+    use MockeryPHPUnitIntegration;
+
 	/** @var ArrayCachingLogger */
 	private $logger;
+	private $httpUtils;
 
 	/**
 	 * @var ValitorMerchantAPI
 	 */
 	private $merchantApi;
 
-	public function setup()
+    protected function setUp(): void
 	{
 		$this->logger = new ArrayCachingLogger();
 		$this->httpUtils = new ValitorFOpenBasedHttpUtils(5, 3);

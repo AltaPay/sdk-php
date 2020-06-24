@@ -1,0 +1,9 @@
+includes:
+	- vendor/phpstan/phpstan-phpunit/extension.neon
+	- vendor/phpstan/phpstan-mockery/extension.neon
+parameters:
+	paths:
+		- .
+	excludes_analyse:
+		- vendor
+	level: 0

@@ -1,7 +1,12 @@
 <?php
 
-class ValitorCurlBasedHttpUtils_ValitorNetworkProblemTest extends MockitTestCase
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\TestCase;
+
+class ValitorCurlBasedHttpUtils_ValitorNetworkProblemTest extends TestCase
 {
+    use MockeryPHPUnitIntegration;
+
 	/**
 	 * ArrayCachingLogger
 	 */
@@ -16,7 +21,7 @@ class ValitorCurlBasedHttpUtils_ValitorNetworkProblemTest extends MockitTestCase
 	 */
 	private $httpUtils;
 
-	public function setup()
+    protected function setUp(): void
 	{
 		$this->logger = new ArrayCachingLogger();
 		$this->httpUtils = new ValitorCurlBasedHttpUtils(5, 3, false);

@@ -1,14 +1,19 @@
 <?php
 
-class ValitorLoginTest extends MockitTestCase
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\TestCase;
+
+class ValitorLoginTest extends TestCase
 {
+    use MockeryPHPUnitIntegration;
+
 	/** @var ValitorMerchantAPI */
 	private $merchantApi;
 
     /**
      * @throws Exception
      */
-    public function setup()
+    protected function setUp(): void
 	{
 		$this->merchantApi = new ValitorMerchantAPI(VALITOR_INTEGRATION_INSTALLATION, VALITOR_INTEGRATION_USERNAME, VALITOR_INTEGRATION_PASSWORD);
 	}

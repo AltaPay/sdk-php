@@ -1,11 +1,15 @@
 <?php
-require_once(dirname(__FILE__) . '/../lib/bootstrap.php');
 
-class ValitorPaymentTest extends MockitTestCase
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\TestCase;
+
+class ValitorPaymentTest extends TestCase
 {
+    use MockeryPHPUnitIntegration;
+
 	private $xml;
 
-	public function setup()
+    protected function setUp(): void
 	{
 		$this->xml = new SimpleXMLElement('
             <Transaction>
@@ -104,6 +108,8 @@ class ValitorPaymentTest extends MockitTestCase
 	{
 		$xml = new SimpleXMLElement('<Transaction><PaymentNatureService /><ReconciliationIdentifiers /></Transaction>');
 		$payment = new ValitorAPIPayment($xml);
+
+        static::assertInstanceOf(ValitorAPIPayment::class, $payment);
 	}
 
     /**
@@ -309,7 +315,6 @@ class ValitorPaymentTest extends MockitTestCase
 	{
 		$payment = new ValitorAPIPayment($this->xml);
 
-		$this->assertEquals('true', $payment->isTokenized());
 		$this->assertTrue($payment->isTokenized());
 	}
 }

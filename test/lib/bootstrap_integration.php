@@ -5,7 +5,6 @@ if (!is_file(dirname(__FILE__) . '/integration_config.php')) {
 }
 
 require_once(dirname(__FILE__) . "/integration_config.php");
-require_once(dirname(__FILE__) . "/bootstrap.php");
 
 class ArrayCachingLogger implements IValitorCommunicationLogger
 {
