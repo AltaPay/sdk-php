@@ -16,11 +16,11 @@ class ValitorAPIChargebackEvent
     /**
      * ValitorAPIChargebackEvent constructor.
      *
-     * @param SimpleXmlElement $xml
+     * @param SimpleXMLElement $xml
      *
      * @throws Exception
      */
-    public function __construct(SimpleXmlElement $xml)
+    public function __construct(SimpleXMLElement $xml)
     {
         $this->date = new DateTime((string)$xml->Date);
         $this->type = (string)$xml->Type;
@@ -44,8 +44,6 @@ class ValitorAPIChargebackEvent
     }
 
     /**
-     * @param $date
-     *
      * @return mixed
      */
     public function setDate($date)
@@ -62,8 +60,6 @@ class ValitorAPIChargebackEvent
     }
 
     /**
-     * @param $type
-     *
      * @return mixed
      */
     public function setType($type)
@@ -80,8 +76,6 @@ class ValitorAPIChargebackEvent
     }
 
     /**
-     * @param $reasonCode
-     *
      * @return mixed
      */
     public function setReasonCode($reasonCode)
@@ -98,8 +92,6 @@ class ValitorAPIChargebackEvent
     }
 
     /**
-     * @param $reason
-     *
      * @return mixed
      */
     public function setReason($reason)
@@ -116,8 +108,6 @@ class ValitorAPIChargebackEvent
     }
 
     /**
-     * @param $amount
-     *
      * @return mixed
      */
     public function setAmount($amount)
@@ -134,8 +124,6 @@ class ValitorAPIChargebackEvent
     }
 
     /**
-     * @param $currency
-     *
      * @return mixed
      */
     public function setCurrency($currency)

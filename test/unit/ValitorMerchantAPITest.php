@@ -68,15 +68,6 @@ class ValitorMerchantAPITest extends TestCase
         $loginResponse = $this->merchantAPI->login();
     }
 
-    /**
-     * @throws PHPUnit_Framework_AssertionFailedError
-     * @throws ValitorConnectionFailedException
-     * @throws ValitorInvalidResponseException
-     * @throws ValitorMerchantAPIException
-     * @throws ValitorRequestTimeoutException
-     * @throws ValitorUnauthorizedAccessException
-     * @throws ValitorUnknownMerchantAPIException
-     */
     public function testGetPaymentParses20110831XmlCorrectly(): void
     {
         $this->response->shouldReceive('getHttpCode')->andReturn(200);
@@ -84,20 +75,11 @@ class ValitorMerchantAPITest extends TestCase
         $this->httpUtils->shouldReceive('requestURL')->andReturn($this->response);
 
         $this->merchantAPI->login();
-        $getPaymentResponse = $this->merchantAPI->getPayment('123', '');
+        $getPaymentResponse = $this->merchantAPI->getPayment('123', array(''));
         static::assertTrue($getPaymentResponse instanceof ValitorGetPaymentResponse);
         static::assertTrue($getPaymentResponse->wasSuccessful());
     }
 
-    /**
-     * @throws PHPUnit_Framework_AssertionFailedError
-     * @throws ValitorConnectionFailedException
-     * @throws ValitorInvalidResponseException
-     * @throws ValitorMerchantAPIException
-     * @throws ValitorRequestTimeoutException
-     * @throws ValitorUnauthorizedAccessException
-     * @throws ValitorUnknownMerchantAPIException
-     */
     public function testGetPaymentParses20130430XmlCorrectly(): void
     {
         $this->response->shouldReceive('getHttpCode')->andReturn(200);
@@ -105,20 +87,11 @@ class ValitorMerchantAPITest extends TestCase
         $this->httpUtils->shouldReceive('requestURL')->andReturn($this->response);
 
         $this->merchantAPI->login();
-        $getPaymentResponse = $this->merchantAPI->getPayment('123', '');
+        $getPaymentResponse = $this->merchantAPI->getPayment('123', array(''));
         static::assertTrue($getPaymentResponse instanceof ValitorGetPaymentResponse);
         static::assertTrue($getPaymentResponse->wasSuccessful());
     }
 
-    /**
-     * @throws PHPUnit_Framework_AssertionFailedError
-     * @throws ValitorConnectionFailedException
-     * @throws ValitorInvalidResponseException
-     * @throws ValitorMerchantAPIException
-     * @throws ValitorRequestTimeoutException
-     * @throws ValitorUnauthorizedAccessException
-     * @throws ValitorUnknownMerchantAPIException
-     */
     public function testGetPaymentParses20130430XmlWithShopOrderIDCorrectly(): void
     {
         $this->response->shouldReceive('getHttpCode')->andReturn(200);
@@ -131,15 +104,6 @@ class ValitorMerchantAPITest extends TestCase
         static::assertTrue($getPaymentResponse->wasSuccessful());
     }
 
-    /**
-     * @throws PHPUnit_Framework_AssertionFailedError
-     * @throws ValitorConnectionFailedException
-     * @throws ValitorInvalidResponseException
-     * @throws ValitorMerchantAPIException
-     * @throws ValitorRequestTimeoutException
-     * @throws ValitorUnauthorizedAccessException
-     * @throws ValitorUnknownMerchantAPIException
-     */
     public function testGetPaymentWithNoPaymentIsNotSuccessful(): void
     {
         $this->response->shouldReceive('getHttpCode')->andReturn(200);
@@ -147,7 +111,7 @@ class ValitorMerchantAPITest extends TestCase
         $this->httpUtils->shouldReceive('requestURL')->andReturn($this->response);
 
         $this->merchantAPI->login();
-        $getPaymentResponse = $this->merchantAPI->getPayment('123', '');
+        $getPaymentResponse = $this->merchantAPI->getPayment('123', array(''));
         static::assertFalse($getPaymentResponse->wasSuccessful());
     }
 }

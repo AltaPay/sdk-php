@@ -6,7 +6,7 @@ $username = 'username';
 $password = 'password';
 $terminal = 'Some Terminal'; // change this to one of the test terminals supplied in the welcome email
 /**
- * @param $api ValitorMerchantAPI
+ * @param ValitorMerchantAPI $api
  */
 $api = new ValitorMerchantAPI($baseURL, $username, $password, /*IValitorCommunicationLogger $logger = */ null);
 $response = $api->login();

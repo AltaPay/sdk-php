@@ -7,6 +7,8 @@ class ValitorLoginTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
+    /** @var TestConfig */
+    private $config;
     /** @var ValitorMerchantAPI */
     private $merchantApi;
 
@@ -15,13 +17,10 @@ class ValitorLoginTest extends TestCase
      */
     protected function setUp(): void
     {
-        $this->merchantApi = new ValitorMerchantAPI(VALITOR_INTEGRATION_INSTALLATION, VALITOR_INTEGRATION_USERNAME, VALITOR_INTEGRATION_PASSWORD);
+        $this->config = new TestConfig();
+        $this->merchantApi = new ValitorMerchantAPI($this->config->installation, $this->config->username, $this->config->password);
     }
 
-    /**
-     * @throws PHPUnit_Framework_AssertionFailedError
-     * @throws ValitorMerchantAPIException
-     */
     public function testSuccessfullLogin(): void
     {
         $response = $this->merchantApi->login();

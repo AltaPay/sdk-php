@@ -11,9 +11,9 @@ $transactionId = reserveAndCapture($api, $terminal, $fullAmount);
  * If success then the amount is captured
  * Obs: the amount cannot be captured if is not reserved firstly.
  *
- * @param $api ValitorMerchantAPI
- * @param $terminal string
- * @param $amount float
+ * @param ValitorMerchantAPI $api
+ * @param string             $terminal
+ * @param float              $amount
  *
  * @throws Exception
  *

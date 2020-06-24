@@ -9,9 +9,9 @@ $transactionId = reserveAmount($api, $terminal, $fullAmount);
 /**
  * Helper method for reserving the payment amount.
  *
- * @param $api ValitorMerchantAPI
- * @param $terminal string
- * @param $amount float
+ * @param ValitorMerchantAPI $api
+ * @param string             $terminal
+ * @param float              $amount
  *
  * @throws Exception
  *

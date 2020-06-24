@@ -2,17 +2,12 @@
 
 class ValitorRefundResponse extends ValitorAbstractPaymentResponse
 {
-    public function __construct(SimpleXmlElement $xml)
-    {
-        parent::__construct($xml);
-    }
-
     /**
-     * @param SimpleXmlElement $body
+     * @param SimpleXMLElement $body
      *
      * @return mixed|void
      */
-    protected function parseBody(SimpleXmlElement $body)
+    protected function parseBody(SimpleXMLElement $body)
     {
     }
 }

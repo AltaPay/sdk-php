@@ -6,16 +6,6 @@
 class ValitorOmniReservationResponse extends ValitorAbstractPaymentResponse
 {
     /**
-     * ValitorOmniReservationResponse constructor.
-     *
-     * @param SimpleXMLElement $xml
-     */
-    public function __construct(SimpleXMLElement $xml)
-    {
-        parent::__construct($xml);
-    }
-
-    /**
      * @param SimpleXMLElement $body
      *
      * @return void

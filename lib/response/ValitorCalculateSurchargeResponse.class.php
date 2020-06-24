@@ -11,9 +11,9 @@ class ValitorCalculateSurchargeResponse extends ValitorAbstractResponse
     /**
      * ValitorCalculateSurchargeResponse constructor.
      *
-     * @param SimpleXmlElement $xml
+     * @param SimpleXMLElement $xml
      */
-    public function __construct(SimpleXmlElement $xml)
+    public function __construct(SimpleXMLElement $xml)
     {
         parent::__construct($xml);
 

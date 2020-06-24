@@ -18,19 +18,25 @@
  */
 abstract class ValitorAbstractResponse
 {
+    /** @var string */
     protected $xml;
+    /** @var string */
     private $version;
+    /** @var string */
     private $date;
+    /** @var string */
     private $path;
+    /** @var string */
     private $errorCode;
+    /** @var string */
     private $errorMessage;
 
     /**
      * ValitorAbstractResponse constructor.
      *
-     * @param SimpleXmlElement $xml
+     * @param SimpleXMLElement $xml
      */
-    public function __construct(SimpleXmlElement $xml)
+    public function __construct(SimpleXMLElement $xml)
     {
         $this->xml = $xml->saveXml();
         $this->version = (string)$xml['version'];

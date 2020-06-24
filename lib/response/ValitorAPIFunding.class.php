@@ -35,9 +35,9 @@ class ValitorAPIFunding
     /**
      * ValitorAPIFunding constructor.
      *
-     * @param SimpleXmlElement $xml
+     * @param SimpleXMLElement $xml
      */
-    public function __construct(SimpleXmlElement $xml)
+    public function __construct(SimpleXMLElement $xml)
     {
         $this->filename = (string)$xml->Filename;
         $this->contractIdentifier = (string)$xml->ContractIdentifier;

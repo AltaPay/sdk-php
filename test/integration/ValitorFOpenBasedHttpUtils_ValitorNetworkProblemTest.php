@@ -9,6 +9,7 @@ class ValitorFOpenBasedHttpUtils_ValitorNetworkProblemTest extends TestCase
 
     /** @var ArrayCachingLogger */
     private $logger;
+    /** @var ValitorFOpenBasedHttpUtils */
     private $httpUtils;
 
     /** @var ValitorMerchantAPI */

@@ -7,6 +7,8 @@ class ValitorRefundTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
+    /** @var TestConfig */
+    private $config;
     /** @var ValitorMerchantAPI */
     private $merchantApi;
 
@@ -15,18 +17,11 @@ class ValitorRefundTest extends TestCase
      */
     protected function setUp(): void
     {
-        $this->merchantApi = new ValitorMerchantAPI(VALITOR_INTEGRATION_INSTALLATION, VALITOR_INTEGRATION_USERNAME, VALITOR_INTEGRATION_PASSWORD);
+        $this->config = new TestConfig();
+        $this->merchantApi = new ValitorMerchantAPI($this->config->installation, $this->config->username, $this->config->password);
         $this->merchantApi->login();
     }
 
-    /**
-     * @throws PHPUnit_Framework_AssertionFailedError
-     * @throws ValitorConnectionFailedException
-     * @throws ValitorInvalidResponseException
-     * @throws ValitorRequestTimeoutException
-     * @throws ValitorUnauthorizedAccessException
-     * @throws ValitorUnknownMerchantAPIException
-     */
     public function testReservationCaptureRefund(): void
     {
         $testReconciliationIdentifier = 'reconrecon';
@@ -42,10 +37,10 @@ class ValitorRefundTest extends TestCase
         );
 
         $response = $this->merchantApi->reservationOfFixedAmount(
-            VALITOR_INTEGRATION_TERMINAL,
+            $this->config->terminal,
             $testOrderId,
             $testAmount,
-            VALITOR_INTEGRATION_CURRENCY,
+            $this->config->currency,
             '4111000011110000',
             '2020',
             '12',

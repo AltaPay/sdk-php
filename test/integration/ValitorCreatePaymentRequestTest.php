@@ -7,6 +7,8 @@ class ValitorCreatePaymentRequestTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
+    /** @var TestConfig */
+    private $config;
     /** @var ValitorMerchantAPI */
     private $merchantApi;
 
@@ -15,19 +17,11 @@ class ValitorCreatePaymentRequestTest extends TestCase
      */
     protected function setUp(): void
     {
-        $this->merchantApi = new ValitorMerchantAPI(VALITOR_INTEGRATION_INSTALLATION, VALITOR_INTEGRATION_USERNAME, VALITOR_INTEGRATION_PASSWORD);
+        $this->config = new TestConfig();
+        $this->merchantApi = new ValitorMerchantAPI($this->config->installation, $this->config->username, $this->config->password);
         $this->merchantApi->login();
     }
 
-    /**
-     * @throws PHPUnit_Framework_AssertionFailedError
-     * @throws ValitorConnectionFailedException
-     * @throws ValitorInvalidResponseException
-     * @throws ValitorMerchantAPIException
-     * @throws ValitorRequestTimeoutException
-     * @throws ValitorUnauthorizedAccessException
-     * @throws ValitorUnknownMerchantAPIException
-     */
     public function testCreatePaymentRequest(): void
     {
         $customerInfo = array(
@@ -50,10 +44,10 @@ class ValitorCreatePaymentRequestTest extends TestCase
             'shipping_country'   => 'Denmark',
         );
         $response = $this->merchantApi->createPaymentRequest(
-            VALITOR_INTEGRATION_TERMINAL,
+            $this->config->terminal,
             'testorder',
             42.00,
-            VALITOR_INTEGRATION_CURRENCY,
+            $this->config->currency,
             'payment',
             $customerInfo
         );
@@ -61,15 +55,6 @@ class ValitorCreatePaymentRequestTest extends TestCase
         static::assertTrue($response->wasSuccessful());
     }
 
-    /**
-     * @throws PHPUnit_Framework_AssertionFailedError
-     * @throws ValitorConnectionFailedException
-     * @throws ValitorInvalidResponseException
-     * @throws ValitorMerchantAPIException
-     * @throws ValitorRequestTimeoutException
-     * @throws ValitorUnauthorizedAccessException
-     * @throws ValitorUnknownMerchantAPIException
-     */
     public function testCreatePaymentRequestWithMoreData(): void
     {
         $customerInfo = array(
@@ -99,10 +84,10 @@ class ValitorCreatePaymentRequestTest extends TestCase
         $transaction_info = array('auxkey' => 'aux data'); // this can be left out.
 
         $response = $this->merchantApi->createPaymentRequest(
-            VALITOR_INTEGRATION_TERMINAL,
+            $this->config->terminal,
             'testorder',
             42.00,
-            VALITOR_INTEGRATION_CURRENCY,
+            $this->config->currency,
             'payment',
             $customerInfo,
             $cookie,

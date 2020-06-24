@@ -1,13 +1,8 @@
 <?php
 
-if (!is_file(__DIR__.'/integration_config.php')) {
-    throw new Exception('The file integration_config.php must be created');
-}
-
-require_once __DIR__.'/integration_config.php';
-
 class ArrayCachingLogger implements IValitorCommunicationLogger
 {
+    /** @var array<string, array<string, string|null>> */
     private $logs = array();
 
     /**
@@ -35,6 +30,9 @@ class ArrayCachingLogger implements IValitorCommunicationLogger
         $this->logs[$logId]['response'] = $message;
     }
 
+    /**
+     * @return array<string, array<string, string|null>>
+     */
     public function getLogs()
     {
         return $this->logs;

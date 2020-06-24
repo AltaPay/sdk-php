@@ -7,6 +7,8 @@ class ValitorReservationTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
+    /** @var TestConfig */
+    private $config;
     /** @var ValitorMerchantAPI */
     private $merchantApi;
 
@@ -15,26 +17,18 @@ class ValitorReservationTest extends TestCase
      */
     protected function setUp(): void
     {
-        $this->merchantApi = new ValitorMerchantAPI(VALITOR_INTEGRATION_INSTALLATION, VALITOR_INTEGRATION_USERNAME, VALITOR_INTEGRATION_PASSWORD);
+        $this->config = new TestConfig();
+        $this->merchantApi = new ValitorMerchantAPI($this->config->installation, $this->config->username, $this->config->password);
         $this->merchantApi->login();
     }
 
-    /**
-     * @throws PHPUnit_Framework_AssertionFailedError
-     * @throws ValitorConnectionFailedException
-     * @throws ValitorInvalidResponseException
-     * @throws ValitorMerchantAPIException
-     * @throws ValitorRequestTimeoutException
-     * @throws ValitorUnauthorizedAccessException
-     * @throws ValitorUnknownMerchantAPIException
-     */
     public function testSuccessfulReservation(): void
     {
         $response = $this->merchantApi->reservation(
-            VALITOR_INTEGRATION_TERMINAL,
+            $this->config->terminal,
             'ReservationTest_'.time(),
             42.00,
-            VALITOR_INTEGRATION_CURRENCY,
+            $this->config->currency,
             null,
             '4111000011110000',
             1,
@@ -45,22 +39,13 @@ class ValitorReservationTest extends TestCase
         static::assertTrue($response->wasSuccessful());
     }
 
-    /**
-     * @throws PHPUnit_Framework_AssertionFailedError
-     * @throws ValitorConnectionFailedException
-     * @throws ValitorInvalidResponseException
-     * @throws ValitorMerchantAPIException
-     * @throws ValitorRequestTimeoutException
-     * @throws ValitorUnauthorizedAccessException
-     * @throws ValitorUnknownMerchantAPIException
-     */
     public function testFailedReservation(): void
     {
         $response = $this->merchantApi->reservation(
-            VALITOR_INTEGRATION_TERMINAL,
+            $this->config->terminal,
             'ReservationTest_'.time(),
             5.66,
-            VALITOR_INTEGRATION_CURRENCY,
+            $this->config->currency,
             null,
             '4111000011110000',
             1,
@@ -71,22 +56,13 @@ class ValitorReservationTest extends TestCase
         static::assertTrue($response->wasDeclined());
     }
 
-    /**
-     * @throws PHPUnit_Framework_AssertionFailedError
-     * @throws ValitorConnectionFailedException
-     * @throws ValitorInvalidResponseException
-     * @throws ValitorMerchantAPIException
-     * @throws ValitorRequestTimeoutException
-     * @throws ValitorUnauthorizedAccessException
-     * @throws ValitorUnknownMerchantAPIException
-     */
     public function testErroneousReservation(): void
     {
         $response = $this->merchantApi->reservation(
-            VALITOR_INTEGRATION_TERMINAL,
+            $this->config->terminal,
             'ReservationTest_'.time(),
             5.67,
-            VALITOR_INTEGRATION_CURRENCY,
+            $this->config->currency,
             null,
             '4111000011110000',
             1,
@@ -97,22 +73,13 @@ class ValitorReservationTest extends TestCase
         static::assertTrue($response->wasErroneous());
     }
 
-    /**
-     * @throws PHPUnit_Framework_AssertionFailedError
-     * @throws ValitorConnectionFailedException
-     * @throws ValitorInvalidResponseException
-     * @throws ValitorMerchantAPIException
-     * @throws ValitorRequestTimeoutException
-     * @throws ValitorUnauthorizedAccessException
-     * @throws ValitorUnknownMerchantAPIException
-     */
     public function testSuccessfulReservationUsingToken(): void
     {
         $response = $this->merchantApi->reservation(
-            VALITOR_INTEGRATION_TERMINAL,
+            $this->config->terminal,
             'ReservationTest_'.time(),
             42.00,
-            VALITOR_INTEGRATION_CURRENCY,
+            $this->config->currency,
             null,
             '4111000011110000',
             1,
@@ -121,10 +88,10 @@ class ValitorReservationTest extends TestCase
         );
 
         $response2 = $this->merchantApi->reservation(
-            VALITOR_INTEGRATION_TERMINAL,
+            $this->config->terminal,
             'ReservationTest_'.time(),
             42.00,
-            VALITOR_INTEGRATION_CURRENCY,
+            $this->config->currency,
             $response->getPrimaryPayment()->getCreditCardToken(),
             null,
             null,
@@ -135,15 +102,6 @@ class ValitorReservationTest extends TestCase
         static::assertTrue($response2->wasSuccessful());
     }
 
-    /**
-     * @throws PHPUnit_Framework_AssertionFailedError
-     * @throws ValitorConnectionFailedException
-     * @throws ValitorInvalidResponseException
-     * @throws ValitorMerchantAPIException
-     * @throws ValitorRequestTimeoutException
-     * @throws ValitorUnauthorizedAccessException
-     * @throws ValitorUnknownMerchantAPIException
-     */
     public function testReservationUsingAllParameters(): void
     {
         $orderLines = array(
@@ -174,10 +132,10 @@ class ValitorReservationTest extends TestCase
         $shop_orderid = 'ReservationTest_'.time();
 
         $response = $this->merchantApi->reservation(
-            VALITOR_INTEGRATION_TERMINAL,
+            $this->config->terminal,
             $shop_orderid,
             42.00,
-            VALITOR_INTEGRATION_CURRENCY,
+            $this->config->currency,
             null,
             '4111000011110000',
             1,
@@ -196,7 +154,7 @@ class ValitorReservationTest extends TestCase
 
         static::assertTrue($response->wasSuccessful(), $response->getErrorMessage());
 
-        static::assertEquals(VALITOR_INTEGRATION_TERMINAL, $response->getPrimaryPayment()->getTerminal());
+        static::assertEquals($this->config->terminal, $response->getPrimaryPayment()->getTerminal());
         static::assertEquals($shop_orderid, $response->getPrimaryPayment()->getShopOrderId());
         static::assertEquals('paymentAndCapture', $response->getPrimaryPayment()->getAuthType());
         static::assertEquals(42, $response->getPrimaryPayment()->getCapturedAmount());

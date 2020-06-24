@@ -7,6 +7,8 @@ class ValitorReservationOfFixedAmountTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
+    /** @var TestConfig */
+    private $config;
     /** @var ValitorMerchantAPI */
     private $merchantApi;
 
@@ -15,20 +17,18 @@ class ValitorReservationOfFixedAmountTest extends TestCase
      */
     protected function setUp(): void
     {
-        $this->merchantApi = new ValitorMerchantAPI(VALITOR_INTEGRATION_INSTALLATION, VALITOR_INTEGRATION_USERNAME, VALITOR_INTEGRATION_PASSWORD);
+        $this->config = new TestConfig();
+        $this->merchantApi = new ValitorMerchantAPI($this->config->installation, $this->config->username, $this->config->password);
         $this->merchantApi->login();
     }
 
-    /**
-     * @throws PHPUnit_Framework_AssertionFailedError
-     */
     public function testSimplePayment(): void
     {
         $response = $this->merchantApi->reservationOfFixedAmount(
-            VALITOR_INTEGRATION_TERMINAL,
+            $this->config->terminal,
             'testorder',
             42.00,
-            VALITOR_INTEGRATION_CURRENCY,
+            $this->config->currency,
             '4111000011110000',
             '2020',
             '12',
@@ -39,9 +39,6 @@ class ValitorReservationOfFixedAmountTest extends TestCase
         static::assertTrue($response->wasSuccessful());
     }
 
-    /**
-     * @throws PHPUnit_Framework_AssertionFailedError
-     */
     public function testPaymentWithCustomerInfo(): void
     {
         $customerInfo = array(
@@ -56,10 +53,10 @@ class ValitorReservationOfFixedAmountTest extends TestCase
         ); // See the documentation for further details
 
         $response = $this->merchantApi->reservationOfFixedAmount(
-            VALITOR_INTEGRATION_TERMINAL,
+            $this->config->terminal,
             'with-billing-and-transinfo-'.time(),
             42.00,
-            VALITOR_INTEGRATION_CURRENCY,
+            $this->config->currency,
             '4111000011110000',
             '2020',
             '12',
@@ -80,18 +77,15 @@ class ValitorReservationOfFixedAmountTest extends TestCase
         static::assertEquals('testperson@mydomain.com', $response->getPrimaryPayment()->getCustomerInfo()->getEmail());
     }
 
-    /**
-     * @throws PHPUnit_Framework_AssertionFailedError
-     */
     public function testPaymentWithPaymentInfo(): void
     {
         $transaction_info = array('auxkey' => 'aux data (<æøå>)', 'otherkey' => 'MyValue');
 
         $response = $this->merchantApi->reservationOfFixedAmount(
-            VALITOR_INTEGRATION_TERMINAL,
+            $this->config->terminal,
             'with-billing-and-transinfo-'.time(),
             42.00,
-            VALITOR_INTEGRATION_CURRENCY,
+            $this->config->currency,
             '4111000011110000',
             '2020',
             '12',
@@ -109,10 +103,10 @@ class ValitorReservationOfFixedAmountTest extends TestCase
     public function testPaymentSchemeNameIsVisa(): void
     {
         $response = $this->merchantApi->reservationOfFixedAmount(
-            VALITOR_INTEGRATION_TERMINAL,
+            $this->config->terminal,
             'testorder',
             43.00,
-            VALITOR_INTEGRATION_CURRENCY,
+            $this->config->currency,
             '4111000011110000',
             '2020',
             '12',

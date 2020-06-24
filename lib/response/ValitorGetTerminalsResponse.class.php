@@ -7,7 +7,7 @@ class ValitorGetTerminalsResponse extends ValitorAbstractResponse
 {
     private $terminals = array();
 
-    public function __construct(SimpleXmlElement $xml)
+    public function __construct(SimpleXMLElement $xml)
     {
         parent::__construct($xml);
 

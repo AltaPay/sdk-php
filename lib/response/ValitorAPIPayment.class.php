@@ -76,7 +76,7 @@ class ValitorAPIPayment
      *
      * @throws Exception
      */
-    public function __construct(SimpleXmlElement $xml)
+    public function __construct(SimpleXMLElement $xml)
     {
         $this->simpleXmlElement = $xml->saveXML();
         $this->transactionId = (string)$xml->TransactionId;

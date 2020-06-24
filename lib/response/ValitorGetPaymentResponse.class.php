@@ -6,16 +6,6 @@
 class ValitorGetPaymentResponse extends ValitorAbstractPaymentResponse
 {
     /**
-     * ValitorGetPaymentResponse constructor.
-     *
-     * @param SimpleXMLElement $xml
-     */
-    public function __construct(SimpleXMLElement $xml)
-    {
-        parent::__construct($xml);
-    }
-
-    /**
      * @param SimpleXMLElement $body
      *
      * @return void

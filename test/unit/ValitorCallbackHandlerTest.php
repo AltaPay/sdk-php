@@ -210,12 +210,9 @@ class ValitorCallbackHandlerTest extends TestCase
         static::assertEquals('epayment_cancelled', $response->getPrimaryPayment()->getCurrentStatus());
     }
 
-    /**
-     * @throws PHPUnit_Framework_AssertionFailedError
-     */
     public function testMerchantErrorMessageWithoutTransactionParameter(): void
     {
-        $xml = file_get_contents(__DIR__.'/xml/CallbackXML_MobilePayError.xml');
+        $xml = file_get_contents(__DIR__.'/xml/CallbackXML_MobilePayError.xml') ?: '';
         try {
             $this->handler->parseXmlResponse($xml);
             static::fail('Expected an exception');
@@ -231,11 +228,11 @@ class ValitorCallbackHandlerTest extends TestCase
      */
     public function testReadCardHolderErrorMessageMustBeShown(): void
     {
-        $xml = file_get_contents(__DIR__.'/xml/CardHolderMessageMustBeShownFalse.xml');
+        $xml = file_get_contents(__DIR__.'/xml/CardHolderMessageMustBeShownFalse.xml') ?: '';
         $response = $this->handler->parseXmlResponse($xml);
         static::assertEquals('false', $response->getCardHolderMessageMustBeShown());
 
-        $xml = file_get_contents(__DIR__.'/xml/CardHolderMessageMustBeShownTrue.xml');
+        $xml = file_get_contents(__DIR__.'/xml/CardHolderMessageMustBeShownTrue.xml') ?: '';
         $response = $this->handler->parseXmlResponse($xml);
         static::assertEquals('true', $response->getCardHolderMessageMustBeShown());
     }
@@ -245,7 +242,7 @@ class ValitorCallbackHandlerTest extends TestCase
      */
     public function testReadReasonCode(): void
     {
-        $xml = file_get_contents(__DIR__.'/xml/ReasonCode.xml');
+        $xml = file_get_contents(__DIR__.'/xml/ReasonCode.xml') ?: '';
         $response = $this->handler->parseXmlResponse($xml);
         static::assertEquals('NONE', $response->getPrimaryPayment()->getReasonCode());
     }
@@ -255,7 +252,7 @@ class ValitorCallbackHandlerTest extends TestCase
      */
     public function testReadPaymentId(): void
     {
-        $xml = file_get_contents(__DIR__.'/xml/ReasonCode.xml');
+        $xml = file_get_contents(__DIR__.'/xml/ReasonCode.xml') ?: '';
         $response = $this->handler->parseXmlResponse($xml);
         static::assertEquals('17794956-9bb6-4854-9712-bce5931e6e3a', $response->getPrimaryPayment()->getPaymentId());
     }

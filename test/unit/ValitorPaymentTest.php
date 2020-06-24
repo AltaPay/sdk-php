@@ -7,6 +7,7 @@ class ValitorPaymentTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
+    /** @var SimpleXMLElement */
     private $xml;
 
     protected function setUp(): void
@@ -308,9 +309,6 @@ class ValitorPaymentTest extends TestCase
         static::assertEquals('19.95', $payment->getCapturedAmount());
     }
 
-    /**
-     * @throws PHPUnit_Framework_AssertionFailedError
-     */
     public function testIsTokenized(): void
     {
         $payment = new ValitorAPIPayment($this->xml);

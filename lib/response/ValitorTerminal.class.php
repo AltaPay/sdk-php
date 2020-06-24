@@ -11,8 +11,6 @@ class ValitorTerminal
     private $currencies = array();
 
     /**
-     * @param $title
-     *
      * @return void
      */
     public function setTitle($title)
@@ -29,8 +27,6 @@ class ValitorTerminal
     }
 
     /**
-     * @param $country
-     *
      * @return void
      */
     public function setCountry($country)
@@ -39,8 +35,6 @@ class ValitorTerminal
     }
 
     /**
-     * @param $nature
-     *
      * @return void
      */
     public function addNature($nature)
@@ -57,8 +51,6 @@ class ValitorTerminal
     }
 
     /**
-     * @param $currency
-     *
      * @return void
      */
     public function addCurrency($currency)
@@ -67,8 +59,6 @@ class ValitorTerminal
     }
 
     /**
-     * @param $currency
-     *
      * @return bool
      */
     public function hasCurrency($currency)
