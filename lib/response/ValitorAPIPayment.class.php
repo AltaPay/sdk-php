@@ -1,19 +1,45 @@
 <?php
 
 /**
- * [Transaction] =&gt; SimpleXMLElement Object
- * (
- * [TransactionId] =&gt; 5
- * [AuthType] =&gt; payment
- * [CardStatus] =&gt; Valid
- * [CreditCardToken] =&gt; ce657182528301c19032840ba6682bdeb5b342d8
- * [CreditCardMaskedPan] =&gt; 555555*****5444.
+ * This class represents the following data structure.
  *
- * @author emanuel
- */
-
-/**
- * Class ValitorAPIPayment.
+ * <Transaction>
+ *     <TransactionId>5</TransactionId>
+ *     <AuthType>payment</AuthType>
+ *     <CardStatus>Valid</CardStatus>
+ *     <CreditCardToken>ce657182528301c19032840ba6682bdeb5b342d8</CreditCardToken>
+ *     <CreditCardMaskedPan>555555*****5444</CreditCardMaskedPan>
+ *     <IsTokenized>true</IsTokenized>
+ *     <ThreeDSecureResult>Not_Attempted</ThreeDSecureResult>
+ *     <BlacklistToken>9484bac14dfd5dbb27329f81dcb12ceb8ed7703e</BlacklistToken>
+ *     <ShopOrderId>qoute_247</ShopOrderId>
+ *     <Shop>Valitor Functional Test Shop</Shop>
+ *     <Terminal>Valitor Dev Terminal</Terminal>
+ *     <TransactionStatus>preauth</TransactionStatus>
+ *     <MerchantCurrency>978</MerchantCurrency>
+ *     <CardHolderCurrency>978</CardHolderCurrency>
+ *     <ReservedAmount>14.10</ReservedAmount>
+ *     <CapturedAmount>0</CapturedAmount>
+ *     <RefundedAmount>0</RefundedAmount>
+ *     <RecurringMaxAmount>0</RecurringMaxAmount>
+ *     <CreatedDate>2012-01-06 15:23:12</CreatedDate>
+ *     <UpdatedDate>2012-01-06 15:23:12</UpdatedDate>
+ *     <PaymentNature>CreditCard</PaymentNature>
+ *     <PaymentSource>eCommerce</PaymentSource>
+ *     <PaymentNatureService name="TestAcquirer">
+ *         <SupportsRelease>true</SupportsRelease>
+ *         <SupportsMultipleCaptures>true</SupportsMultipleCaptures>
+ *         <SupportsMultipleRefunds>true</SupportsMultipleRefunds>
+ *     </PaymentNatureService>
+ *     <FraudRiskScore>14</FraudRiskScore>
+ *     <FraudExplanation>For the test fraud service the risk score is always equal mod 101 of the created amount for the payment</FraudExplanation>
+ *     <TransactionInfo></TransactionInfo>
+ *     <CustomerInfo>
+ *         <UserAgent></UserAgent>
+ *         <IpAddress>127.0.0.1</IpAddress>
+ *     </CustomerInfo>
+ *     <ReconciliationIdentifiers></ReconciliationIdentifiers>
+ * </Transaction>
  */
 class ValitorAPIPayment
 {
@@ -103,8 +129,6 @@ class ValitorAPIPayment
     // Remember to reflect additions within this->getCurrentXml()
 
     /**
-     * ValitorAPIPayment constructor.
-     *
      * @param SimpleXMLElement $xml
      *
      * @throws Exception

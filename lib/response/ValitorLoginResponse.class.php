@@ -1,16 +1,11 @@
 <?php
 
-/**
- * Class ValitorLoginResponse.
- */
 class ValitorLoginResponse extends ValitorAbstractResponse
 {
     /** @var string */
     private $result;
 
     /**
-     * ValitorLoginResponse constructor.
-     *
      * @param SimpleXMLElement $xml
      */
     public function __construct(SimpleXMLElement $xml)

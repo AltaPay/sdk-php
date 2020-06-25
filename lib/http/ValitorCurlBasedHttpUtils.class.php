@@ -1,8 +1,5 @@
 <?php
 
-/**
- * Class ValitorCurlBasedHttpUtils.
- */
 class ValitorCurlBasedHttpUtils implements IValitorHttpUtils
 {
     /** @var int */
@@ -13,8 +10,6 @@ class ValitorCurlBasedHttpUtils implements IValitorHttpUtils
     private $sslVerifyPeer;
 
     /**
-     * ValitorCurlBasedHttpUtils constructor.
-     *
      * @param int  $timeoutSeconds
      * @param int  $connectionTimeout
      * @param bool $sslVerifyPeer

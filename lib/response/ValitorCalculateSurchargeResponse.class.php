@@ -1,8 +1,5 @@
 <?php
 
-/**
- * Class ValitorCalculateSurchargeResponse.
- */
 class ValitorCalculateSurchargeResponse extends ValitorAbstractResponse
 {
     /** @var string */
@@ -11,8 +8,6 @@ class ValitorCalculateSurchargeResponse extends ValitorAbstractResponse
     private $surchargeAmount;
 
     /**
-     * ValitorCalculateSurchargeResponse constructor.
-     *
      * @param SimpleXMLElement $xml
      */
     public function __construct(SimpleXMLElement $xml)

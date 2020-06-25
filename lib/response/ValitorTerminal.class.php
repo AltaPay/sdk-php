@@ -1,8 +1,5 @@
 <?php
 
-/**
- * Class ValitorTerminal.
- */
 class ValitorTerminal
 {
     /** @var string */

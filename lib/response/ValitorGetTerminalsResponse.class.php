@@ -1,8 +1,5 @@
 <?php
 
-/**
- * Class ValitorGetTerminalsResponse.
- */
 class ValitorGetTerminalsResponse extends ValitorAbstractResponse
 {
     /** @var ValitorTerminal[] */

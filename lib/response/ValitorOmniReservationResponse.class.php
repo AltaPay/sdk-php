@@ -1,8 +1,5 @@
 <?php
 
-/**
- * Class ValitorOmniReservationResponse.
- */
 class ValitorOmniReservationResponse extends ValitorAbstractPaymentResponse
 {
     /**

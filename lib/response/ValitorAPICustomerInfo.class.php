@@ -1,19 +1,22 @@
 <?php
 
+/**
+ * This class represents the following data structure.
+ *
+ * <UserAgent>Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:13.0)
+ *     Gecko/20100101 Firefox/13.0.1</UserAgent>
+ * <IpAddress>81.7.175.18</IpAddress>
+ * <Email></Email>
+ * <Username></Username>
+ * <CustomerPhone></CustomerPhone>
+ * <OrganisationNumber></OrganisationNumber>
+ * <CountryOfOrigin>
+ *     <Country></Country><Source>NotSet</Source>
+ * </CountryOfOrigin>
+ */
 class ValitorAPICustomerInfo
 {
-    /** @var SimpleXMLElement
-     * <UserAgent>Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:13.0)
-     *     Gecko/20100101 Firefox/13.0.1</UserAgent>
-     * <IpAddress>81.7.175.18</IpAddress>
-     * <Email></Email>
-     * <Username></Username>
-     * <CustomerPhone></CustomerPhone>
-     * <OrganisationNumber></OrganisationNumber>
-     * <CountryOfOrigin>
-     *     <Country></Country><Source>NotSet</Source>
-     * </CountryOfOrigin>
-     */
+    /** @var SimpleXMLElement */
     private $simpleXmlElement;
     /** @var string */
     private $userAgent;
@@ -39,8 +42,6 @@ class ValitorAPICustomerInfo
     private $countryOfOrigin;
 
     /**
-     * ValitorAPICustomerInfo constructor.
-     *
      * @param SimpleXMLElement $xml
      */
     public function __construct(SimpleXMLElement $xml)

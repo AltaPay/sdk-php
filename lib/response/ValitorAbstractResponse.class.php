@@ -1,6 +1,8 @@
 <?php
 
 /**
+ * This class represents the following data structure.
+ *
  * <APIResponse version="20110831">
  *     <Header>
  *         <Date>2011-08-29T23:48:32+02:00</Date>
@@ -12,9 +14,6 @@
  *         [.....]
  *     </Body>
  * </APIResponse>
- * Enter description here ...
- *
- * @author emanuel
  */
 abstract class ValitorAbstractResponse
 {
@@ -32,8 +31,6 @@ abstract class ValitorAbstractResponse
     private $errorMessage;
 
     /**
-     * ValitorAbstractResponse constructor.
-     *
      * @param SimpleXMLElement $xml
      */
     public function __construct(SimpleXMLElement $xml)

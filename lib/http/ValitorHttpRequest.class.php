@@ -1,8 +1,5 @@
 <?php
 
-/**
- * Class ValitorHttpRequest.
- */
 class ValitorHttpRequest
 {
     /** @var string */

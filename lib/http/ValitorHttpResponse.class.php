@@ -1,8 +1,5 @@
 <?php
 
-/**
- * Class ValitorHttpResponse.
- */
 class ValitorHttpResponse
 {
     const CONNECTION_REFUSED = 'CONNECTION_REFUSED';

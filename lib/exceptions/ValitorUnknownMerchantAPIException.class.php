@@ -6,8 +6,6 @@ class ValitorUnknownMerchantAPIException extends ValitorMerchantAPIException
     private $cause;
 
     /**
-     * ValitorUnknownMerchantAPIException constructor.
-     *
      * @param Exception|null $cause
      */
     public function __construct(Exception $cause = null)

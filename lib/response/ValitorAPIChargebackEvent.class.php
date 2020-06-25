@@ -1,8 +1,5 @@
 <?php
 
-/**
- * Class ValitorAPIChargebackEvent.
- */
 class ValitorAPIChargebackEvent
 {
     /** @var DateTime */
@@ -21,8 +18,6 @@ class ValitorAPIChargebackEvent
     private $additionalInfo = array();
 
     /**
-     * ValitorAPIChargebackEvent constructor.
-     *
      * @param SimpleXMLElement $xml
      *
      * @throws Exception

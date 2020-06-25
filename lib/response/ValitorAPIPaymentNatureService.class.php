@@ -1,8 +1,5 @@
 <?php
 
-/**
- * Class ValitorAPIPaymentNatureService.
- */
 class ValitorAPIPaymentNatureService
 {
     /** @var string|null */
@@ -19,8 +16,6 @@ class ValitorAPIPaymentNatureService
     private $simpleXmlElement;
 
     /**
-     * ValitorAPIPaymentNatureService constructor.
-     *
      * @param SimpleXMLElement $xml
      */
     public function __construct(SimpleXMLElement $xml)

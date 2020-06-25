@@ -1,8 +1,5 @@
 <?php
 
-/**
- * Class ValitorFOpenBasedHttpUtils.
- */
 class ValitorFOpenBasedHttpUtils implements IValitorHttpUtils
 {
     /** @var string */
@@ -13,8 +10,6 @@ class ValitorFOpenBasedHttpUtils implements IValitorHttpUtils
     private $connectionTimeout;
 
     /**
-     * ValitorFOpenBasedHttpUtils constructor.
-     *
      * @param int $timeoutSeconds
      * @param int $connectionTimeout
      */

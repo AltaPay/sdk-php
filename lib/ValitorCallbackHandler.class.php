@@ -4,8 +4,6 @@
  * The purpose of this class is to parse the callback parameters and return
  * a usefull response object from which your business logic can get information
  * for the decisions it needs to make.
- *
- * @author "Emanuel Holm Greisen" <phpclientapi@valitor.com>
  */
 class ValitorCallbackHandler
 {

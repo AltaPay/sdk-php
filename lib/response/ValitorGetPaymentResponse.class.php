@@ -1,8 +1,5 @@
 <?php
 
-/**
- * Class ValitorGetPaymentResponse.
- */
 class ValitorGetPaymentResponse extends ValitorAbstractPaymentResponse
 {
     /**

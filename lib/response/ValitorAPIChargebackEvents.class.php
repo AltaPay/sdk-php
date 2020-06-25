@@ -1,8 +1,5 @@
 <?php
 
-/**
- * Class ValitorAPIChargebackEvents.
- */
 class ValitorAPIChargebackEvents
 {
     /** @var SimpleXMLElement */
@@ -11,8 +8,6 @@ class ValitorAPIChargebackEvents
     private $chargebackEvents = array();
 
     /**
-     * ValitorAPIChargebackEvents constructor.
-     *
      * @param SimpleXMLElement $xml
      *
      * @throws Exception

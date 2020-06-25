@@ -3,8 +3,6 @@
 class ValitorRequestTimeoutException extends ValitorMerchantAPIException
 {
     /**
-     * ValitorRequestTimeoutException constructor.
-     *
      * @param string $url
      */
     public function __construct($url)

@@ -1,8 +1,5 @@
 <?php
 
-/**
- * Class ValitorAPITransactionsRequest.
- */
 class ValitorAPITransactionsRequest
 {
     /** @var string */

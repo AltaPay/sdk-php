@@ -1,16 +1,11 @@
 <?php
 
-/**
- * Class ValitorCreateInvoiceReservationResponse.
- */
 class ValitorCreateInvoiceReservationResponse extends ValitorAbstractResponse
 {
     /** @var string */
     private $result;
 
     /**
-     * ValitorCreateInvoiceReservationResponse constructor.
-     *
      * @param SimpleXMLElement $xml
      */
     public function __construct(SimpleXMLElement $xml)

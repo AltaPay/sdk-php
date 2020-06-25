@@ -1,8 +1,5 @@
 <?php
 
-/**
- * Class ValitorCreatePaymentRequestResponse.
- */
 class ValitorCreatePaymentRequestResponse extends ValitorAbstractResponse
 {
     /** @var string */
@@ -11,8 +8,6 @@ class ValitorCreatePaymentRequestResponse extends ValitorAbstractResponse
     private $result;
 
     /**
-     * ValitorCreatePaymentRequestResponse constructor.
-     *
      * @param SimpleXMLElement $xml
      */
     public function __construct(SimpleXMLElement $xml)

@@ -1,8 +1,5 @@
 <?php
 
-/**
- * Class ValitorFundingListResponse.
- */
 class ValitorFundingListResponse extends ValitorAbstractResponse
 {
     /** @var int */
@@ -11,8 +8,6 @@ class ValitorFundingListResponse extends ValitorAbstractResponse
     private $fundings = array();
 
     /**
-     * ValitorFundingListResponse constructor.
-     *
      * @param SimpleXMLElement $xml
      */
     public function __construct(SimpleXMLElement $xml)

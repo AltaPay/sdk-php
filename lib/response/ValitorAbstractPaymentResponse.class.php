@@ -1,8 +1,5 @@
 <?php
 
-/**
- * Class ValitorAbstractPaymentResponse.
- */
 abstract class ValitorAbstractPaymentResponse extends ValitorAbstractResponse
 {
     /** @var string */
@@ -17,8 +14,6 @@ abstract class ValitorAbstractPaymentResponse extends ValitorAbstractResponse
     protected $payments = array();
 
     /**
-     * ValitorAbstractPaymentResponse constructor.
-     *
      * @param SimpleXMLElement $xml
      *
      * @throws Exception

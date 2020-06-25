@@ -1,19 +1,21 @@
 <?php
 
+/**
+ * This class represents the following data structure.
+ *
+ * <PaymentInfos>
+ *      <PaymentInfo name="auxkey">aux data (&lt;&#xE6;&#xF8;&#xE5;&gt;)</PaymentInfo>
+ * </PaymentInfos>
+ */
 class ValitorAPIPaymentInfos
 {
     /** @var SimpleXMLElement
-     * <PaymentInfos>
-     * <PaymentInfo name="auxkey">aux data (&lt;&#xE6;&#xF8;&#xE5;&gt;)</PaymentInfo>
-     * </PaymentInfos>
      */
     private $simpleXmlElement;
     /** @var array<string, string> */
     private $infos = array();
 
     /**
-     * ValitorAPIPaymentInfos constructor.
-     *
      * @param SimpleXMLElement $xml
      */
     public function __construct(SimpleXMLElement $xml)

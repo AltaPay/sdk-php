@@ -1,15 +1,14 @@
 <?php
 
 /**
- * [ReconciliationIdentifier] => SimpleXMLElement Object
- * (
- * [Id] => 5a9d09b7-4784-4d47-aebc-c0ac63b56722
- * [Amount] => 105
- * [Type] => captured
- * [Date] => 2011-08-31T23:36:14+02:00
- * ).
+ * This class represents the following data structure.
  *
- * @author emanuel
+ * <ReconciliationIdentifier>
+ *     <Id>5a9d09b7-4784-4d47-aebc-c0ac63b56722</Id>
+ *     <Amount>105</Amount>
+ *     <Type>captured</Type>
+ *     <Date>2011-08-31T23:36:14+02:00</Date>
+ * </ReconciliationIdentifier>
  */
 class ValitorAPIReconciliationIdentifier
 {
@@ -23,8 +22,6 @@ class ValitorAPIReconciliationIdentifier
     private $date;
 
     /**
-     * ValitorAPIReconciliationIdentifier constructor.
-     *
      * @param SimpleXMLElement $xml
      */
     public function __construct(SimpleXMLElement $xml)

@@ -6,8 +6,6 @@ class ValitorXmlException extends Exception
     private $xml;
 
     /**
-     * ValitorXmlException constructor.
-     *
      * @param string           $message
      * @param SimpleXMLElement $xml
      */

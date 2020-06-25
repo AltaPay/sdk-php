@@ -1,5 +1,18 @@
 <?php
 
+/**
+ * This class represents the following data structure.
+ *
+ * <BillingAddress>
+ *     <Firstname><![CDATA[Kødpålæg >-) <script>alert(42);</script>]]></Firstname>
+ *     <Lastname><![CDATA[Lyn]]></Lastname>
+ *     <Address><![CDATA[Rosenkæret 13]]></Address>
+ *     <City><![CDATA[Søborg]]></City>
+ *     <Region><![CDATA[]]></Region>
+ *     <Country><![CDATA[DK]]></Country>
+ *     <PostalCode><![CDATA[2860]]></PostalCode>
+ * </BillingAddress>
+ */
 class ValitorAPIAddress
 {
     /** @var string */
@@ -18,18 +31,7 @@ class ValitorAPIAddress
     private $postalCode;
 
     /**
-     * ValitorAPIAddress constructor.
-     *
      * @param SimpleXMLElement $xml
-     *                              <BillingAddress>
-     *                              <Firstname><![CDATA[Kødpålæg >-) <script>alert(42);</script>]]></Firstname>
-     *                              <Lastname><![CDATA[Lyn]]></Lastname>
-     *                              <Address><![CDATA[Rosenkæret 13]]></Address>
-     *                              <City><![CDATA[Søborg]]></City>
-     *                              <Region><![CDATA[]]></Region>
-     *                              <Country><![CDATA[DK]]></Country>
-     *                              <PostalCode><![CDATA[2860]]></PostalCode>
-     *                              </BillingAddress>
      */
     public function __construct(SimpleXMLElement $xml)
     {

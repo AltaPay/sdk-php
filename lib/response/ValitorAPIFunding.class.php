@@ -1,23 +1,18 @@
 <?php
 
 /**
- * SimpleXMLElement Object
- * (
- * [Filename] => fundingDownloadTest
- * [ContractIdentifier] => FunctionalTestContractID
- * [Shops] => SimpleXMLElement Object
- * (
- * [Shop] => Valitor Functional Test Shop
- * ).
+ * This class represents the following data structure.
  *
- * [Acquirer] => TestAcquirer
- * [FundingDate] => 2010-12-24
- * [Amount] => 0.00 EUR
- * [CreatedDate] => 2013-01-19
- * [DownloadLink] => http://gateway.dev.valitor.com/merchant.php/API/fundingDownload?id=1
- * )
- *
- * @author emanuel
+ * <Filename>fundingDownloadTest</Filename>
+ * <ContractIdentifier>FunctionalTestContractID</ContractIdentifier>
+ * <Shops>
+ *     <Shop>Valitor Functional Test Shop</Shop>
+ * </Shops>
+ * <Acquirer>TestAcquirer</Acquirer>
+ * <FundingDate>2010-12-24</FundingDate>
+ * <Amount>0.00 EUR<Amount>
+ * <CreatedDate>2013-01-19</CreatedDate>
+ * <DownloadLink>http://gateway.dev.valitor.com/merchant.php/API/fundingDownload?id=1</DownloadLink>
  */
 class ValitorAPIFunding
 {
@@ -43,8 +38,6 @@ class ValitorAPIFunding
     private $referenceText;
 
     /**
-     * ValitorAPIFunding constructor.
-     *
      * @param SimpleXMLElement $xml
      */
     public function __construct(SimpleXMLElement $xml)

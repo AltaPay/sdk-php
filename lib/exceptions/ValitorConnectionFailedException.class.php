@@ -3,8 +3,6 @@
 class ValitorConnectionFailedException extends ValitorMerchantAPIException
 {
     /**
-     * ValitorConnectionFailedException constructor.
-     *
      * @param string $url
      * @param string $reason
      */

@@ -1,8 +1,5 @@
 <?php
 
-/**
- * Class ValitorAPICountryOfOrigin.
- */
 class ValitorAPICountryOfOrigin
 {
     const NotSet = 'NotSet';
@@ -19,8 +16,6 @@ class ValitorAPICountryOfOrigin
     private $source;
 
     /**
-     * ValitorAPICountryOfOrigin constructor.
-     *
      * @param SimpleXMLElement $xml
      */
     public function __construct(SimpleXMLElement $xml)
