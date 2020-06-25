@@ -27,7 +27,7 @@ class ValitorAPIChargebackEvents
     }
 
     /**
-     * @return ValitorAPIChargebackEvent
+     * @return ValitorAPIChargebackEvent|null
      */
     public function getNewest()
     {

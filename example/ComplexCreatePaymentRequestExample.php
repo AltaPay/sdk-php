@@ -75,8 +75,7 @@ $response = $api->createPaymentRequest(
     $transactionInfo,
     $orderLines
 );
-if ($response->wasSuccessful()) {
-    echo 'Redirect URL is: '.$response->getRedirectURL();
-} else {
+if (!$response->wasSuccessful()) {
     throw new Exception('Create payment failed: '.$response->getErrorMessage());
 }
+echo 'Redirect URL is: '.$response->getRedirectURL();

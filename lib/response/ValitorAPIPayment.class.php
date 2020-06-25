@@ -459,6 +459,8 @@ class ValitorAPIPayment
 
     /**
      * Gives the amount of the good(s) without surcharge.
+     *
+     * @return string
      */
     public function getInitiallyAmount()
     {

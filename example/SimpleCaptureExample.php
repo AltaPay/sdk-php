@@ -47,11 +47,10 @@ function reserveAmount($api, $terminal, $amount)
         $paymentType,
         $paymentSource
     );
-    if ($response->wasSuccessful()) {
-        return $response->getPrimaryPayment()->getId();
-    } else {
+    if (!$response->wasSuccessful()) {
         throw new Exception('Amount reservation failed: '.$response->getErrorMessage());
     }
+    return $response->getPrimaryPayment()->getId();
 }
 
 /**
@@ -59,8 +58,7 @@ function reserveAmount($api, $terminal, $amount)
  * @var ValitorCaptureResponse $response
  */
 $response = $api->captureReservation($transactionId);
-if ($response->wasSuccessful()) {
-    echo 'Successful capture';
-} else {
+if (!$response->wasSuccessful()) {
     throw new Exception('Capture failed: '.$response->getErrorMessage());
 }
+echo 'Successful capture';

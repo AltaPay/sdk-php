@@ -30,23 +30,25 @@ class ValitorHttpResponse
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getContentType()
     {
         if (preg_match('/^Content-Type: (.+)$/m', $this->header, $matches)) {
             return trim($matches[1]);
         }
+        return null;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getLocationHeader()
     {
         if (preg_match('/^Location: (.+)$/m', $this->header, $matches)) {
             return trim($matches[1]);
         }
+        return null;
     }
 
     /**

@@ -26,9 +26,8 @@ $response = $api->createPaymentRequest(
     null,
     $config
 );
-if ($response->wasSuccessful()) {
-    echo 'Successful createPaymentRequest'.PHP_EOL;
-    echo 'Redirect URL: '.$response->getRedirectURL();
-} else {
+if (!$response->wasSuccessful()) {
     throw new Exception('Create payment failed: '.$response->getErrorMessage());
 }
+echo 'Successful createPaymentRequest'.PHP_EOL;
+echo 'Redirect URL: '.$response->getRedirectURL();

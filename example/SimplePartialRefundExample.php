@@ -49,22 +49,20 @@ function reserveAndCapture($api, $terminal, $amount)
         $paymentType,
         $paymentSource
     );
-    if ($response->wasSuccessful()) {
-        $transactionId = $response->getPrimaryPayment()->getId();
-        /**
-         * Capture the amount based on the fetched transaction ID.
-         *
-         * @var ValitorCaptureResponse $captureResponse
-         */
-        $captureResponse = $api->captureReservation($transactionId);
-        if ($captureResponse->wasSuccessful()) {
-            return $transactionId;
-        } else {
-            throw new Exception('Capture failed: '.$response->getErrorMessage());
-        }
-    } else {
+    if (!$response->wasSuccessful()) {
         throw new Exception('Reservation failed: '.$response->getErrorMessage());
     }
+    $transactionId = $response->getPrimaryPayment()->getId();
+    /**
+     * Capture the amount based on the fetched transaction ID.
+     *
+     * @var ValitorCaptureResponse $captureResponse
+     */
+    $captureResponse = $api->captureReservation($transactionId);
+    if (!$captureResponse->wasSuccessful()) {
+        throw new Exception('Capture failed: '.$response->getErrorMessage());
+    }
+    return $transactionId;
 }
 
 /**
@@ -72,8 +70,7 @@ function reserveAndCapture($api, $terminal, $amount)
  * @var ValitorRefundResponse $response
  */
 $response = $api->refundCapturedReservation($transactionId, $partialAmount);
-if ($response->wasSuccessful()) {
-    echo 'Successful refund';
-} else {
+if (!$response->wasSuccessful()) {
     throw new Exception('Partial refund failed: '.$response->getErrorMessage());
 }
+echo 'Successful refund';

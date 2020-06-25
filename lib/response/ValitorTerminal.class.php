@@ -5,12 +5,16 @@
  */
 class ValitorTerminal
 {
+    /** @var string */
     private $title;
+    /** @var string */
     private $country;
     private $natures = array();
     private $currencies = array();
 
     /**
+     * @param string $title
+     *
      * @return void
      */
     public function setTitle($title)
@@ -19,7 +23,7 @@ class ValitorTerminal
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getTitle()
     {
@@ -27,6 +31,8 @@ class ValitorTerminal
     }
 
     /**
+     * @param string $country
+     *
      * @return void
      */
     public function setCountry($country)
@@ -35,6 +41,8 @@ class ValitorTerminal
     }
 
     /**
+     * @param string $nature
+     *
      * @return void
      */
     public function addNature($nature)
@@ -51,6 +59,8 @@ class ValitorTerminal
     }
 
     /**
+     * @param string $currency
+     *
      * @return void
      */
     public function addCurrency($currency)
@@ -65,8 +75,7 @@ class ValitorTerminal
     {
         if (!empty($this->currencies)) {
             return in_array('XXX', $this->currencies) || in_array($currency, $this->currencies);
-        } else {
-            return true;
         }
+        return true;
     }
 }

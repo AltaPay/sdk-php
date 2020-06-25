@@ -80,19 +80,17 @@ function reserveAmount($api, $terminal, $amount, $orderLines)
         null,
         $orderLines
     );
-    if ($response->wasSuccessful()) {
-        return $response->getPrimaryPayment()->getId();
-    } else {
+    if (!$response->wasSuccessful()) {
         throw new Exception('Amount reservation failed: '.$response->getErrorMessage());
     }
+    return $response->getPrimaryPayment()->getId();
 }
 
 /**
  * @var ValitorReleaseResponse $response
  */
 $response = $api->releaseReservation($transactionId);
-if ($response->wasSuccessful()) {
-    echo 'Successful release';
-} else {
+if (!$response->wasSuccessful()) {
     throw new Exception('Release operation failed: '.$response->getErrorMessage());
 }
+echo 'Successful release';

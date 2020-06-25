@@ -2,12 +2,17 @@
 
 class ValitorMerchantAPI
 {
+    /** @var string */
     private $baseURL;
+    /** @var string */
     private $username;
+    /** @var string */
     private $password;
+    /** @var bool */
     private $connected = false;
     /** @var IValitorCommunicationLogger */
     private $logger;
+    /** @var IValitorHttpUtils */
     private $httpUtil;
 
     /**
@@ -62,15 +67,16 @@ class ValitorMerchantAPI
     /**
      * Generated the masked pan for provided string.
      *
+     * @parm string $pan
+     *
      * @return string
      */
     private function maskPan($pan)
     {
         if (strlen($pan) >= 10) {
             return substr($pan, 0, 6).str_repeat('x', strlen($pan) - 10).substr($pan, -4);
-        } else {
-            return $pan;
         }
+        return $pan;
     }
 
     /**
@@ -130,23 +136,24 @@ class ValitorMerchantAPI
                     }
                 } elseif (stripos($response->getContentType(), 'text/csv') !== false) {
                     return $response->getContent();
-                } else {
-                    throw new ValitorInvalidResponseException('Non XML ContentType (was: '.$response->getContentType().')');
                 }
-            } elseif ($response->getHttpCode() == 401) {
-                throw new ValitorUnauthorizedAccessException($absoluteUrl, $this->username);
-            } else {
-                throw new ValitorInvalidResponseException('Non HTTP 200 Response: '.$response->getHttpCode());
+                throw new ValitorInvalidResponseException('Non XML ContentType (was: '.$response->getContentType().')');
             }
-        } elseif ($response->getConnectionResult() == ValitorHttpResponse::CONNECTION_REFUSED) {
-            throw new ValitorConnectionFailedException($absoluteUrl, 'Connection refused');
-        } elseif ($response->getConnectionResult() == ValitorHttpResponse::CONNECTION_TIMEOUT) {
-            throw new ValitorConnectionFailedException($absoluteUrl, 'Connection timed out');
-        } elseif ($response->getConnectionResult() == ValitorHttpResponse::CONNECTION_READ_TIMEOUT) {
-            throw new ValitorRequestTimeoutException($absoluteUrl);
-        } else {
-            throw new ValitorUnknownMerchantAPIException();
+            if ($response->getHttpCode() == 401) {
+                throw new ValitorUnauthorizedAccessException($absoluteUrl, $this->username);
+            }
+            throw new ValitorInvalidResponseException('Non HTTP 200 Response: '.$response->getHttpCode());
         }
+        if ($response->getConnectionResult() == ValitorHttpResponse::CONNECTION_REFUSED) {
+            throw new ValitorConnectionFailedException($absoluteUrl, 'Connection refused');
+        }
+        if ($response->getConnectionResult() == ValitorHttpResponse::CONNECTION_TIMEOUT) {
+            throw new ValitorConnectionFailedException($absoluteUrl, 'Connection timed out');
+        }
+        if ($response->getConnectionResult() == ValitorHttpResponse::CONNECTION_READ_TIMEOUT) {
+            throw new ValitorRequestTimeoutException($absoluteUrl);
+        }
+        throw new ValitorUnknownMerchantAPIException();
     }
 
     /**
@@ -210,6 +217,24 @@ class ValitorMerchantAPI
         return false;
     }
 
+    /**
+     * @param string      $apiMethod
+     * @param string      $terminal
+     * @param string      $shopOrderId
+     * @param float       $amount
+     * @param string      $currency
+     * @param string      $creditCardNumber
+     * @param string      $creditCardExpiryYear
+     * @param string      $creditCardExpiryMonth
+     * @param string|null $creditCardToken
+     * @param string      $cvc
+     * @param string      $type
+     * @param string      $paymentSource
+     * @param array       $customerInfo
+     * @param array       $transactionInfo
+     *
+     * @return ValitorOmniReservationResponse
+     */
     private function reservationInternal(
         $apiMethod,
         $terminal,
@@ -271,6 +296,18 @@ class ValitorMerchantAPI
 
     /**
      * Fixed amount reservation.
+     *
+     * @param string $terminal
+     * @param string $shopOrderId
+     * @param float  $amount
+     * @param string $currency
+     * @param string $creditCardNumber
+     * @param string $creditCardExpiryYear
+     * @param string $creditCardExpiryMonth
+     * @param string $cvc
+     * @param string $paymentSource
+     * @param array  $customerInfo
+     * @param array  $transactionInfo
      *
      * @return ValitorOmniReservationResponse
      */
@@ -391,6 +428,11 @@ class ValitorMerchantAPI
     }
 
     /**
+     * @param string      $terminal
+     * @param string      $shopOrderId
+     * @param float       $amount
+     * @param string      $currency
+     * @param string      $creditCardToken
      * @param string|null $cvc
      * @param string      $paymentSource
      * @param array       $customerInfo
@@ -431,7 +473,11 @@ class ValitorMerchantAPI
      * @param string $terminal
      * @param string $shopOrderId
      * @param string $currency
+     * @param string $creditCardNumber
+     * @param string $creditCardExpiryYear
+     * @param string $creditCardExpiryMonth
      * @param string $cvc
+     * @param string $paymentSource
      * @param array  $customerInfo
      * @param array  $transactionInfo
      *
@@ -505,6 +551,7 @@ class ValitorMerchantAPI
     }
 
     /**
+     * @param string     $paymentId
      * @param float|null $amount
      * @param array      $orderLines
      * @param float|null $salesTax
@@ -545,6 +592,7 @@ class ValitorMerchantAPI
     }
 
     /**
+     * @param string                                       $paymentId
      * @param float|null                                   $amount
      * @param array<int, array<string, float|string>>|null $orderLines
      * @param string|null                                  $reconciliationIdentifier
@@ -1009,6 +1057,7 @@ class ValitorMerchantAPI
     }
 
     /**
+     * @param string     $subscriptionId
      * @param string     $reconciliationIdentifier
      * @param float|null $amount
      *
@@ -1037,6 +1086,7 @@ class ValitorMerchantAPI
     }
 
     /**
+     * @param string     $subscriptionId
      * @param float|null $amount
      *
      * @throws ValitorConnectionFailedException
@@ -1176,6 +1226,9 @@ class ValitorMerchantAPI
     }
 
     /**
+     * @param array $customerInfo
+     * @param array $args
+     *
      * @throws ValitorMerchantAPIException
      *
      * @return void

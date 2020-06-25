@@ -41,12 +41,10 @@ class ValitorFOpenBasedHttpUtils implements IValitorHttpUtils
             $response->setHeader($http_response_header);
             $response->setContent($content);
             $response->setConnectionResult(ValitorHttpResponse::CONNECTION_OKAY);
+        } elseif ($this->streamState == 'NOT_CONNECTED') {
+            $response->setConnectionResult(ValitorHttpResponse::CONNECTION_REFUSED);
         } else {
-            if ($this->streamState == 'NOT_CONNECTED') {
-                $response->setConnectionResult(ValitorHttpResponse::CONNECTION_REFUSED);
-            } else {
-                $response->setConnectionResult(ValitorHttpResponse::CONNECTION_READ_TIMEOUT);
-            }
+            $response->setConnectionResult(ValitorHttpResponse::CONNECTION_READ_TIMEOUT);
         }
 
         return $response;

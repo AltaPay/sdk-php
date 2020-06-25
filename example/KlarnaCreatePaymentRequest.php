@@ -61,10 +61,9 @@ $response = $api->createPaymentRequest(
     $orderLines
 );
 
-if ($response->wasSuccessful()) {
-    // Access the url below and use the social security number 0801363945
-    // to complete the Klarna order
-    echo $response->getRedirectURL();
-} else {
+if (!$response->wasSuccessful()) {
     throw new Exception('Could not create the payment request: '.$response->getErrorMessage());
 }
+// Access the url below and use the social security number 0801363945
+// to complete the Klarna order
+echo $response->getRedirectURL();
