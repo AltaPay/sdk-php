@@ -1,31 +1,39 @@
 <?php
 
+/**
+ * This class represents the following data structure.
+ *
+ * <BillingAddress>
+ *     <Firstname><![CDATA[Kødpålæg >-) <script>alert(42);</script>]]></Firstname>
+ *     <Lastname><![CDATA[Lyn]]></Lastname>
+ *     <Address><![CDATA[Rosenkæret 13]]></Address>
+ *     <City><![CDATA[Søborg]]></City>
+ *     <Region><![CDATA[]]></Region>
+ *     <Country><![CDATA[DK]]></Country>
+ *     <PostalCode><![CDATA[2860]]></PostalCode>
+ * </BillingAddress>
+ */
 class ValitorAPIAddress
 {
-    /*
-    <BillingAddress>
-    <Firstname><![CDATA[Kødpålæg >-) <script>alert(42);</script>]]></Firstname>
-    <Lastname><![CDATA[Lyn]]></Lastname>
-    <Address><![CDATA[Rosenkæret 13]]></Address>
-    <City><![CDATA[Søborg]]></City>
-    <Region><![CDATA[]]></Region>
-    <Country><![CDATA[DK]]></Country>
-    <PostalCode><![CDATA[2860]]></PostalCode>
-    </BillingAddress>
-    */
+    /** @var string */
     private $firstName;
+    /** @var string */
     private $lastName;
+    /** @var string */
     private $address;
+    /** @var string */
     private $city;
+    /** @var string */
     private $region;
+    /** @var string */
     private $country;
+    /** @var string */
     private $postalCode;
 
     /**
-     * ValitorAPIAddress constructor.
-     * @param SimpleXmlElement $xml
+     * @param SimpleXMLElement $xml
      */
-    public function __construct(SimpleXmlElement $xml)
+    public function __construct(SimpleXMLElement $xml)
     {
         $attrs = $xml->attributes();
 

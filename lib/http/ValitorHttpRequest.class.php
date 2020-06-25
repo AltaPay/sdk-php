@@ -1,27 +1,34 @@
 <?php
 
-/**
- * Class ValitorHttpRequest
- */
 class ValitorHttpRequest
 {
+    /** @var string */
     private $url;
+    /** @var string */
     private $method = 'GET';
+    /** @var string[] */
     private $parameters = array();
+    /** @var string|null */
     private $postContent;
+    /** @var string|null */
     private $user;
+    /** @var string|null */
     private $pass;
+    /** @var string */
     private $logPaymentId;
+    /** @var string */
     private $logPaymentRequestId;
+    /** @var string */
     private $cookie;
+    /** @var string[] */
     private $headers = array();
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getUrl()
     {
-        return $this->url; 
+        return $this->url;
     }
 
     /**
@@ -29,147 +36,167 @@ class ValitorHttpRequest
      */
     public function getMethod()
     {
-        return $this->method; 
+        return $this->method;
     }
 
     /**
-     * @return array
+     * @return string[]
      */
     public function getParameters()
     {
-        return $this->parameters; 
+        return $this->parameters;
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
     public function getPostContent()
     {
-        return $this->postContent; 
+        return $this->postContent;
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
     public function getUser()
     {
-        return $this->user; 
+        return $this->user;
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
     public function getPass()
     {
-        return $this->pass; 
+        return $this->pass;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getLogPaymentId()
     {
-        return $this->logPaymentId; 
+        return $this->logPaymentId;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getLogPaymentRequestId()
     {
-        return $this->logPaymentRequestId; 
+        return $this->logPaymentRequestId;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getCookie()
     {
-        return $this->cookie; 
+        return $this->cookie;
     }
 
     /**
-     * @return array
+     * @return string[]
      */
     public function getHeaders()
     {
-        return $this->headers; 
+        return $this->headers;
     }
 
     /**
-     * @param $x
+     * @param string $x
+     *
+     * @return void
      */
     public function setUrl($x)
     {
-        $this->url = $x; 
+        $this->url = $x;
     }
 
     /**
-     * @param $x
+     * @param string $x
+     *
+     * @return void
      */
     public function setMethod($x)
     {
-        $this->method = $x; 
+        $this->method = $x;
     }
 
     /**
-     * @param $x
+     * @param string[] $x
+     *
+     * @return void
      */
     public function setParameters($x)
     {
-        $this->parameters = $x; 
+        $this->parameters = $x;
     }
 
     /**
-     * @param $x
+     * @param string $x
+     *
+     * @return void
      */
     public function setPostContent($x)
     {
-        $this->postContent = $x; 
+        $this->postContent = $x;
     }
 
     /**
-     * @param $x
+     * @param string $x
+     *
+     * @return void
      */
     public function setUser($x)
     {
-        $this->user = $x; 
+        $this->user = $x;
     }
 
     /**
-     * @param $x
+     * @param string $x
+     *
+     * @return void
      */
     public function setPass($x)
     {
-        $this->pass = $x; 
+        $this->pass = $x;
     }
 
     /**
-     * @param $x
+     * @param string $x
+     *
+     * @return void
      */
     public function setLogPaymentId($x)
     {
-        $this->logPaymentId = $x; 
+        $this->logPaymentId = $x;
     }
 
     /**
-     * @param $x
+     * @param string $x
+     *
+     * @return void
      */
     public function setLogPaymentRequestId($x)
     {
-        $this->logPaymentRequestId = $x; 
+        $this->logPaymentRequestId = $x;
     }
 
     /**
-     * @param $x
+     * @param string $x
+     *
+     * @return void
      */
     public function setCookie($x)
     {
-        $this->cookie = $x; 
+        $this->cookie = $x;
     }
 
     /**
-     * @param $header
+     * @param string $header
+     *
+     * @return void
      */
     public function addHeader($header)
     {

@@ -1,115 +1,65 @@
 <?php
-require_once(dirname(__FILE__) . '/../lib/bootstrap_integration.php');
 
-class ValitorCurlBasedHttpUtils_ValitorNetworkProblemTest extends MockitTestCase
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\TestCase;
+
+class ValitorCurlBasedHttpUtils_ValitorNetworkProblemTest extends TestCase
 {
-	/**
-	 * ArrayCachingLogger
-	 */
-	private $logger;
+    use MockeryPHPUnitIntegration;
 
-	/**
-	 * @var ValitorMerchantAPI
-	 */
-	private $merchantApi;
-	/**
-	 * @var ValitorCurlBasedHttpUtils
-	 */
-	private $httpUtils;
+    /** @var ArrayCachingLogger */
+    private $logger;
 
-	public function setup()
-	{
-		$this->logger = new ArrayCachingLogger();
-		$this->httpUtils = new ValitorCurlBasedHttpUtils(5, 3, false);
-	}
+    /** @var ValitorMerchantAPI */
+    private $merchantApi;
+    /** @var ValitorCurlBasedHttpUtils */
+    private $httpUtils;
 
-	/**
-	 * @expectedException ValitorConnectionFailedException
-	 */
-	public function testConnectionRefused()
-	{
-		$this->merchantApi = new ValitorMerchantAPI(
-			'http://localhost:28888/',
-			'username',
-			'password',
-			$this->logger,
-			$this->httpUtils
-		);
-		$response = $this->merchantApi->login();
-	}
+    protected function setUp(): void
+    {
+        $this->logger = new ArrayCachingLogger();
+        $this->httpUtils = new ValitorCurlBasedHttpUtils(5, 3, false);
+    }
 
-	/**
-	 * @expectedException ValitorConnectionFailedException
-	 */
-	public function testNoConnection()
-	{
-		$this->merchantApi = new ValitorMerchantAPI(
-			'http://testgateway.valitor.com:28888/',
-			'username',
-			'password',
-			$this->logger,
-			$this->httpUtils
-		);
-		$response = $this->merchantApi->login();
-	}
+    public function testNoConnection(): void
+    {
+        $this->expectException(ValitorConnectionFailedException::class);
 
-	/**
-	 * @expectedException ValitorRequestTimeoutException
-	 */
-	public function testRequestTimeout()
-	{
-		$this->merchantApi = new ValitorMerchantAPI(
-			'https://testbank.valitor.com/Sleep?time=21&',
-			'username',
-			'password',
-			$this->logger,
-			$this->httpUtils
-		);
-		$this->merchantApi->login();
-	}
+        $this->merchantApi = new ValitorMerchantAPI(
+            'http://testgateway.valitor.com:28888/',
+            'username',
+            'password',
+            $this->logger,
+            $this->httpUtils
+        );
+        $response = $this->merchantApi->login();
+    }
 
-	/**
-	 * @expectedException ValitorInvalidResponseException
-	 */
-	public function testNonXMLResponse()
-	{
-		$this->merchantApi = new ValitorMerchantAPI(
-			'https://testbank.valitor.com',
-			'username',
-			'password',
-			$this->logger,
-			$this->httpUtils
-		);
-		$response = $this->merchantApi->login();
-	}
+    public function testRequestTimeout(): void
+    {
+        $this->expectException(ValitorRequestTimeoutException::class);
 
-	/**
-	 * @expectedException ValitorUnauthorizedAccessException
-	 */
-	public function testUnauthorizedResponse()
-	{
-		$this->merchantApi = new ValitorMerchantAPI(
-			'https://testgateway.valitor.com/',
-			'username',
-			'password',
-			$this->logger,
-			$this->httpUtils
-		);
-		$response = $this->merchantApi->login();
-	}
+        $this->merchantApi = new ValitorMerchantAPI(
+            'https://testbank.valitor.com/Sleep?time=21&',
+            'username',
+            'password',
+            $this->logger,
+            $this->httpUtils
+        );
+        $this->merchantApi->login();
+    }
 
-	/**
-	 * @expectedException ValitorInvalidResponseException
-	 */
-	public function testNonHTTP200Response()
-	{
-		$this->merchantApi = new ValitorMerchantAPI(
-			'http://www.valitor.com/',
-			'username',
-			'password',
-			$this->logger,
-			$this->httpUtils
-		);
-		$response = $this->merchantApi->login();
-	}
+    public function testUnauthorizedResponse(): void
+    {
+        $this->expectException(ValitorUnauthorizedAccessException::class);
+
+        $this->merchantApi = new ValitorMerchantAPI(
+            'https://testgateway.valitor.com/',
+            'username',
+            'password',
+            $this->logger,
+            $this->httpUtils
+        );
+        $response = $this->merchantApi->login();
+    }
 }

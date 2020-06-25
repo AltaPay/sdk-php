@@ -1,38 +1,35 @@
 <?php
 
-/**
- * Class ValitorAPIChargebackEvents
- */
 class ValitorAPIChargebackEvents
 {
+    /** @var SimpleXMLElement */
     private $simpleXmlElement;
+    /** @var ValitorAPIChargebackEvent[] */
     private $chargebackEvents = array();
 
     /**
-     * ValitorAPIChargebackEvents constructor.
-     * @param SimpleXmlElement $xml
+     * @param SimpleXMLElement $xml
+     *
      * @throws Exception
      */
-    public function __construct(SimpleXmlElement $xml)
+    public function __construct(SimpleXMLElement $xml)
     {
         $this->simpleXmlElement = $xml;
-        if(isset($xml->ChargebackEvent)) {
-            foreach($xml->ChargebackEvent as $chargebackEvent)
-            {
+        if (isset($xml->ChargebackEvent)) {
+            foreach ($xml->ChargebackEvent as $chargebackEvent) {
                 $this->chargebackEvents[] = new ValitorAPIChargebackEvent($chargebackEvent);
             }
         }
     }
 
     /**
-     * @return ValitorAPIChargebackEvent
+     * @return ValitorAPIChargebackEvent|null
      */
     public function getNewest()
     {
-        $newest = null; /* @var $newest ValitorAPIChargebackEvent */
-        foreach($this->chargebackEvents as $chargebackEvent) /* @var $chargebackEvent ValitorAPIChargebackEvent */
-        {
-            if(is_null($newest) || $newest->getDate()->getTimestamp() < $chargebackEvent->getDate()->getTimestamp()) {
+        $newest = null;
+        foreach ($this->chargebackEvents as $chargebackEvent) {
+            if ($newest === null || $newest->getDate()->getTimestamp() < $chargebackEvent->getDate()->getTimestamp()) {
                 $newest = $chargebackEvent;
             }
         }

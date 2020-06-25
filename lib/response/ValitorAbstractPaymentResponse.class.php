@@ -1,58 +1,57 @@
 <?php
 
-if(!defined('VALITOR_API_ROOT')) {
-    define('VALITOR_API_ROOT', dirname(__DIR__));
-}
-
-require_once VALITOR_API_ROOT. DIRECTORY_SEPARATOR .'response'. DIRECTORY_SEPARATOR .'ValitorAbstractResponse.class.php';
-require_once VALITOR_API_ROOT. DIRECTORY_SEPARATOR .'response'. DIRECTORY_SEPARATOR .'ValitorAPIPayment.class.php';
-
-/**
- * Class ValitorAbstractPaymentResponse
- */
 abstract class ValitorAbstractPaymentResponse extends ValitorAbstractResponse
 {
+    /** @var string */
     private $result;
-    private $merchantErrorMessage, $cardHolderErrorMessage, $cardHolderMessageMustBeShown;
+    /** @var string */
+    private $merchantErrorMessage;
+    /** @var string */
+    private $cardHolderErrorMessage;
+    /** @var string */
+    private $cardHolderMessageMustBeShown;
+    /** @var ValitorAPIPayment[] */
     protected $payments = array();
 
     /**
-     * ValitorAbstractPaymentResponse constructor.
-     * @param SimpleXmlElement $xml
+     * @param SimpleXMLElement $xml
+     *
      * @throws Exception
      */
-    public function __construct(SimpleXmlElement $xml)
+    public function __construct(SimpleXMLElement $xml)
     {
         parent::__construct($xml);
         $this->initFromXml($xml);
     }
 
     /**
-     *
+     * @return void
      */
     public function __wakeup()
     {
-        $this->initFromXml(new SimpleXmlElement($this->xml));
+        $this->initFromXml(new SimpleXMLElement($this->xml));
     }
 
     /**
-     * @param SimpleXmlElement $xml
+     * @param SimpleXMLElement $xml
+     *
      * @throws Exception
+     *
+     * @return void
      */
-    private function initFromXml(SimpleXmlElement $xml)
+    private function initFromXml(SimpleXMLElement $xml)
     {
         $this->payments = array();
-        if($this->getErrorCode() === '0') {
-            $this->result = strval($xml->Body->Result);
+        if ($this->getErrorCode() === '0') {
+            $this->result = (string)($xml->Body->Result);
             $this->merchantErrorMessage = (string)$xml->Body->MerchantErrorMessage;
             $this->cardHolderErrorMessage = (string)$xml->Body->CardHolderErrorMessage;
             $this->cardHolderMessageMustBeShown = (string)$xml->Body->CardHolderMessageMustBeShown;
-            
+
             $this->parseBody($xml->Body);
 
-            if(isset($xml->Body->Transactions->Transaction)) {
-                foreach($xml->Body->Transactions->Transaction as $transactionXml)
-                {
+            if (isset($xml->Body->Transactions->Transaction)) {
+                foreach ($xml->Body->Transactions->Transaction as $transactionXml) {
                     $this->addPayment(new ValitorAPIPayment($transactionXml));
                 }
             }
@@ -61,12 +60,14 @@ abstract class ValitorAbstractPaymentResponse extends ValitorAbstractResponse
 
     /**
      * @param ValitorAPIPayment $payment
+     *
+     * @return void
      */
     private function addPayment(ValitorAPIPayment $payment)
     {
         $this->payments[] = $payment;
     }
-    
+
     /**
      * @return ValitorAPIPayment[]
      */
@@ -74,9 +75,9 @@ abstract class ValitorAbstractPaymentResponse extends ValitorAbstractResponse
     {
         return $this->payments;
     }
-    
+
     /**
-     * @return ValitorAPIPayment
+     * @return ValitorAPIPayment|null
      */
     public function getPrimaryPayment()
     {
@@ -132,8 +133,9 @@ abstract class ValitorAbstractPaymentResponse extends ValitorAbstractResponse
     }
 
     /**
-     * @param SimpleXmlElement $body
+     * @param SimpleXMLElement $body
+     *
      * @return mixed
      */
-    abstract protected function parseBody(SimpleXmlElement $body);
+    abstract protected function parseBody(SimpleXMLElement $body);
 }

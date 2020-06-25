@@ -1,141 +1,139 @@
 <?php
 
-if(!defined('VALITOR_API_ROOT')) {
-    define('VALITOR_API_ROOT', dirname(__DIR__));
-}
-
-require_once VALITOR_API_ROOT. DIRECTORY_SEPARATOR .'response'. DIRECTORY_SEPARATOR .'ValitorAPIReconciliationIdentifier.class.php';
-
 /**
-   [Transaction] =&gt; SimpleXMLElement Object
-       (
-           [TransactionId] =&gt; 5
-           [AuthType] =&gt; payment
-           [CardStatus] =&gt; Valid
-           [CreditCardToken] =&gt; ce657182528301c19032840ba6682bdeb5b342d8
-           [CreditCardMaskedPan] =&gt; 555555*****5444
-           [IsTokenized] =&gt; true
-           [ThreeDSecureResult] =&gt; Not_Attempted
-           [BlacklistToken] =&gt; 9484bac14dfd5dbb27329f81dcb12ceb8ed7703e
-           [ShopOrderId] =&gt; qoute_247
-           [Shop] =&gt; Valitor Functional Test Shop
-           [Terminal] =&gt; Valitor Dev Terminal
-           [TransactionStatus] =&gt; preauth
-           [MerchantCurrency] =&gt; 978
-           [CardHolderCurrency] =&gt; 978
-           [ReservedAmount] =&gt; 14.10
-           [CapturedAmount] =&gt; 0
-           [RefundedAmount] =&gt; 0
-           [RecurringMaxAmount] =&gt; 0
-           [CreatedDate] =&gt; 2012-01-06 15:23:12
-           [UpdatedDate] =&gt; 2012-01-06 15:23:12
-           [PaymentNature] =&gt; CreditCard
-           [PaymentSource] = &gt; eCommerce
-           [PaymentNatureService] =&gt; SimpleXMLElement Object
-               (
-                   [@attributes] =&gt; Array
-                       (
-                           [name] =&gt; TestAcquirer
-                       )
-
-                   [SupportsRefunds] =&gt; true
-                   [SupportsRelease] =&gt; true
-                   [SupportsMultipleCaptures] =&gt; true
-                   [SupportsMultipleRefunds] =&gt; true
-               )
-
-           [FraudRiskScore] =&gt; 14
-           [FraudExplanation] =&gt; For the test fraud service the risk score is always equal mod 101 of the created amount for the payment
-           [TransactionInfo] =&gt; SimpleXMLElement Object
-               (
-               )
-
-           [CustomerInfo] =&gt; SimpleXMLElement Object
-               (
-                   [UserAgent] =&gt; SimpleXMLElement Object
-                       (
-                       )
-
-                   [IpAddress] =&gt; 127.0.0.1
-               )
-
-           [ReconciliationIdentifiers] =&gt; SimpleXMLElement Object
-               (
-               )
+ * This class represents the following data structure.
  *
- * @author emanuel
- */
-
-
-/**
- * Class ValitorAPIPayment
+ * <Transaction>
+ *     <TransactionId>5</TransactionId>
+ *     <AuthType>payment</AuthType>
+ *     <CardStatus>Valid</CardStatus>
+ *     <CreditCardToken>ce657182528301c19032840ba6682bdeb5b342d8</CreditCardToken>
+ *     <CreditCardMaskedPan>555555*****5444</CreditCardMaskedPan>
+ *     <IsTokenized>true</IsTokenized>
+ *     <ThreeDSecureResult>Not_Attempted</ThreeDSecureResult>
+ *     <BlacklistToken>9484bac14dfd5dbb27329f81dcb12ceb8ed7703e</BlacklistToken>
+ *     <ShopOrderId>qoute_247</ShopOrderId>
+ *     <Shop>Valitor Functional Test Shop</Shop>
+ *     <Terminal>Valitor Dev Terminal</Terminal>
+ *     <TransactionStatus>preauth</TransactionStatus>
+ *     <MerchantCurrency>978</MerchantCurrency>
+ *     <CardHolderCurrency>978</CardHolderCurrency>
+ *     <ReservedAmount>14.10</ReservedAmount>
+ *     <CapturedAmount>0</CapturedAmount>
+ *     <RefundedAmount>0</RefundedAmount>
+ *     <RecurringMaxAmount>0</RecurringMaxAmount>
+ *     <CreatedDate>2012-01-06 15:23:12</CreatedDate>
+ *     <UpdatedDate>2012-01-06 15:23:12</UpdatedDate>
+ *     <PaymentNature>CreditCard</PaymentNature>
+ *     <PaymentSource>eCommerce</PaymentSource>
+ *     <PaymentNatureService name="TestAcquirer">
+ *         <SupportsRelease>true</SupportsRelease>
+ *         <SupportsMultipleCaptures>true</SupportsMultipleCaptures>
+ *         <SupportsMultipleRefunds>true</SupportsMultipleRefunds>
+ *     </PaymentNatureService>
+ *     <FraudRiskScore>14</FraudRiskScore>
+ *     <FraudExplanation>For the test fraud service the risk score is always equal mod 101 of the created amount for the payment</FraudExplanation>
+ *     <TransactionInfo></TransactionInfo>
+ *     <CustomerInfo>
+ *         <UserAgent></UserAgent>
+ *         <IpAddress>127.0.0.1</IpAddress>
+ *     </CustomerInfo>
+ *     <ReconciliationIdentifiers></ReconciliationIdentifiers>
+ * </Transaction>
  */
 class ValitorAPIPayment
 {
+    /** @var SimpleXMLElement */
     private $simpleXmlElement;
 
     // Remember to reflect additions within this->getCurrentXml()
+    /** @var string */
     private $transactionId;
+    /** @var string */
     private $uuid;
+    /** @var string */
     private $authType;
+    /** @var string */
     private $creditCardMaskedPan;
+    /** @var string */
     private $creditCardExpiryMonth;
+    /** @var string */
     private $creditCardExpiryYear;
+    /** @var string */
     private $creditCardToken;
+    /** @var bool */
     private $isTokenized;
+    /** @var string */
     private $cardStatus;
+    /** @var string */
     private $shopOrderId;
+    /** @var string */
     private $shop;
+    /** @var string */
     private $terminal;
+    /** @var string */
     private $transactionStatus;
+    /** @var string */
     private $reasonCode;
+    /** @var string */
     private $currency;
+    /** @var string */
     private $addressVerification;
+    /** @var string */
     private $addressVerificationDescription;
-    
+
+    /** @var string */
     private $reservedAmount;
+    /** @var string */
     private $capturedAmount;
+    /** @var string */
     private $refundedAmount;
+    /** @var string */
     private $recurringMaxAmount;
+    /** @var string */
     private $surchargeAmount;
 
+    /** @var string */
     private $paymentSchemeName;
+    /** @var string */
     private $paymentNature;
+    /** @var string */
     private $paymentSource;
+    /** @var ValitorAPIPaymentNatureService */
     private $paymentNatureService;
 
+    /** @var string */
     private $fraudRiskScore;
+    /** @var string */
     private $fraudExplanation;
+    /** @var string */
     private $fraudRecommendation;
 
+    /** @var string */
     private $createdDate;
+    /** @var string */
     private $updatedDate;
 
     // Remember to reflect additions within this->getCurrentXml()
-    /**
-     * @var ValitorAPICustomerInfo
-     */
+    /** @var ValitorAPICustomerInfo */
     private $customerInfo;
-    
-    /**
-     * @var ValitorAPIPaymentInfos
-     */
+
+    /** @var ValitorAPIPaymentInfos */
     private $paymentInfos;
-    
+
+    /** @var ValitorAPIReconciliationIdentifier[] */
     private $reconciliationIdentifiers = array();
 
-    /**
-     * @var ValitorAPIChargebackEvents
-     */
+    /** @var ValitorAPIChargebackEvents */
     private $chargebackEvents;
     // Remember to reflect additions within this->getCurrentXml()
 
     /**
-     * ValitorAPIPayment constructor.
-     * @param SimpleXmlElement $xml
+     * @param SimpleXMLElement $xml
+     *
      * @throws Exception
      */
-    public function __construct(SimpleXmlElement $xml)
+    public function __construct(SimpleXMLElement $xml)
     {
         $this->simpleXmlElement = $xml->saveXML();
         $this->transactionId = (string)$xml->TransactionId;
@@ -145,7 +143,7 @@ class ValitorAPIPayment
         $this->creditCardExpiryMonth = (string)$xml->CreditCardExpiry->Month;
         $this->creditCardExpiryYear = (string)$xml->CreditCardExpiry->Year;
         $this->creditCardToken = (string)$xml->CreditCardToken;
-        $this->isTokenized = (boolean)$xml->IsTokenized;
+        $this->isTokenized = (bool)$xml->IsTokenized;
         $this->cardStatus = (string)$xml->CardStatus;
         $this->shopOrderId = (string)$xml->ShopOrderId;
         $this->shop = (string)$xml->Shop;
@@ -160,7 +158,7 @@ class ValitorAPIPayment
         $this->capturedAmount = (string)$xml->CapturedAmount;
         $this->refundedAmount = (string)$xml->RefundedAmount;
         $this->recurringMaxAmount = (string)$xml->RecurringMaxAmount;
-        $this->surchargeAmount = (String)$xml->SurchargeAmount;
+        $this->surchargeAmount = (string)$xml->SurchargeAmount;
 
         $this->createdDate = (string)$xml->CreatedDate;
         $this->updatedDate = (string)$xml->UpdatedDate;
@@ -178,9 +176,8 @@ class ValitorAPIPayment
         $this->paymentInfos = new ValitorAPIPaymentInfos($xml->PaymentInfos);
         $this->chargebackEvents = new ValitorAPIChargebackEvents($xml->ChargebackEvents);
 
-        if(isset($xml->ReconciliationIdentifiers->ReconciliationIdentifier)) {
-            foreach($xml->ReconciliationIdentifiers->ReconciliationIdentifier as $reconXml)
-            {
+        if (isset($xml->ReconciliationIdentifiers->ReconciliationIdentifier)) {
+            foreach ($xml->ReconciliationIdentifiers->ReconciliationIdentifier as $reconXml) {
                 $this->reconciliationIdentifiers[] = new ValitorAPIReconciliationIdentifier($reconXml);
             }
         }
@@ -209,7 +206,7 @@ class ValitorAPIPayment
     {
         return $this->getCurrentStatus() == 'released';
     }
-    
+
     /**
      * @return ValitorAPIReconciliationIdentifier
      */
@@ -321,7 +318,7 @@ class ValitorAPIPayment
     {
         return $this->paymentSchemeName;
     }
-    
+
     /**
      * @return ValitorAPIPaymentNatureService
      */
@@ -363,8 +360,9 @@ class ValitorAPIPayment
     }
 
     /**
-     * @param $keyName
-     * @return mixed
+     * @param string $keyName
+     *
+     * @return string|null
      */
     public function getPaymentInfo($keyName)
     {
@@ -400,7 +398,7 @@ class ValitorAPIPayment
      */
     public function getCapturedAmount()
     {
-        return $this->capturedAmount; 
+        return $this->capturedAmount;
     }
 
     /**
@@ -439,23 +437,25 @@ class ValitorAPIPayment
      * Returns an XML representation of the payment as used to instantiate the object. It does not reflect any subsequent changes.
      *
      * @see    ValitorAPIPayment::getCurrentXml() for an up-to-date XML representation of the payment
+     *
      * @return SimpleXMLElement an XML representation of the object as it was instantiated
      */
     public function getXml()
     {
         return $this->simpleXmlElement;
     }
-    
+
     /**
-     * Returns an up-to-date XML representation of the payment
+     * Returns an up-to-date XML representation of the payment.
      *
      * @see    ValitorAPIPayment::getXml() for an XML representation of the payment as used to instantiate the object
+     *
      * @return SimpleXMLElement an up-to-date XML representation of the payment
      */
     public function getCurrentXml()
     {
         $simpleXmlElement = new SimpleXMLElement('<ValitorAPIPayment></ValitorAPIPayment>');
-        
+
         $simpleXmlElement->addChild('TransactionId', $this->transactionId);
         $simpleXmlElement->addChild('PaymentId', $this->uuid);
         $simpleXmlElement->addChild('AuthType', $this->authType);
@@ -473,28 +473,28 @@ class ValitorAPIPayment
         $simpleXmlElement->addChild('MerchantCurrency', $this->currency);
         $simpleXmlElement->addChild('AddressVerification', $this->addressVerification);
         $simpleXmlElement->addChild('AddressVerificationDescription', $this->addressVerificationDescription);
-        
+
         $simpleXmlElement->addChild('ReservedAmount', $this->reservedAmount);
         $simpleXmlElement->addChild('CapturedAmount', $this->capturedAmount);
         $simpleXmlElement->addChild('RefundedAmount', $this->refundedAmount);
         $simpleXmlElement->addChild('RecurringMaxAmount', $this->recurringMaxAmount);
         $simpleXmlElement->addChild('SurchargeAmount', $this->surchargeAmount);
-        
+
         $simpleXmlElement->addChild('PaymentSchemeName', $this->paymentSchemeName);
         $simpleXmlElement->addChild('PaymentNature', $this->paymentNature);
         $simpleXmlElement->addChild('PaymentSource', $this->paymentSource);
         $simpleXmlElement->addChild('PaymentNatureService', $this->paymentNatureService->getXmlElement());
-        
+
         $simpleXmlElement->addChild('FraudRiskScore', $this->fraudRiskScore);
         $simpleXmlElement->addChild('FraudExplanation', $this->fraudExplanation);
         $simpleXmlElement->addChild('FraudRecommendation', $this->fraudRecommendation);
-        
+
         $simpleXmlElement->addChild('ValitorAPICustomerInfo', $this->customerInfo->getXmlElement());
         $simpleXmlElement->addChild('ValitorAPIPaymentInfos', $this->paymentInfos->getXmlElement());
         $simpleXmlElement->addChild('ValitorAPIChargebackEvents', $this->chargebackEvents->getXmlElement());
-        $simpleXmlElement->addChild("CreatedDate", $this->getCreatedDate());
-        $simpleXmlElement->addChild("UpdatedDate", $this->getUpdatedDate());
-        
+        $simpleXmlElement->addChild('CreatedDate', $this->getCreatedDate());
+        $simpleXmlElement->addChild('UpdatedDate', $this->getUpdatedDate());
+
         return $simpleXmlElement;
     }
 
@@ -516,6 +516,8 @@ class ValitorAPIPayment
 
     /**
      * Gives the amount of the good(s) without surcharge.
+     *
+     * @return string
      */
     public function getInitiallyAmount()
     {

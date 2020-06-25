@@ -1,31 +1,14 @@
 <?php
 
-if(!defined('VALITOR_API_ROOT')) {
-    define('VALITOR_API_ROOT', dirname(__DIR__));
-}
-
-require_once VALITOR_API_ROOT. DIRECTORY_SEPARATOR .'response'. DIRECTORY_SEPARATOR .'ValitorAbstractPaymentResponse.class.php';
-
-/**
- * Class ValitorGetPaymentResponse
- */
 class ValitorGetPaymentResponse extends ValitorAbstractPaymentResponse
 {
     /**
-     * ValitorGetPaymentResponse constructor.
-     * @param SimpleXmlElement $xml
+     * @param SimpleXMLElement $body
+     *
+     * @return void
      */
-    public function __construct(SimpleXmlElement $xml)
+    protected function parseBody(SimpleXMLElement $body)
     {
-        parent::__construct($xml);
-    }
-
-    /**
-     * @param SimpleXmlElement $body
-     */
-    protected function parseBody(SimpleXmlElement $body)
-    {
-        
     }
 
     /**
@@ -33,8 +16,6 @@ class ValitorGetPaymentResponse extends ValitorAbstractPaymentResponse
      */
     public function wasSuccessful()
     {
-        return $this->getErrorCode() === '0' && !is_null($this->getPrimaryPayment());
+        return $this->getErrorCode() === '0' && $this->getPrimaryPayment() !== null;
     }
-
-
 }

@@ -1,141 +1,128 @@
 <?php
-require_once(dirname(__FILE__) . '/../lib/bootstrap_integration.php');
 
-class ValitorSubscriptionTest extends MockitTestCase
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\TestCase;
+
+class ValitorSubscriptionTest extends TestCase
 {
-	/**
-	 * @var ValitorMerchantAPI
-	 */
-	private $merchantApi;
+    use MockeryPHPUnitIntegration;
+
+    /** @var TestConfig */
+    private $config;
+    /** @var ValitorMerchantAPI */
+    private $merchantApi;
+    /** @var ArrayCachingLogger */
+    private $logger;
 
     /**
      * @throws ValitorMerchantAPIException
      */
-    public function setup()
-	{
-		$this->logger = new ArrayCachingLogger();
-		$this->merchantApi = new ValitorMerchantAPI(
-			VALITOR_INTEGRATION_INSTALLATION,
-			VALITOR_INTEGRATION_USERNAME,
-			VALITOR_INTEGRATION_PASSWORD,
-			$this->logger
-		);
-		$this->merchantApi->login();
-	}
+    protected function setUp(): void
+    {
+        $this->config = new TestConfig();
+        $this->logger = new ArrayCachingLogger();
+        $this->merchantApi = new ValitorMerchantAPI(
+            $this->config->installation,
+            $this->config->username,
+            $this->config->password,
+            $this->logger
+        );
+        $this->merchantApi->login();
+    }
 
-    /**
-     * @throws PHPUnit_Framework_AssertionFailedError
-     */
-    public function testSuccessfullSetupSubscription()
-	{
-		$response = $this->merchantApi->setupSubscription(
-			VALITOR_INTEGRATION_TERMINAL,
-			'subscription' . time(),
-			42.00,
-			VALITOR_INTEGRATION_CURRENCY,
-			'4111000011110000',
-			'2020',
-			'12',
-			'123',
-			'eCommerce'
-		);
+    public function testSuccessfullSetupSubscription(): void
+    {
+        $response = $this->merchantApi->setupSubscription(
+            $this->config->terminal,
+            'subscription'.time(),
+            42.00,
+            $this->config->currency,
+            '4111000011110000',
+            '2020',
+            '12',
+            '123',
+            'eCommerce'
+        );
 
-		$this->assertTrue($response->wasSuccessful(), $response->getMerchantErrorMessage());
-	}
+        static::assertTrue($response->wasSuccessful(), $response->getMerchantErrorMessage());
+    }
 
-    /**
-     * @throws PHPUnit_Framework_AssertionFailedError
-     */
-    public function testDeclinedSetupSubscription()
-	{
-		$response = $this->merchantApi->setupSubscription(
-			VALITOR_INTEGRATION_TERMINAL,
-			'subscription-declined' . time(),
-			42.00,
-			VALITOR_INTEGRATION_CURRENCY,
-			'4111000011111466',
-			'2020',
-			'12',
-			'123',
-			'eCommerce'
-		);
+    public function testDeclinedSetupSubscription(): void
+    {
+        $response = $this->merchantApi->setupSubscription(
+            $this->config->terminal,
+            'subscription-declined'.time(),
+            42.00,
+            $this->config->currency,
+            '4111000011111466',
+            '2020',
+            '12',
+            '123',
+            'eCommerce'
+        );
 
-		$this->assertTrue($response->wasDeclined(), $response->getMerchantErrorMessage());
-	}
+        static::assertTrue($response->wasDeclined(), $response->getMerchantErrorMessage());
+    }
 
-    /**
-     * @throws PHPUnit_Framework_AssertionFailedError
-     */
-    public function testErroneousSetupSubscription()
-	{
-		$response = $this->merchantApi->setupSubscription(
-			VALITOR_INTEGRATION_TERMINAL,
-			'subscription-error' . time(),
-			42.00,
-			VALITOR_INTEGRATION_CURRENCY,
-			'4111000011111467',
-			'2020',
-			'12',
-			'123',
-			'eCommerce'
-		);
+    public function testErroneousSetupSubscription(): void
+    {
+        $response = $this->merchantApi->setupSubscription(
+            $this->config->terminal,
+            'subscription-error'.time(),
+            42.00,
+            $this->config->currency,
+            '4111000011111467',
+            '2020',
+            '12',
+            '123',
+            'eCommerce'
+        );
 
-		$this->assertTrue($response->wasErroneous(), $response->getMerchantErrorMessage());
-	}
+        static::assertTrue($response->wasErroneous(), $response->getMerchantErrorMessage());
+    }
 
-    /**
-     * @throws PHPUnit_Framework_AssertionFailedError
-     * @throws ValitorConnectionFailedException
-     * @throws ValitorInvalidResponseException
-     * @throws ValitorRequestTimeoutException
-     * @throws ValitorUnauthorizedAccessException
-     * @throws ValitorUnknownMerchantAPIException
-     */
-    public function testSuccessfulChargeSubscription()
-	{
-		$subscriptionResponse = $this->merchantApi->setupSubscription(
-			VALITOR_INTEGRATION_TERMINAL,
-			'subscription-charge' . time(),
-			42.00,
-			VALITOR_INTEGRATION_CURRENCY,
-			'4111000011110000',
-			'2020',
-			'12',
-			'123',
-			'eCommerce'
-		);
+    public function testSuccessfulChargeSubscription(): void
+    {
+        $subscriptionResponse = $this->merchantApi->setupSubscription(
+            $this->config->terminal,
+            'subscription-charge'.time(),
+            42.00,
+            $this->config->currency,
+            '4111000011110000',
+            '2020',
+            '12',
+            '123',
+            'eCommerce'
+        );
 
-		$chargeResponse = $this->merchantApi->chargeSubscription($subscriptionResponse->getPrimaryPayment()->getId());
+        $chargeResponse = $this->merchantApi->chargeSubscription($subscriptionResponse->getPrimaryPayment()->getId());
 
-		$this->assertTrue($chargeResponse->wasSuccessful(), $chargeResponse->getMerchantErrorMessage());
-	}
+        static::assertTrue($chargeResponse->wasSuccessful(), $chargeResponse->getMerchantErrorMessage());
+    }
 
-    /**
-     * @throws PHPUnit_Framework_AssertionFailedError
-     */
-    public function testSuccessfulChargeSubscriptionWithToken()
-	{
-		$verifyCardResponse = $this->merchantApi->verifyCard(
-			VALITOR_INTEGRATION_TERMINAL,
-			'verify-card' . time(),
-			VALITOR_INTEGRATION_CURRENCY,
-			'4111000011110000',
-			'2020',
-			'12',
-			'123',
-			'eCommerce'
-		);
+    public function testSuccessfulChargeSubscriptionWithToken(): void
+    {
+        $verifyCardResponse = $this->merchantApi->verifyCard(
+            $this->config->terminal,
+            'verify-card'.time(),
+            $this->config->currency,
+            '4111000011110000',
+            '2020',
+            '12',
+            '123',
+            'eCommerce'
+        );
 
-		$subscriptionResponseWithToken = $this->merchantApi->setupSubscriptionWithToken(
-			VALITOR_INTEGRATION_TERMINAL,
-			'subscription-with-token' . time(),
-			42.00,
-			VALITOR_INTEGRATION_CURRENCY,
-			$verifyCardResponse->getPrimaryPayment()->getCreditCardToken(),
-			'123',
-			'eCommerce'
-		);
+        $subscriptionResponseWithToken = $this->merchantApi->setupSubscriptionWithToken(
+            $this->config->terminal,
+            'subscription-with-token'.time(),
+            42.00,
+            $this->config->currency,
+            $verifyCardResponse->getPrimaryPayment()->getCreditCardToken(),
+            '123',
+            'eCommerce'
+        );
 
-		$this->assertTrue($subscriptionResponseWithToken->wasSuccessful(), $subscriptionResponseWithToken->getMerchantErrorMessage());
-	}
+        static::assertTrue($subscriptionResponseWithToken->wasSuccessful(), $subscriptionResponseWithToken->getMerchantErrorMessage());
+    }
 }

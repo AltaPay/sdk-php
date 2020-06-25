@@ -1,39 +1,50 @@
 <?php
 
+/**
+ * This class represents the following data structure.
+ *
+ * <UserAgent>Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:13.0)
+ *     Gecko/20100101 Firefox/13.0.1</UserAgent>
+ * <IpAddress>81.7.175.18</IpAddress>
+ * <Email></Email>
+ * <Username></Username>
+ * <CustomerPhone></CustomerPhone>
+ * <OrganisationNumber></OrganisationNumber>
+ * <CountryOfOrigin>
+ *     <Country></Country><Source>NotSet</Source>
+ * </CountryOfOrigin>
+ */
 class ValitorAPICustomerInfo
 {
-    /*
-                    <UserAgent>Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:13.0)
-                        Gecko/20100101 Firefox/13.0.1</UserAgent>
-                    <IpAddress>81.7.175.18</IpAddress>
-                    <Email></Email>
-                    <Username></Username>
-                    <CustomerPhone></CustomerPhone>
-                    <OrganisationNumber></OrganisationNumber>
-                    <CountryOfOrigin>
-                        <Country></Country><Source>NotSet</Source>
-                    </CountryOfOrigin>
-    */
+    /** @var SimpleXMLElement */
     private $simpleXmlElement;
+    /** @var string */
     private $userAgent;
+    /** @var string */
     private $ipAddress;
+    /** @var string */
     private $email;
+    /** @var string */
     private $username;
+    /** @var string */
     private $phone;
+    /** @var string */
     private $organisationNumber;
-    
-    /**
-     * @var ValitorAPIAddress
-     */
-    private $billingAddress,$shippingAddress,$registeredAddress;
 
+    /** @var ValitorAPIAddress */
+    private $billingAddress;
+    /** @var ValitorAPIAddress */
+    private $shippingAddress;
+    /** @var ValitorAPIAddress */
+    private $registeredAddress;
+
+    /** @var ValitorAPICountryOfOrigin */
     private $countryOfOrigin;
 
     /**
-     * ValitorAPICustomerInfo constructor.
-     * @param SimpleXmlElement $xml
+     * @param SimpleXMLElement $xml
      */
-    public function __construct(SimpleXmlElement $xml)
+    public function __construct(SimpleXMLElement $xml)
     {
         $this->simpleXmlElement = $xml;
         $this->userAgent = (string)$xml->UserAgent;
@@ -43,20 +54,20 @@ class ValitorAPICustomerInfo
         $this->phone = (string)$xml->CustomerPhone;
         $this->organisationNumber = (string)$xml->OrganisationNumber;
 
-        if(isset($xml->CountryOfOrigin)) {
+        if (isset($xml->CountryOfOrigin)) {
             $this->countryOfOrigin = new ValitorAPICountryOfOrigin($xml->CountryOfOrigin);
         }
-        if(isset($xml->BillingAddress)) {
+        if (isset($xml->BillingAddress)) {
             $this->billingAddress = new ValitorAPIAddress($xml->BillingAddress);
         }
-        if(isset($xml->ShippingAddress)) {
+        if (isset($xml->ShippingAddress)) {
             $this->shippingAddress = new ValitorAPIAddress($xml->ShippingAddress);
         }
-        if(isset($xml->RegisteredAddress)) {
+        if (isset($xml->RegisteredAddress)) {
             $this->registeredAddress = new ValitorAPIAddress($xml->RegisteredAddress);
         }
     }
-    
+
     /**
      * @return ValitorAPIAddress
      */
@@ -72,7 +83,7 @@ class ValitorAPICustomerInfo
     {
         return $this->shippingAddress;
     }
-    
+
     /**
      * @return ValitorAPIAddress
      */

@@ -1,11 +1,7 @@
 <?php
 
-/**
- * Class ValitorAPICountryOfOrigin
- */
 class ValitorAPICountryOfOrigin
 {
-
     const NotSet = 'NotSet';
     const CardNumber = 'CardNumber';
     const BankAccount = 'BankAccount';
@@ -14,14 +10,15 @@ class ValitorAPICountryOfOrigin
     const ShippingAddress = 'ShippingAddress';
     const PayPal = 'PayPal';
 
+    /** @var string */
     private $country;
+    /** @var string */
     private $source;
 
     /**
-     * ValitorAPICountryOfOrigin constructor.
-     * @param SimpleXmlElement $xml
+     * @param SimpleXMLElement $xml
      */
-    public function __construct(SimpleXmlElement $xml)
+    public function __construct(SimpleXMLElement $xml)
     {
         $this->country = (string)$xml->Country;
         $this->source = (string)$xml->Source;

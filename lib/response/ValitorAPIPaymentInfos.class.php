@@ -1,25 +1,28 @@
 <?php
 
+/**
+ * This class represents the following data structure.
+ *
+ * <PaymentInfos>
+ *      <PaymentInfo name="auxkey">aux data (&lt;&#xE6;&#xF8;&#xE5;&gt;)</PaymentInfo>
+ * </PaymentInfos>
+ */
 class ValitorAPIPaymentInfos
 {
-    /*
-    <PaymentInfos>
-    <PaymentInfo name="auxkey">aux data (&lt;&#xE6;&#xF8;&#xE5;&gt;)</PaymentInfo>
-    </PaymentInfos>
-    */
+    /** @var SimpleXMLElement
+     */
     private $simpleXmlElement;
+    /** @var array<string, string> */
     private $infos = array();
 
     /**
-     * ValitorAPIPaymentInfos constructor.
-     * @param SimpleXmlElement $xml
+     * @param SimpleXMLElement $xml
      */
-    public function __construct(SimpleXmlElement $xml)
+    public function __construct(SimpleXMLElement $xml)
     {
         $this->simpleXmlElement = $xml;
-        if(isset($xml->PaymentInfo)) {
-            foreach($xml->PaymentInfo as $paymentInfo)
-            {
+        if (isset($xml->PaymentInfo)) {
+            foreach ($xml->PaymentInfo as $paymentInfo) {
                 $attrs = $paymentInfo->attributes();
                 $this->infos[(string)$attrs['name']] = (string)$paymentInfo;
             }
@@ -27,7 +30,7 @@ class ValitorAPIPaymentInfos
     }
 
     /**
-     * @return array
+     * @return array<string, string>
      */
     public function getAll()
     {
@@ -35,12 +38,13 @@ class ValitorAPIPaymentInfos
     }
 
     /**
-     * @param $key
-     * @return mixed
+     * @param string $key
+     *
+     * @return string|null
      */
     public function getInfo($key)
     {
-        return @$this->infos[$key];
+        return isset($this->infos[$key]) ? $this->infos[$key] : null;
     }
 
     /**

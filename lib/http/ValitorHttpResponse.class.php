@@ -1,21 +1,25 @@
 <?php
 
-/**
- * Class ValitorHttpResponse
- */
 class ValitorHttpResponse
 {
     const CONNECTION_REFUSED = 'CONNECTION_REFUSED';
     const CONNECTION_TIMEOUT = 'CONNECTION_TIMEOUT';
     const CONNECTION_READ_TIMEOUT = 'CONNECTION_READ_TIMEOUT';
     const CONNECTION_OKAY = 'CONNECTION_OKAY';
-    
+
+    /** @var string */
     private $requestHeader = '';
+    /** @var string */
     private $header = '';
+    /** @var string */
     private $content = '';
+    /** @var mixed[] */
     private $info;
+    /** @var string */
     private $errorMessage;
+    /** @var int */
     private $errorNumber;
+    /** @var string */
     private $connectionResult;
 
     /**
@@ -27,23 +31,25 @@ class ValitorHttpResponse
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getContentType()
     {
-        if(preg_match('/^Content-Type: (.+)$/m', $this->header, $matches)) {
+        if (preg_match('/^Content-Type: (.+)$/m', $this->header, $matches)) {
             return trim($matches[1]);
         }
+        return null;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getLocationHeader()
     {
-        if(preg_match('/^Location: (.+)$/m', $this->header, $matches)) {
+        if (preg_match('/^Location: (.+)$/m', $this->header, $matches)) {
             return trim($matches[1]);
         }
+        return null;
     }
 
     /**
@@ -55,18 +61,22 @@ class ValitorHttpResponse
     }
 
     /**
-     * @param $header
+     * @param string[] $header
+     *
+     * @return void
      */
     public function setHeader($header)
     {
-        if(is_array($header)) {
+        if (is_array($header)) {
             $header = implode("\r\n", $header);
-        }        
+        }
         $this->header = $header;
     }
 
     /**
-     * @param $content
+     * @param string $content
+     *
+     * @return void
      */
     public function setContent($content)
     {
@@ -82,7 +92,9 @@ class ValitorHttpResponse
     }
 
     /**
-     * @param $requestHeader
+     * @param string $requestHeader
+     *
+     * @return void
      */
     public function setRequestHeader($requestHeader)
     {
@@ -90,7 +102,7 @@ class ValitorHttpResponse
     }
 
     /**
-     * @return mixed
+     * @return mixed[]
      */
     public function getInfo()
     {
@@ -98,7 +110,9 @@ class ValitorHttpResponse
     }
 
     /**
-     * @param $info
+     * @param mixed[] $info
+     *
+     * @return void
      */
     public function setInfo($info)
     {
@@ -106,7 +120,7 @@ class ValitorHttpResponse
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getErrorMessage()
     {
@@ -114,7 +128,9 @@ class ValitorHttpResponse
     }
 
     /**
-     * @param $errorMessage
+     * @param string $errorMessage
+     *
+     * @return void
      */
     public function setErrorMessage($errorMessage)
     {
@@ -130,7 +146,9 @@ class ValitorHttpResponse
     }
 
     /**
-     * @param $errorNumber
+     * @param int $errorNumber
+     *
+     * @return void
      */
     public function setErrorNumber($errorNumber)
     {
@@ -138,7 +156,7 @@ class ValitorHttpResponse
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getConnectionResult()
     {
@@ -146,7 +164,9 @@ class ValitorHttpResponse
     }
 
     /**
-     * @param $connectionResult
+     * @param string $connectionResult
+     *
+     * @return void
      */
     public function setConnectionResult($connectionResult)
     {
@@ -154,34 +174,36 @@ class ValitorHttpResponse
     }
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getHttpCode()
     {
-        return $this->info['http_code'];
+        return (int)$this->info['http_code'];
     }
 
     /**
-     * @param $curl
-     * @param $header
+     * @param resource $curl
+     * @param string   $header
+     *
      * @return int
      */
     public function curlReadHeader(&$curl, $header)
     {
         $this->header .= $header;
-        
+
         return strlen($header);
     }
 
     /**
-     * @param $curl
-     * @param $content
+     * @param resource $curl
+     * @param string   $content
+     *
      * @return int
      */
     public function curlReadContent(&$curl, $content)
     {
         $this->content .= $content;
-        
+
         return strlen($content);
     }
 }

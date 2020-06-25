@@ -1,36 +1,27 @@
 <?php
 
-if(!defined('VALITOR_API_ROOT')) {
-    define('VALITOR_API_ROOT', dirname(__DIR__));
-}
-
-require_once VALITOR_API_ROOT. DIRECTORY_SEPARATOR .'response'. DIRECTORY_SEPARATOR .'ValitorAbstractResponse.class.php';
-require_once VALITOR_API_ROOT. DIRECTORY_SEPARATOR .'response'. DIRECTORY_SEPARATOR .'ValitorTerminal.class.php';
-
-/**
- * Class ValitorCalculateSurchargeResponse
- */
 class ValitorCalculateSurchargeResponse extends ValitorAbstractResponse
 {
+    /** @var string */
     private $result;
-    private $surchargeAmount = array();
+    /** @var string */
+    private $surchargeAmount;
 
     /**
-     * ValitorCalculateSurchargeResponse constructor.
-     * @param SimpleXmlElement $xml
+     * @param SimpleXMLElement $xml
      */
-    public function __construct(SimpleXmlElement $xml)
+    public function __construct(SimpleXMLElement $xml)
     {
         parent::__construct($xml);
-        
-        if($this->getErrorCode() === '0') {
+
+        if ($this->getErrorCode() === '0') {
             $this->result = (string)$xml->Body->Result;
             $this->surchargeAmount = (string)$xml->Body->SurchageAmount;
         }
     }
 
     /**
-     * @return array|string
+     * @return string
      */
     public function getSurchargeAmount()
     {

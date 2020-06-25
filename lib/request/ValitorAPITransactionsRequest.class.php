@@ -1,21 +1,26 @@
 <?php
 
-/**
- * Class ValitorAPITransactionsRequest
- */
 class ValitorAPITransactionsRequest
 {
+    /** @var string */
     private $shop;
+    /** @var string */
     private $terminal;
+    /** @var string */
     private $transaction;
+    /** @var string */
     private $transactionId;
+    /** @var string */
     private $shopOrderId;
+    /** @var string */
     private $paymentStatus;
+    /** @var string */
     private $reconciliationIdentifier;
+    /** @var string */
     private $acquirerReconciliationIdentifier;
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getShop()
     {
@@ -23,7 +28,9 @@ class ValitorAPITransactionsRequest
     }
 
     /**
-     * @param $shop
+     * @param string $shop
+     *
+     * @return void
      */
     public function setShop($shop)
     {
@@ -31,7 +38,7 @@ class ValitorAPITransactionsRequest
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getTerminal()
     {
@@ -39,7 +46,9 @@ class ValitorAPITransactionsRequest
     }
 
     /**
-     * @param $terminal
+     * @param string $terminal
+     *
+     * @return void
      */
     public function setTerminal($terminal)
     {
@@ -47,7 +56,7 @@ class ValitorAPITransactionsRequest
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getTransaction()
     {
@@ -55,7 +64,9 @@ class ValitorAPITransactionsRequest
     }
 
     /**
-     * @param $transaction
+     * @param string $transaction
+     *
+     * @return void
      */
     public function setTransaction($transaction)
     {
@@ -63,7 +74,7 @@ class ValitorAPITransactionsRequest
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getTransactionId()
     {
@@ -71,7 +82,9 @@ class ValitorAPITransactionsRequest
     }
 
     /**
-     * @param $transactionId
+     * @param string $transactionId
+     *
+     * @return void
      */
     public function setTransactionId($transactionId)
     {
@@ -79,7 +92,7 @@ class ValitorAPITransactionsRequest
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getShopOrderId()
     {
@@ -87,7 +100,9 @@ class ValitorAPITransactionsRequest
     }
 
     /**
-     * @param $shopOrderId
+     * @param string $shopOrderId
+     *
+     * @return void
      */
     public function setShopOrderId($shopOrderId)
     {
@@ -95,7 +110,7 @@ class ValitorAPITransactionsRequest
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getPaymentStatus()
     {
@@ -103,7 +118,9 @@ class ValitorAPITransactionsRequest
     }
 
     /**
-     * @param $paymentStatus
+     * @param string $paymentStatus
+     *
+     * @return void
      */
     public function setPaymentStatus($paymentStatus)
     {
@@ -111,7 +128,7 @@ class ValitorAPITransactionsRequest
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getReconciliationIdentifier()
     {
@@ -119,7 +136,9 @@ class ValitorAPITransactionsRequest
     }
 
     /**
-     * @param $reconciliationIdentifier
+     * @param string $reconciliationIdentifier
+     *
+     * @return void
      */
     public function setReconciliationIdentifier($reconciliationIdentifier)
     {
@@ -127,7 +146,7 @@ class ValitorAPITransactionsRequest
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getAcquirerReconciliationIdentifier()
     {
@@ -135,7 +154,9 @@ class ValitorAPITransactionsRequest
     }
 
     /**
-     * @param $acquirerReconciliationIdentifier
+     * @param string $acquirerReconciliationIdentifier
+     *
+     * @return void
      */
     public function setAcquirerReconciliationIdentifier($acquirerReconciliationIdentifier)
     {
@@ -143,33 +164,33 @@ class ValitorAPITransactionsRequest
     }
 
     /**
-     * @return array
+     * @return string[]
      */
     public function asArray()
     {
         $array = array();
-        if (!is_null($this->shop)) {
+        if ($this->shop !== null) {
             $array['shop'] = $this->shop;
         }
-        if (!is_null($this->terminal)) {
+        if ($this->terminal !== null) {
             $array['terminal'] = $this->terminal;
         }
-        if (!is_null($this->transaction)) {
+        if ($this->transaction !== null) {
             $array['transaction'] = $this->transaction;
         }
-        if (!is_null($this->transactionId)) {
+        if ($this->transactionId !== null) {
             $array['transaction_id'] = $this->transactionId;
         }
-        if (!is_null($this->shopOrderId)) {
+        if ($this->shopOrderId !== null) {
             $array['shop_orderid'] = $this->shopOrderId;
         }
-        if (!is_null($this->paymentStatus)) {
+        if ($this->paymentStatus !== null) {
             $array['payment_status'] = $this->paymentStatus;
         }
-        if (!is_null($this->reconciliationIdentifier)) {
+        if ($this->reconciliationIdentifier !== null) {
             $array['reconciliation_identifier'] = $this->reconciliationIdentifier;
         }
-        if (!is_null($this->acquirerReconciliationIdentifier)) {
+        if ($this->acquirerReconciliationIdentifier !== null) {
             $array['acquirer_reconciliation_identifier'] = $this->acquirerReconciliationIdentifier;
         }
 

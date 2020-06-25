@@ -1,157 +1,117 @@
 <?php
-require_once(dirname(__FILE__) . '/../lib/bootstrap.php');
 
-class ValitorMerchantAPITest extends MockitTestCase
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use Mockery\MockInterface;
+use PHPUnit\Framework\TestCase;
+
+class ValitorMerchantAPITest extends TestCase
 {
-	/**
-	 * @var ValitorMerchantAPI
-	 */
-	private $merchantAPI;
+    use MockeryPHPUnitIntegration;
 
-	/**
-	 * @var Mock_IValitorCommunicationLogger
-	 */
-	private $logger;
-	/**
-	 * @var Mock_IValitorHttpUtils
-	 */
-	private $httpUtils;
-	/**
-	 * @var Mock_ValitorHttpResponse
-	 */
-	private $response;
+    /** @var ValitorMerchantAPI */
+    private $merchantAPI;
 
-	public function setup()
-	{
-		Mockit::initMocks($this);
-		$this->response->when()->getConnectionResult()->thenReturn(ValitorHttpResponse::CONNECTION_OKAY);
-		$this->response->when()->getContentType()->thenReturn("text/xml");
+    /** @var IValitorCommunicationLogger&MockInterface */
+    private $logger;
+    /** @var IValitorHttpUtils&MockInterface */
+    private $httpUtils;
+    /** @var ValitorHttpResponse&MockInterface */
+    private $response;
 
-		$this->merchantAPI = new ValitorMerchantAPI('http://base.url', 'username', 'password', $this->logger->instance(), $this->httpUtils->instance());
-	}
+    protected function setUp(): void
+    {
+        $this->logger = Mockery::spy(IValitorCommunicationLogger::class);
+        $this->httpUtils = Mockery::mock(IValitorHttpUtils::class);
+        $this->response = Mockery::mock(ValitorHttpResponse::class);
 
-	/**
-	 * @expectedException ValitorInvalidResponseException
-	 */
-	public function testHandlesNonXmlNicely()
-	{
-		$this->response->when()->getHttpCode()->thenReturn(200);
-		$this->response->when()->getContent()->thenReturn('<html>
+        $this->response->shouldReceive('getConnectionResult')->andReturn(ValitorHttpResponse::CONNECTION_OKAY);
+        $this->response->shouldReceive('getContentType')->andReturn('text/xml');
+
+        $this->merchantAPI = new ValitorMerchantAPI('http://base.url', 'username', 'password', $this->logger, $this->httpUtils);
+    }
+
+    public function testHandlesNonXmlNicely(): void
+    {
+        $this->expectException(ValitorInvalidResponseException::class);
+
+        $this->response->shouldReceive('getHttpCode')->andReturn(200);
+        $this->response->shouldReceive('getContent')->andReturn('<html>
 <head><title>504 Gateway Time-out</title></head>
 <body bgcolor="white">
 <center><h1>504 Gateway Time-out</h1></center>
 <hr><center>nginx/0.7.67</center>
 </body>
 </html>');
-		$this->httpUtils->when()->requestURL()->thenReturn($this->response->instance());
+        $this->httpUtils->shouldReceive('requestURL')->andReturn($this->response);
 
-		$loginResponse = $this->merchantAPI->login();
-		$this->assertEquals('Error: String could not be parsed as XML', $loginResponse->getErrorMessage());
-	}
-
-	/**
-	 * @expectedException ValitorInvalidResponseException
-	 */
-	public function testNon200ReturnCodeIsHandled()
-	{
-		$this->response->when()->getHttpCode()->thenReturn(500);
-		$this->httpUtils->when()->requestURL()->thenReturn($this->response->instance());
-
-		$loginResponse = $this->merchantAPI->login();
-	}
-
-	/**
-	 * @expectedException ValitorUnauthorizedAccessException
-	 */
-	public function testUnAuthorizedReturnCodeIsHandled()
-	{
-		$this->response->when()->getHttpCode()->thenReturn(401);
-		$this->httpUtils->when()->requestURL()->thenReturn($this->response->instance());
-
-		$loginResponse = $this->merchantAPI->login();
-	}
-
-
-    /**
-     * @throws PHPUnit_Framework_AssertionFailedError
-     * @throws ValitorConnectionFailedException
-     * @throws ValitorInvalidResponseException
-     * @throws ValitorMerchantAPIException
-     * @throws ValitorRequestTimeoutException
-     * @throws ValitorUnauthorizedAccessException
-     * @throws ValitorUnknownMerchantAPIException
-     */
-    public function testGetPayment_Parses20110831XmlCorrectly()
-    {
-        $this->response->when()->getHttpCode()->thenReturn(200);
-        $this->response->when()->getContent()->thenReturn(file_get_contents(dirname(dirname(dirname(__FILE__))) . '/example/xml/20110831_get_payment.xml'));
-        $this->httpUtils->when()->requestURL()->thenReturn($this->response->instance());
-
-        $this->merchantAPI->login();
-        $getPaymentResponse = $this->merchantAPI->getPayment('123', '');
-        $this->assertTrue($getPaymentResponse instanceof ValitorGetPaymentResponse);
-        $this->assertTrue($getPaymentResponse->wasSuccessful());
+        $loginResponse = $this->merchantAPI->login();
+        static::assertEquals('Error: String could not be parsed as XML', $loginResponse->getErrorMessage());
     }
 
-    /**
-     * @throws PHPUnit_Framework_AssertionFailedError
-     * @throws ValitorConnectionFailedException
-     * @throws ValitorInvalidResponseException
-     * @throws ValitorMerchantAPIException
-     * @throws ValitorRequestTimeoutException
-     * @throws ValitorUnauthorizedAccessException
-     * @throws ValitorUnknownMerchantAPIException
-     */
-    public function testGetPayment_Parses20130430XmlCorrectly()
+    public function testNon200ReturnCodeIsHandled(): void
     {
-        $this->response->when()->getHttpCode()->thenReturn(200);
-        $this->response->when()->getContent()->thenReturn(file_get_contents(dirname(dirname(dirname(__FILE__))) . '/example/xml/20130430_get_payment.xml'));
-        $this->httpUtils->when()->requestURL()->thenReturn($this->response->instance());
+        $this->expectException(ValitorInvalidResponseException::class);
 
-        $this->merchantAPI->login();
-        $getPaymentResponse = $this->merchantAPI->getPayment('123', '');
-        $this->assertTrue($getPaymentResponse instanceof ValitorGetPaymentResponse);
-        $this->assertTrue($getPaymentResponse->wasSuccessful());
+        $this->response->shouldReceive('getHttpCode')->andReturn(500);
+        $this->httpUtils->shouldReceive('requestURL')->andReturn($this->response);
+
+        $loginResponse = $this->merchantAPI->login();
     }
 
-    /**
-     * @throws PHPUnit_Framework_AssertionFailedError
-     * @throws ValitorConnectionFailedException
-     * @throws ValitorInvalidResponseException
-     * @throws ValitorMerchantAPIException
-     * @throws ValitorRequestTimeoutException
-     * @throws ValitorUnauthorizedAccessException
-     * @throws ValitorUnknownMerchantAPIException
-     */
-    public function testGetPayment_Parses20130430XmlWithShopOrderIDCorrectly()
+    public function testUnAuthorizedReturnCodeIsHandled(): void
     {
-        $this->response->when()->getHttpCode()->thenReturn(200);
-        $this->response->when()->getContent()->thenReturn(file_get_contents(dirname(dirname(dirname(__FILE__))) . '/example/xml/20130430_get_payment.xml'));
-        $this->httpUtils->when()->requestURL()->thenReturn($this->response->instance());
+        $this->expectException(ValitorUnauthorizedAccessException::class);
 
-        $this->merchantAPI->login();
-        $getPaymentResponse = $this->merchantAPI->getPayment('', array("shop_orderid" => "ceae3968b13111e38a24ac162d8c2738"));
-        $this->assertTrue($getPaymentResponse instanceof ValitorGetPaymentResponse);
-        $this->assertTrue($getPaymentResponse->wasSuccessful());
+        $this->response->shouldReceive('getHttpCode')->andReturn(401);
+        $this->httpUtils->shouldReceive('requestURL')->andReturn($this->response);
+
+        $loginResponse = $this->merchantAPI->login();
     }
 
-    /**
-     * @throws PHPUnit_Framework_AssertionFailedError
-     * @throws ValitorConnectionFailedException
-     * @throws ValitorInvalidResponseException
-     * @throws ValitorMerchantAPIException
-     * @throws ValitorRequestTimeoutException
-     * @throws ValitorUnauthorizedAccessException
-     * @throws ValitorUnknownMerchantAPIException
-     */
-    public function testGetPayment_WithNoPayment_IsNotSuccessful()
+    public function testGetPaymentParses20110831XmlCorrectly(): void
     {
-        $this->response->when()->getHttpCode()->thenReturn(200);
-        $this->response->when()->getContent()->thenReturn(file_get_contents(dirname(dirname(dirname(__FILE__))) . '/example/xml/20130430_get_payment_empty.xml'));
-        $this->httpUtils->when()->requestURL()->thenReturn($this->response->instance());
+        $this->response->shouldReceive('getHttpCode')->andReturn(200);
+        $this->response->shouldReceive('getContent')->andReturn(file_get_contents(dirname(__DIR__, 2).'/example/xml/20110831_get_payment.xml'));
+        $this->httpUtils->shouldReceive('requestURL')->andReturn($this->response);
 
         $this->merchantAPI->login();
-        $getPaymentResponse = $this->merchantAPI->getPayment('123','');
-        $this->assertFalse($getPaymentResponse->wasSuccessful());
+        $getPaymentResponse = $this->merchantAPI->getPayment('123', array(''));
+        static::assertTrue($getPaymentResponse instanceof ValitorGetPaymentResponse);
+        static::assertTrue($getPaymentResponse->wasSuccessful());
+    }
+
+    public function testGetPaymentParses20130430XmlCorrectly(): void
+    {
+        $this->response->shouldReceive('getHttpCode')->andReturn(200);
+        $this->response->shouldReceive('getContent')->andReturn(file_get_contents(dirname(__DIR__, 2).'/example/xml/20130430_get_payment.xml'));
+        $this->httpUtils->shouldReceive('requestURL')->andReturn($this->response);
+
+        $this->merchantAPI->login();
+        $getPaymentResponse = $this->merchantAPI->getPayment('123', array(''));
+        static::assertTrue($getPaymentResponse instanceof ValitorGetPaymentResponse);
+        static::assertTrue($getPaymentResponse->wasSuccessful());
+    }
+
+    public function testGetPaymentParses20130430XmlWithShopOrderIDCorrectly(): void
+    {
+        $this->response->shouldReceive('getHttpCode')->andReturn(200);
+        $this->response->shouldReceive('getContent')->andReturn(file_get_contents(dirname(__DIR__, 2).'/example/xml/20130430_get_payment.xml'));
+        $this->httpUtils->shouldReceive('requestURL')->andReturn($this->response);
+
+        $this->merchantAPI->login();
+        $getPaymentResponse = $this->merchantAPI->getPayment('', array('shop_orderid' => 'ceae3968b13111e38a24ac162d8c2738'));
+        static::assertTrue($getPaymentResponse instanceof ValitorGetPaymentResponse);
+        static::assertTrue($getPaymentResponse->wasSuccessful());
+    }
+
+    public function testGetPaymentWithNoPaymentIsNotSuccessful(): void
+    {
+        $this->response->shouldReceive('getHttpCode')->andReturn(200);
+        $this->response->shouldReceive('getContent')->andReturn(file_get_contents(dirname(__DIR__, 2).'/example/xml/20130430_get_payment_empty.xml'));
+        $this->httpUtils->shouldReceive('requestURL')->andReturn($this->response);
+
+        $this->merchantAPI->login();
+        $getPaymentResponse = $this->merchantAPI->getPayment('123', array(''));
+        static::assertFalse($getPaymentResponse->wasSuccessful());
     }
 }

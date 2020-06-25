@@ -1,40 +1,31 @@
 <?php
-if(!defined('VALITOR_API_ROOT')) {
-    define('VALITOR_API_ROOT', dirname(__DIR__));
-}
-require_once VALITOR_API_ROOT. DIRECTORY_SEPARATOR .'response'. DIRECTORY_SEPARATOR .'ValitorAbstractPaymentResponse.class.php';
 
 class ValitorPreauthRecurringResponse extends ValitorAbstractPaymentResponse
 {
-    public function __construct(SimpleXmlElement $xml)
-    {
-        parent::__construct($xml);
-    }
-
     /**
-     * @param SimpleXmlElement $body
+     * @param SimpleXMLElement $body
+     *
      * @return mixed|void
      */
-    protected function parseBody(SimpleXmlElement $body)
+    protected function parseBody(SimpleXMLElement $body)
     {
-        
     }
 
     /**
-     * This payment represent the subscription, it is returned as the subscription it 
+     * This payment represent the subscription, it is returned as the subscription it
      * self might have changed since last time it was used.
-     * 
-     * @return ValitorAPIPayment
+     *
+     * @return ValitorAPIPayment|null
      */
     public function getSubscriptionPayment()
     {
         return isset($this->payments[0]) ? $this->payments[0] : null;
     }
-    
+
     /**
      * This is the payment which was pre-authed.
-     * 
-     * @return ValitorAPIPayment
+     *
+     * @return ValitorAPIPayment|null
      */
     public function getPrimaryPayment()
     {

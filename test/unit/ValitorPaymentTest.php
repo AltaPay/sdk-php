@@ -1,13 +1,18 @@
 <?php
-require_once(dirname(__FILE__) . '/../lib/bootstrap.php');
 
-class ValitorPaymentTest extends MockitTestCase
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\TestCase;
+
+class ValitorPaymentTest extends TestCase
 {
-	private $xml;
+    use MockeryPHPUnitIntegration;
 
-	public function setup()
-	{
-		$this->xml = new SimpleXMLElement('
+    /** @var SimpleXMLElement */
+    private $xml;
+
+    protected function setUp(): void
+    {
+        $this->xml = new SimpleXMLElement('
             <Transaction>
                 <TransactionId>14398495</TransactionId>
                 <AuthType>paymentAndCapture</AuthType>
@@ -75,241 +80,239 @@ class ValitorPaymentTest extends MockitTestCase
                     </ReconciliationIdentifier>
                 </ReconciliationIdentifiers>
             </Transaction>');
-	}
+    }
 
     /**
      * @throws Exception
      */
-    public function testCreatedDate()
-	{
-		$payment = new ValitorAPIPayment($this->xml);
+    public function testCreatedDate(): void
+    {
+        $payment = new ValitorAPIPayment($this->xml);
 
-		$this->assertEquals('2014-03-21 20:49:38', $payment->getCreatedDate());
-	}
-
-    /**
-     * @throws Exception
-     */
-    public function testUpdatedDate()
-	{
-		$payment = new ValitorAPIPayment($this->xml);
-
-		$this->assertEquals('2014-03-21 20:49:41', $payment->getUpdatedDate());
-	}
+        static::assertEquals('2014-03-21 20:49:38', $payment->getCreatedDate());
+    }
 
     /**
      * @throws Exception
      */
-    public function testParsingOfSimpleXml()
-	{
-		$xml = new SimpleXMLElement('<Transaction><PaymentNatureService /><ReconciliationIdentifiers /></Transaction>');
-		$payment = new ValitorAPIPayment($xml);
-	}
+    public function testUpdatedDate(): void
+    {
+        $payment = new ValitorAPIPayment($this->xml);
+
+        static::assertEquals('2014-03-21 20:49:41', $payment->getUpdatedDate());
+    }
 
     /**
      * @throws Exception
      */
-    public function testParsing_of_CurrentStatus()
-	{
-		$payment = new ValitorAPIPayment($this->xml);
+    public function testParsingOfSimpleXml(): void
+    {
+        $xml = new SimpleXMLElement('<Transaction><PaymentNatureService /><ReconciliationIdentifiers /></Transaction>');
+        $payment = new ValitorAPIPayment($xml);
 
-		$this->assertEquals('captured', $payment->getCurrentStatus());
-	}
-
-    /**
-     * @throws Exception
-     */
-    public function testParsing_of_Id()
-	{
-		$payment = new ValitorAPIPayment($this->xml);
-
-		$this->assertEquals('14398495', $payment->getId());
-	}
+        static::assertInstanceOf(ValitorAPIPayment::class, $payment);
+    }
 
     /**
      * @throws Exception
      */
-    public function testParsing_of_AuthType()
-	{
-		$payment = new ValitorAPIPayment($this->xml);
+    public function testParsingOfCurrentStatus(): void
+    {
+        $payment = new ValitorAPIPayment($this->xml);
 
-		$this->assertEquals('paymentAndCapture', $payment->getAuthType());
-	}
-
-    /**
-     * @throws Exception
-     */
-    public function testParsing_of_ShopOrderId()
-	{
-		$payment = new ValitorAPIPayment($this->xml);
-
-		$this->assertEquals('ceae3968b82640e38a24ac162d8c2738', $payment->getShopOrderId());
-	}
+        static::assertEquals('captured', $payment->getCurrentStatus());
+    }
 
     /**
      * @throws Exception
      */
-    public function testParsing_of_MaskedPan()
-	{
-		$payment = new ValitorAPIPayment($this->xml);
+    public function testParsingOfId(): void
+    {
+        $payment = new ValitorAPIPayment($this->xml);
 
-		$this->assertEquals('424374******7275', $payment->getMaskedPan());
-	}
-
-    /**
-     * @throws Exception
-     */
-    public function testParsing_of_CreditCardToken()
-	{
-		$payment = new ValitorAPIPayment($this->xml);
-
-		$this->assertEquals('37ad3ff596164142876df477e13336e0aeef0905', $payment->getCreditCardToken());
-	}
+        static::assertEquals('14398495', $payment->getId());
+    }
 
     /**
      * @throws Exception
      */
-    public function testParsing_of_CardStatus()
-	{
-		$payment = new ValitorAPIPayment($this->xml);
+    public function testParsingOfAuthType(): void
+    {
+        $payment = new ValitorAPIPayment($this->xml);
 
-		$this->assertEquals('Valid', $payment->getCardStatus());
-	}
-
-    /**
-     * @throws Exception
-     */
-    public function testParsing_of_PaymentNature()
-	{
-		$payment = new ValitorAPIPayment($this->xml);
-
-		$this->assertEquals('CreditCard', $payment->getPaymentNature());
-	}
+        static::assertEquals('paymentAndCapture', $payment->getAuthType());
+    }
 
     /**
      * @throws Exception
      */
-    public function testParsing_of_PaymentSchemeName()
-	{
-		$payment = new ValitorAPIPayment($this->xml);
+    public function testParsingOfShopOrderId(): void
+    {
+        $payment = new ValitorAPIPayment($this->xml);
 
-		$this->assertEquals('Visa', $payment->getPaymentSchemeName());
-	}
-
-    /**
-     * @throws Exception
-     */
-    public function testParsing_of_PaymentNatureService()
-	{
-		$payment = new ValitorAPIPayment($this->xml);
-
-		$paymentNature = $payment->getPaymentNatureService();
-		$this->assertEquals('ValitorAcquirer', $paymentNature->getName());
-		$this->assertEquals('true1', $paymentNature->getSupportsRefunds());
-		$this->assertEquals('true2', $paymentNature->getSupportsRelease());
-		$this->assertEquals('true3', $paymentNature->getSupportsMultipleCaptures());
-		$this->assertEquals('true4', $paymentNature->getSupportsMultipleRefunds());
-	}
+        static::assertEquals('ceae3968b82640e38a24ac162d8c2738', $payment->getShopOrderId());
+    }
 
     /**
      * @throws Exception
      */
-    public function testParsing_of_FraudRiskScore()
-	{
-		$payment = new ValitorAPIPayment($this->xml);
+    public function testParsingOfMaskedPan(): void
+    {
+        $payment = new ValitorAPIPayment($this->xml);
 
-		$this->assertEquals('42', $payment->getFraudRiskScore());
-	}
-
-    /**
-     * @throws Exception
-     */
-    public function testParsing_of_FraudExplanation()
-	{
-		$payment = new ValitorAPIPayment($this->xml);
-
-		$this->assertEquals('For the test fraud service the risk score is always equal mod 101 of the created amount for the payment', $payment->getFraudExplanation());
-	}
+        static::assertEquals('424374******7275', $payment->getMaskedPan());
+    }
 
     /**
      * @throws Exception
      */
-    public function testParsing_of_FraudRecommendation()
-	{
-		$payment = new ValitorAPIPayment($this->xml);
+    public function testParsingOfCreditCardToken(): void
+    {
+        $payment = new ValitorAPIPayment($this->xml);
 
-		$this->assertEquals('Deny', $payment->getFraudRecommendation());
-	}
-
-    /**
-     * @throws Exception
-     */
-    public function testParsing_of_CustomerInfo()
-	{
-		$payment = new ValitorAPIPayment($this->xml);
-		$customerInfo = $payment->getCustomerInfo();
-
-		$this->assertEquals('Mozilla/5.0 (Windows NT 6.1; WOW64; rv:27.0) Gecko/20100101 Firefox/27.0', $customerInfo->getUserAgent());
-		$this->assertEquals('91.152.252.214', $customerInfo->getIpAddress());
-		$this->assertEquals('timo.k.honkanen@elisanet.fi', $customerInfo->getEmail());
-		$this->assertEquals('22 22 22 22', $customerInfo->getPhone());
-		$this->assertEquals('345678', $customerInfo->getOrganisationNumber());
-		$this->assertEquals('FI', $customerInfo->getCountryOfOrigin()->getCountry());
-		$this->assertEquals('CardNumber', $customerInfo->getCountryOfOrigin()->getSource());
-	}
+        static::assertEquals('37ad3ff596164142876df477e13336e0aeef0905', $payment->getCreditCardToken());
+    }
 
     /**
      * @throws Exception
      */
-    public function testParsing_of_PaymentInfo()
-	{
-		$payment = new ValitorAPIPayment($this->xml);
+    public function testParsingOfCardStatus(): void
+    {
+        $payment = new ValitorAPIPayment($this->xml);
 
-		$this->assertEquals('5 500 Gold', $payment->getPaymentInfo('item_name'));
-		$this->assertEquals('19.95', $payment->getPaymentInfo('original_amount'));
-		$this->assertEquals('creditcard', $payment->getPaymentInfo('payment_method'));
-		$this->assertEquals('affe8e4f628ca55cbd07aa6b0b4fdffb', $payment->getPaymentInfo('signature'));
-		$this->assertEquals('eu', $payment->getPaymentInfo('wg_server'));
-	}
+        static::assertEquals('Valid', $payment->getCardStatus());
+    }
 
     /**
      * @throws Exception
      */
-    public function testParsing_of_Currency()
-	{
-		$payment = new ValitorAPIPayment($this->xml);
+    public function testParsingOfPaymentNature(): void
+    {
+        $payment = new ValitorAPIPayment($this->xml);
 
-		$this->assertEquals('978', $payment->getCurrency());
-	}
-
-    /**
-     * @throws Exception
-     */
-    public function testParsing_of_ReservedAmount()
-	{
-		$payment = new ValitorAPIPayment($this->xml);
-
-		$this->assertEquals('20.00', $payment->getReservedAmount());
-	}
+        static::assertEquals('CreditCard', $payment->getPaymentNature());
+    }
 
     /**
      * @throws Exception
      */
-    public function testParsing_of_CapturedAmount()
-	{
-		$payment = new ValitorAPIPayment($this->xml);
+    public function testParsingOfPaymentSchemeName(): void
+    {
+        $payment = new ValitorAPIPayment($this->xml);
 
-		$this->assertEquals('19.95', $payment->getCapturedAmount());
-	}
+        static::assertEquals('Visa', $payment->getPaymentSchemeName());
+    }
 
     /**
-     * @throws PHPUnit_Framework_AssertionFailedError
+     * @throws Exception
      */
-    public function test_IsTokenized()
-	{
-		$payment = new ValitorAPIPayment($this->xml);
+    public function testParsingOfPaymentNatureService(): void
+    {
+        $payment = new ValitorAPIPayment($this->xml);
 
-		$this->assertEquals('true', $payment->isTokenized());
-		$this->assertTrue($payment->isTokenized());
-	}
+        $paymentNature = $payment->getPaymentNatureService();
+        static::assertEquals('ValitorAcquirer', $paymentNature->getName());
+        static::assertEquals('true1', $paymentNature->getSupportsRefunds());
+        static::assertEquals('true2', $paymentNature->getSupportsRelease());
+        static::assertEquals('true3', $paymentNature->getSupportsMultipleCaptures());
+        static::assertEquals('true4', $paymentNature->getSupportsMultipleRefunds());
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testParsingOfFraudRiskScore(): void
+    {
+        $payment = new ValitorAPIPayment($this->xml);
+
+        static::assertEquals('42', $payment->getFraudRiskScore());
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testParsingOfFraudExplanation(): void
+    {
+        $payment = new ValitorAPIPayment($this->xml);
+
+        static::assertEquals('For the test fraud service the risk score is always equal mod 101 of the created amount for the payment', $payment->getFraudExplanation());
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testParsingOfFraudRecommendation(): void
+    {
+        $payment = new ValitorAPIPayment($this->xml);
+
+        static::assertEquals('Deny', $payment->getFraudRecommendation());
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testParsingOfCustomerInfo(): void
+    {
+        $payment = new ValitorAPIPayment($this->xml);
+        $customerInfo = $payment->getCustomerInfo();
+
+        static::assertEquals('Mozilla/5.0 (Windows NT 6.1; WOW64; rv:27.0) Gecko/20100101 Firefox/27.0', $customerInfo->getUserAgent());
+        static::assertEquals('91.152.252.214', $customerInfo->getIpAddress());
+        static::assertEquals('timo.k.honkanen@elisanet.fi', $customerInfo->getEmail());
+        static::assertEquals('22 22 22 22', $customerInfo->getPhone());
+        static::assertEquals('345678', $customerInfo->getOrganisationNumber());
+        static::assertEquals('FI', $customerInfo->getCountryOfOrigin()->getCountry());
+        static::assertEquals('CardNumber', $customerInfo->getCountryOfOrigin()->getSource());
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testParsingOfPaymentInfo(): void
+    {
+        $payment = new ValitorAPIPayment($this->xml);
+
+        static::assertEquals('5 500 Gold', $payment->getPaymentInfo('item_name'));
+        static::assertEquals('19.95', $payment->getPaymentInfo('original_amount'));
+        static::assertEquals('creditcard', $payment->getPaymentInfo('payment_method'));
+        static::assertEquals('affe8e4f628ca55cbd07aa6b0b4fdffb', $payment->getPaymentInfo('signature'));
+        static::assertEquals('eu', $payment->getPaymentInfo('wg_server'));
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testParsingOfCurrency(): void
+    {
+        $payment = new ValitorAPIPayment($this->xml);
+
+        static::assertEquals('978', $payment->getCurrency());
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testParsingOfReservedAmount(): void
+    {
+        $payment = new ValitorAPIPayment($this->xml);
+
+        static::assertEquals('20.00', $payment->getReservedAmount());
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testParsingOfCapturedAmount(): void
+    {
+        $payment = new ValitorAPIPayment($this->xml);
+
+        static::assertEquals('19.95', $payment->getCapturedAmount());
+    }
+
+    public function testIsTokenized(): void
+    {
+        $payment = new ValitorAPIPayment($this->xml);
+
+        static::assertTrue($payment->isTokenized());
+    }
 }

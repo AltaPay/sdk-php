@@ -1,26 +1,30 @@
 <?php
 
-/**
- * Class ValitorAPIChargebackEvent
- */
 class ValitorAPIChargebackEvent
 {
+    /** @var DateTime */
     private $date;
+    /** @var string */
     private $type;
+    /** @var string */
     private $reasonCode;
+    /** @var string */
     private $reason;
+    /** @var string */
     private $amount;
+    /** @var string */
     private $currency;
+    /** @var array<string, string> */
     private $additionalInfo = array();
 
     /**
-     * ValitorAPIChargebackEvent constructor.
-     * @param SimpleXmlElement $xml
+     * @param SimpleXMLElement $xml
+     *
      * @throws Exception
      */
-    public function __construct(SimpleXmlElement $xml)
+    public function __construct(SimpleXMLElement $xml)
     {
-        $this->date =  new DateTime((string)$xml->Date);
+        $this->date = new DateTime((string)$xml->Date);
         $this->type = (string)$xml->Type;
         $this->reasonCode = (string)$xml->ReasonCode;
         $this->reason = (string)$xml->Reason;
@@ -28,9 +32,10 @@ class ValitorAPIChargebackEvent
         $this->currency = (string)$xml->Currency;
 
         $additionalInfoXml = @simplexml_load_string((string)$xml->AdditionalInfo);
-        foreach($additionalInfoXml->info_element as $infoElement)
-        {
-            $this->additionalInfo[(string)$infoElement->key] = (string)$infoElement->value;
+        if ($additionalInfoXml) {
+            foreach ($additionalInfoXml->info_element as $infoElement) {
+                $this->additionalInfo[(string)$infoElement->key] = (string)$infoElement->value;
+            }
         }
     }
 
@@ -43,8 +48,9 @@ class ValitorAPIChargebackEvent
     }
 
     /**
-     * @param $date
-     * @return mixed
+     * @param DateTime $date
+     *
+     * @return DateTime
      */
     public function setDate($date)
     {
@@ -60,8 +66,9 @@ class ValitorAPIChargebackEvent
     }
 
     /**
-     * @param $type
-     * @return mixed
+     * @param string $type
+     *
+     * @return string
      */
     public function setType($type)
     {
@@ -77,8 +84,9 @@ class ValitorAPIChargebackEvent
     }
 
     /**
-     * @param $reasonCode
-     * @return mixed
+     * @param string $reasonCode
+     *
+     * @return string
      */
     public function setReasonCode($reasonCode)
     {
@@ -94,8 +102,9 @@ class ValitorAPIChargebackEvent
     }
 
     /**
-     * @param $reason
-     * @return mixed
+     * @param string $reason
+     *
+     * @return string
      */
     public function setReason($reason)
     {
@@ -111,8 +120,9 @@ class ValitorAPIChargebackEvent
     }
 
     /**
-     * @param $amount
-     * @return mixed
+     * @param string $amount
+     *
+     * @return string
      */
     public function setAmount($amount)
     {
@@ -128,8 +138,9 @@ class ValitorAPIChargebackEvent
     }
 
     /**
-     * @param $currency
-     * @return mixed
+     * @param string $currency
+     *
+     * @return string
      */
     public function setCurrency($currency)
     {
@@ -137,7 +148,7 @@ class ValitorAPIChargebackEvent
     }
 
     /**
-     * @return array
+     * @return array<string, string>
      */
     public function getAdditionalInfo()
     {
@@ -145,12 +156,12 @@ class ValitorAPIChargebackEvent
     }
 
     /**
-     * @param array $additionalInfo
-     * @return array
+     * @param array<string, string> $additionalInfo
+     *
+     * @return array<string, string>
      */
     public function setAdditionalInfo(array $additionalInfo)
     {
         return $this->additionalInfo = $additionalInfo;
     }
 }
-
