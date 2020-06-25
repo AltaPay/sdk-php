@@ -24,8 +24,10 @@ class ArrayCachingLogger implements IValitorCommunicationLogger
      *
      * @param string $logId
      * @param string $message
+     *
+     * @return void
      */
-    public function logResponse($logId, $message): void
+    public function logResponse($logId, $message)
     {
         $this->logs[$logId]['response'] = $message;
     }

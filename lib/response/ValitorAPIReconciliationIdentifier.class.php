@@ -13,9 +13,13 @@
  */
 class ValitorAPIReconciliationIdentifier
 {
+    /** @var string */
     private $id;
+    /** @var string */
     private $amount;
+    /** @var string */
     private $type;
+    /** @var string */
     private $date;
 
     /**

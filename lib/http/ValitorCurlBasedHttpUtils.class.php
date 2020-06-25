@@ -7,7 +7,9 @@ class ValitorCurlBasedHttpUtils implements IValitorHttpUtils
 {
     /** @var int */
     private $timeout;
+    /** @var int */
     private $connectionTimeout;
+    /** @var bool */
     private $sslVerifyPeer;
 
     /**
@@ -94,7 +96,7 @@ class ValitorCurlBasedHttpUtils implements IValitorHttpUtils
         if (isset($charsetAndMime['charset'])) {
             // Actually convert the bytes
             if (strtolower($charsetAndMime['charset']) != 'utf-8') {
-                $httpResponse->setContent(iconv($charsetAndMime['charset'], 'utf-8', $httpResponse->getContent()));
+                $httpResponse->setContent(iconv($charsetAndMime['charset'], 'utf-8', $httpResponse->getContent()) ?: '');
 
                 // Replace in header
                 if ($charsetAndMime['mime'] == 'text/html') {
@@ -151,8 +153,8 @@ class ValitorCurlBasedHttpUtils implements IValitorHttpUtils
     /**
      * This method will append the given parameters to the URL. Using a ? or a & depending on the url.
      *
-     * @param string $url
-     * @param array  $parameters
+     * @param string  $url
+     * @param mixed[] $parameters
      *
      * @return string - the URL with the new parameters appended
      */

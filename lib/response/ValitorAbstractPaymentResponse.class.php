@@ -5,10 +5,15 @@
  */
 abstract class ValitorAbstractPaymentResponse extends ValitorAbstractResponse
 {
+    /** @var string */
     private $result;
+    /** @var string */
     private $merchantErrorMessage;
+    /** @var string */
     private $cardHolderErrorMessage;
+    /** @var string */
     private $cardHolderMessageMustBeShown;
+    /** @var ValitorAPIPayment[] */
     protected $payments = array();
 
     /**
@@ -77,7 +82,7 @@ abstract class ValitorAbstractPaymentResponse extends ValitorAbstractResponse
     }
 
     /**
-     * @return ValitorAPIPayment
+     * @return ValitorAPIPayment|null
      */
     public function getPrimaryPayment()
     {

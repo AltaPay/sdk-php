@@ -10,7 +10,7 @@ class ValitorMerchantAPI
     private $password;
     /** @var bool */
     private $connected = false;
-    /** @var IValitorCommunicationLogger */
+    /** @var IValitorCommunicationLogger|null */
     private $logger;
     /** @var IValitorHttpUtils */
     private $httpUtil;
@@ -67,7 +67,7 @@ class ValitorMerchantAPI
     /**
      * Generated the masked pan for provided string.
      *
-     * @parm string $pan
+     * @param string $pan
      *
      * @return string
      */
@@ -82,8 +82,8 @@ class ValitorMerchantAPI
     /**
      * Check API connection response and return the status.
      *
-     * @param string   $method
-     * @param string[] $args
+     * @param string  $method
+     * @param mixed[] $args
      *
      * @throws ValitorConnectionFailedException
      * @throws ValitorInvalidResponseException
@@ -97,7 +97,7 @@ class ValitorMerchantAPI
     {
         $absoluteUrl = $this->baseURL.'/merchant/API/'.$method;
 
-        $logId = null;
+        $logId = '';
         if ($this->logger !== null) {
             $loggedArgs = $args;
             if (isset($loggedArgs['cardnum'])) {
@@ -125,7 +125,7 @@ class ValitorMerchantAPI
 
         if ($response->getConnectionResult() == ValitorHttpResponse::CONNECTION_OKAY) {
             if ($response->getHttpCode() == 200) {
-                if (stripos($response->getContentType(), 'text/xml') !== false) {
+                if (stripos($response->getContentType() ?: '', 'text/xml') !== false) {
                     try {
                         return new SimpleXMLElement($response->getContent());
                     } catch (Exception $e) {
@@ -134,7 +134,7 @@ class ValitorMerchantAPI
                         }
                         throw new ValitorUnknownMerchantAPIException($e);
                     }
-                } elseif (stripos($response->getContentType(), 'text/csv') !== false) {
+                } elseif (stripos($response->getContentType() ?: '', 'text/csv') !== false) {
                     return $response->getContent();
                 }
                 throw new ValitorInvalidResponseException('Non XML ContentType (was: '.$response->getContentType().')');
@@ -157,6 +157,8 @@ class ValitorMerchantAPI
     }
 
     /**
+     * @param int $page
+     *
      * @throws ValitorMerchantAPIException
      *
      * @return ValitorFundingListResponse
@@ -193,6 +195,8 @@ class ValitorMerchantAPI
     }
 
     /**
+     * @param string $downloadLink
+     *
      * @throws Exception
      *
      * @return bool|string
@@ -218,20 +222,20 @@ class ValitorMerchantAPI
     }
 
     /**
-     * @param string      $apiMethod
-     * @param string      $terminal
-     * @param string      $shopOrderId
-     * @param float       $amount
-     * @param string      $currency
-     * @param string      $creditCardNumber
-     * @param string      $creditCardExpiryYear
-     * @param string      $creditCardExpiryMonth
-     * @param string|null $creditCardToken
-     * @param string      $cvc
-     * @param string      $type
-     * @param string      $paymentSource
-     * @param array       $customerInfo
-     * @param array       $transactionInfo
+     * @param string                $apiMethod
+     * @param string                $terminal
+     * @param string                $shopOrderId
+     * @param float                 $amount
+     * @param string                $currency
+     * @param string|null           $creditCardNumber
+     * @param string|null           $creditCardExpiryYear
+     * @param string|null           $creditCardExpiryMonth
+     * @param string|null           $creditCardToken
+     * @param string                $cvc
+     * @param string                $type
+     * @param string                $paymentSource
+     * @param array<string, string> $customerInfo
+     * @param array<string, string> $transactionInfo
      *
      * @return ValitorOmniReservationResponse
      */
@@ -270,7 +274,7 @@ class ValitorMerchantAPI
             $args['eyear'] = $creditCardExpiryYear;
         }
 
-        if ($customerInfo !== null && is_array($customerInfo)) {
+        if (is_array($customerInfo)) {
             $this->addCustomerInfo($customerInfo, $args);
         }
 
@@ -297,17 +301,17 @@ class ValitorMerchantAPI
     /**
      * Fixed amount reservation.
      *
-     * @param string $terminal
-     * @param string $shopOrderId
-     * @param float  $amount
-     * @param string $currency
-     * @param string $creditCardNumber
-     * @param string $creditCardExpiryYear
-     * @param string $creditCardExpiryMonth
-     * @param string $cvc
-     * @param string $paymentSource
-     * @param array  $customerInfo
-     * @param array  $transactionInfo
+     * @param string                $terminal
+     * @param string                $shopOrderId
+     * @param float                 $amount
+     * @param string                $currency
+     * @param string                $creditCardNumber
+     * @param string                $creditCardExpiryYear
+     * @param string                $creditCardExpiryMonth
+     * @param string                $cvc
+     * @param string                $paymentSource
+     * @param array<string, string> $customerInfo
+     * @param array<string, string> $transactionInfo
      *
      * @return ValitorOmniReservationResponse
      */
@@ -344,10 +348,15 @@ class ValitorMerchantAPI
     }
 
     /**
-     * @param string|null $cvc
-     * @param string      $paymentSource
-     * @param array       $customerInfo
-     * @param array       $transactionInfo
+     * @param string                $terminal
+     * @param string                $shopOrderId
+     * @param float                 $amount
+     * @param string                $currency
+     * @param string                $creditCardToken
+     * @param string|null           $cvc
+     * @param string                $paymentSource
+     * @param array<string, string> $customerInfo
+     * @param array<string, string> $transactionInfo
      *
      * @return ValitorOmniReservationResponse
      */
@@ -381,17 +390,17 @@ class ValitorMerchantAPI
     }
 
     /**
-     * @param string $terminal
-     * @param string $shopOrderId
-     * @param float  $amount
-     * @param string $currency
-     * @param string $creditCardNumber
-     * @param string $creditCardExpiryYear
-     * @param string $creditCardExpiryMonth
-     * @param string $cvc
-     * @param string $paymentSource
-     * @param array  $customerInfo
-     * @param array  $transactionInfo
+     * @param string                $terminal
+     * @param string                $shopOrderId
+     * @param float                 $amount
+     * @param string                $currency
+     * @param string                $creditCardNumber
+     * @param string                $creditCardExpiryYear
+     * @param string                $creditCardExpiryMonth
+     * @param string                $cvc
+     * @param string                $paymentSource
+     * @param array<string, string> $customerInfo
+     * @param array<string, string> $transactionInfo
      *
      * @return ValitorOmniReservationResponse
      */
@@ -428,15 +437,15 @@ class ValitorMerchantAPI
     }
 
     /**
-     * @param string      $terminal
-     * @param string      $shopOrderId
-     * @param float       $amount
-     * @param string      $currency
-     * @param string      $creditCardToken
-     * @param string|null $cvc
-     * @param string      $paymentSource
-     * @param array       $customerInfo
-     * @param array       $transactionInfo
+     * @param string                $terminal
+     * @param string                $shopOrderId
+     * @param float                 $amount
+     * @param string                $currency
+     * @param string                $creditCardToken
+     * @param string|null           $cvc
+     * @param string                $paymentSource
+     * @param array<string, string> $customerInfo
+     * @param array<string, string> $transactionInfo
      *
      * @return ValitorOmniReservationResponse
      */
@@ -470,16 +479,16 @@ class ValitorMerchantAPI
     }
 
     /**
-     * @param string $terminal
-     * @param string $shopOrderId
-     * @param string $currency
-     * @param string $creditCardNumber
-     * @param string $creditCardExpiryYear
-     * @param string $creditCardExpiryMonth
-     * @param string $cvc
-     * @param string $paymentSource
-     * @param array  $customerInfo
-     * @param array  $transactionInfo
+     * @param string                $terminal
+     * @param string                $shopOrderId
+     * @param string                $currency
+     * @param string                $creditCardNumber
+     * @param string                $creditCardExpiryYear
+     * @param string                $creditCardExpiryMonth
+     * @param string                $cvc
+     * @param string                $paymentSource
+     * @param array<string, string> $customerInfo
+     * @param array<string, string> $transactionInfo
      *
      * @return ValitorOmniReservationResponse
      */
@@ -515,10 +524,14 @@ class ValitorMerchantAPI
     }
 
     /**
-     * @param string null $cvc
-     * @param string      $paymentSource
-     * @param array       $customerInfo
-     * @param array       $transactionInfo
+     * @param string                $terminal
+     * @param string                $shopOrderId
+     * @param string                $currency
+     * @param string                $creditCardToken
+     * @param string|null           $cvc
+     * @param string                $paymentSource
+     * @param array<string, string> $customerInfo
+     * @param array<string, string> $transactionInfo
      *
      * @return ValitorOmniReservationResponse
      */
@@ -551,14 +564,14 @@ class ValitorMerchantAPI
     }
 
     /**
-     * @param string     $paymentId
-     * @param float|null $amount
-     * @param array      $orderLines
-     * @param float|null $salesTax
-     * @param string     $reconciliationIdentifier
-     * @param string     $invoiceNumber
-     * @param null       $shippingCompany
-     * @param null       $trackingNumber
+     * @param string                           $paymentId
+     * @param float|null                       $amount
+     * @param array<int, array<string, mixed>> $orderLines
+     * @param float|null                       $salesTax
+     * @param string                           $reconciliationIdentifier
+     * @param string                           $invoiceNumber
+     * @param string|null                      $shippingCompany
+     * @param string|null                      $trackingNumber
      *
      * @throws ValitorConnectionFailedException
      * @throws ValitorInvalidResponseException
@@ -627,8 +640,8 @@ class ValitorMerchantAPI
     }
 
     /**
-     * @param string $paymentId
-     * @param array  $orderLines
+     * @param string                                $paymentId
+     * @param array<int, array<string, mixed>>|null $orderLines
      *
      * @throws ValitorMerchantAPIException
      *
@@ -654,6 +667,7 @@ class ValitorMerchantAPI
     }
 
     /**
+     * @param string     $paymentId
      * @param float|null $amount
      *
      * @throws ValitorConnectionFailedException
@@ -744,20 +758,27 @@ class ValitorMerchantAPI
     }
 
     /**
-     * @param string                          $terminal
-     * @param string                          $orderId
-     * @param float                           $amount
-     * @param string                          $currencyCode
-     * @param string                          $paymentType
-     * @param array<string, string|null>|null $customerInfo
-     * @param string|null                     $cookie
-     * @param string|null                     $language
-     * @param string                          $reconciliationIdentifier
-     * @param array                           $config
-     * @param array                           $transactionInfo
-     * @param array                           $orderLines
-     * @param bool                            $accountOffer
-     * @param null                            $ccToken
+     * @param string                           $terminal
+     * @param string                           $orderId
+     * @param float                            $amount
+     * @param string                           $currencyCode
+     * @param string                           $paymentType
+     * @param array<string, string|null>|null  $customerInfo
+     * @param string|null                      $cookie
+     * @param string|null                      $language
+     * @param array<string, string>            $config
+     * @param array<string, string>            $transactionInfo
+     * @param array<int, array<string, mixed>> $orderLines
+     * @param bool                             $accountOffer
+     * @param string|null                      $ccToken
+     * @param string                           $reconciliationIdentifier
+     * @param string|null                      $invoiceNumber
+     * @param string|null                      $fraudService
+     * @param string|null                      $paymentSource
+     * @param string|null                      $shippingMethod
+     * @param string|null                      $customerCreatedDate
+     * @param string|null                      $organizationNumber
+     * @param float|null                       $salesTax
      *
      * @throws ValitorConnectionFailedException
      * @throws ValitorInvalidResponseException
@@ -854,17 +875,21 @@ class ValitorMerchantAPI
     }
 
     /**
-     * @param null  $paymentType
-     * @param null  $customerInfo
-     * @param array $transactionInfo
-     * @param null  $accountNumber
-     * @param null  $bankCode
-     * @param null  $fraud_service
-     * @param null  $paymentSource
-     * @param array $orderLines
-     * @param null  $organisationNumber
-     * @param null  $personalIdentifyNumber
-     * @param null  $birthDate
+     * @param string                           $terminal
+     * @param string                           $shopOrderId
+     * @param float                            $amount
+     * @param string                           $currencyCode
+     * @param string|null                      $paymentType
+     * @param array<string, string>|null       $customerInfo
+     * @param array<string, string>            $transactionInfo
+     * @param string|null                      $accountNumber
+     * @param string|null                      $bankCode
+     * @param string|null                      $fraud_service
+     * @param string|null                      $paymentSource
+     * @param array<int, array<string, mixed>> $orderLines
+     * @param string|null                      $organisationNumber
+     * @param string|null                      $personalIdentifyNumber
+     * @param string|null                      $birthDate
      *
      * @throws ValitorConnectionFailedException
      * @throws ValitorInvalidResponseException
@@ -937,24 +962,24 @@ class ValitorMerchantAPI
     }
 
     /**
-     * @param string                     $terminal
-     * @param string                     $shopOrderId
-     * @param float                      $amount
-     * @param string                     $currencyCode
-     * @param string|null                $creditCardToken
-     * @param string|null                $pan
-     * @param int|null                   $expiryMonth
-     * @param int|null                   $expiryYear
-     * @param string|null                $cvc
-     * @param array                      $transactionInfo
-     * @param string|null                $paymentType
-     * @param string|null                $paymentSource
-     * @param string|null                $fraudService
-     * @param float|null                 $surcharge
-     * @param string|null                $customerCreatedDate
-     * @param string|null                $shippingMethod
-     * @param array<string, string>|null $customerInfo
-     * @param array                      $orderLines
+     * @param string                           $terminal
+     * @param string                           $shopOrderId
+     * @param float                            $amount
+     * @param string                           $currencyCode
+     * @param string|null                      $creditCardToken
+     * @param string|null                      $pan
+     * @param string|null                      $expiryMonth
+     * @param string|null                      $expiryYear
+     * @param string|null                      $cvc
+     * @param array<string, string>            $transactionInfo
+     * @param string|null                      $paymentType
+     * @param string|null                      $paymentSource
+     * @param string|null                      $fraudService
+     * @param float|null                       $surcharge
+     * @param string|null                      $customerCreatedDate
+     * @param string|null                      $shippingMethod
+     * @param array<string, string>|null       $customerInfo
+     * @param array<int, array<string, mixed>> $orderLines
      *
      * @throws ValitorConnectionFailedException
      * @throws ValitorInvalidResponseException
@@ -1039,6 +1064,7 @@ class ValitorMerchantAPI
     }
 
     /**
+     * @param string     $subscriptionId
      * @param float|null $amount
      *
      * @throws ValitorConnectionFailedException
@@ -1057,9 +1083,9 @@ class ValitorMerchantAPI
     }
 
     /**
-     * @param string     $subscriptionId
-     * @param string     $reconciliationIdentifier
-     * @param float|null $amount
+     * @param string      $subscriptionId
+     * @param string|null $reconciliationIdentifier
+     * @param float|null  $amount
      *
      * @throws ValitorConnectionFailedException
      * @throws ValitorInvalidResponseException
@@ -1103,6 +1129,7 @@ class ValitorMerchantAPI
     }
 
     /**
+     * @param string     $subscriptionId
      * @param float|null $amount
      *
      * @throws ValitorMerchantAPIException
@@ -1117,6 +1144,7 @@ class ValitorMerchantAPI
     }
 
     /**
+     * @param string     $subscriptionId
      * @param float|null $amount
      *
      * @throws ValitorConnectionFailedException
@@ -1143,6 +1171,11 @@ class ValitorMerchantAPI
     }
 
     /**
+     * @param string $terminal
+     * @param string $cardToken
+     * @param float  $amount
+     * @param string $currency
+     *
      * @throws ValitorConnectionFailedException
      * @throws ValitorInvalidResponseException
      * @throws ValitorRequestTimeoutException
@@ -1169,6 +1202,9 @@ class ValitorMerchantAPI
     }
 
     /**
+     * @param string $subscriptionId
+     * @param float  $amount
+     *
      * @throws ValitorConnectionFailedException
      * @throws ValitorInvalidResponseException
      * @throws ValitorRequestTimeoutException
@@ -1193,6 +1229,8 @@ class ValitorMerchantAPI
     }
 
     /**
+     * @param mixed[] $args
+     *
      * @throws ValitorConnectionFailedException
      * @throws ValitorInvalidResponseException
      * @throws ValitorRequestTimeoutException
@@ -1226,8 +1264,8 @@ class ValitorMerchantAPI
     }
 
     /**
-     * @param array $customerInfo
-     * @param array $args
+     * @param array<string, string|null>|null $customerInfo
+     * @param string[][]                      $args
      *
      * @throws ValitorMerchantAPIException
      *

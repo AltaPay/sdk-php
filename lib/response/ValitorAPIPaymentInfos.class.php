@@ -2,12 +2,13 @@
 
 class ValitorAPIPaymentInfos
 {
-    /*
-    <PaymentInfos>
-    <PaymentInfo name="auxkey">aux data (&lt;&#xE6;&#xF8;&#xE5;&gt;)</PaymentInfo>
-    </PaymentInfos>
-    */
+    /** @var SimpleXMLElement
+     * <PaymentInfos>
+     * <PaymentInfo name="auxkey">aux data (&lt;&#xE6;&#xF8;&#xE5;&gt;)</PaymentInfo>
+     * </PaymentInfos>
+     */
     private $simpleXmlElement;
+    /** @var array<string, string> */
     private $infos = array();
 
     /**
@@ -27,7 +28,7 @@ class ValitorAPIPaymentInfos
     }
 
     /**
-     * @return array
+     * @return array<string, string>
      */
     public function getAll()
     {
@@ -37,11 +38,11 @@ class ValitorAPIPaymentInfos
     /**
      * @param string $key
      *
-     * @return string
+     * @return string|null
      */
     public function getInfo($key)
     {
-        return @$this->infos[$key];
+        return isset($this->infos[$key]) ? $this->infos[$key] : null;
     }
 
     /**

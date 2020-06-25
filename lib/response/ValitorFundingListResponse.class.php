@@ -5,7 +5,9 @@
  */
 class ValitorFundingListResponse extends ValitorAbstractResponse
 {
+    /** @var int */
     private $numberOfPages;
+    /** @var ValitorAPIFunding[] */
     private $fundings = array();
 
     /**
@@ -18,7 +20,7 @@ class ValitorFundingListResponse extends ValitorAbstractResponse
         parent::__construct($xml);
         if ($this->getErrorCode() === '0') {
             $attr = $xml->Body->Fundings->attributes();
-            $this->numberOfPages = (string)$attr['numberOfPages'];
+            $this->numberOfPages = isset($attr['numberOfPages']) ? (int)$attr['numberOfPages'] : 0;
             foreach ($xml->Body->Fundings->Funding as $funding) {
                 $this->fundings[] = new ValitorAPIFunding($funding);
             }
@@ -34,7 +36,7 @@ class ValitorFundingListResponse extends ValitorAbstractResponse
     }
 
     /**
-     * @return string
+     * @return int
      */
     public function getNumberOfPages()
     {
@@ -42,7 +44,7 @@ class ValitorFundingListResponse extends ValitorAbstractResponse
     }
 
     /**
-     * @return array
+     * @return ValitorAPIFunding[]
      */
     public function getFundings()
     {

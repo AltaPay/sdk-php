@@ -16,9 +16,13 @@ class ValitorHttpResponse
     private $header = '';
     /** @var string */
     private $content = '';
+    /** @var mixed[] */
     private $info;
+    /** @var string */
     private $errorMessage;
+    /** @var int */
     private $errorNumber;
+    /** @var string */
     private $connectionResult;
 
     /**
@@ -101,7 +105,7 @@ class ValitorHttpResponse
     }
 
     /**
-     * @return mixed
+     * @return mixed[]
      */
     public function getInfo()
     {
@@ -109,7 +113,7 @@ class ValitorHttpResponse
     }
 
     /**
-     * @param mixed $info
+     * @param mixed[] $info
      *
      * @return void
      */
@@ -177,7 +181,7 @@ class ValitorHttpResponse
      */
     public function getHttpCode()
     {
-        return $this->info['http_code'];
+        return (int)$this->info['http_code'];
     }
 
     /**

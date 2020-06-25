@@ -5,8 +5,11 @@
  */
 class ValitorFOpenBasedHttpUtils implements IValitorHttpUtils
 {
+    /** @var string */
     private $streamState;
+    /** @var int */
     private $timeout;
+    /** @var int */
     private $connectionTimeout;
 
     /**
@@ -88,7 +91,7 @@ class ValitorFOpenBasedHttpUtils implements IValitorHttpUtils
     {
         switch ($notification_code) {
         case STREAM_NOTIFY_FAILURE:
-            if (strpos($message, '401 Unauthorized')) {
+            if ($message && strpos($message, '401 Unauthorized')) {
                 $this->streamState = 'AUTH_FAILED';
             }
             break;
@@ -119,8 +122,8 @@ class ValitorFOpenBasedHttpUtils implements IValitorHttpUtils
     /**
      * This method will append the given parameters to the URL. Using a ? or a & depending on the url.
      *
-     * @param string $url
-     * @param array  $parameters
+     * @param string  $url
+     * @param mixed[] $parameters
      *
      * @return string - the URL with the new parameters appended
      */

@@ -5,6 +5,7 @@
  */
 class ValitorGetTerminalsResponse extends ValitorAbstractResponse
 {
+    /** @var ValitorTerminal[] */
     private $terminals = array();
 
     public function __construct(SimpleXMLElement $xml)
@@ -29,7 +30,7 @@ class ValitorGetTerminalsResponse extends ValitorAbstractResponse
     }
 
     /**
-     * @return array
+     * @return ValitorTerminal[]
      */
     public function getTerminals()
     {

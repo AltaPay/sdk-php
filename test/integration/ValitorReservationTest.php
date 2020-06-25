@@ -31,8 +31,8 @@ class ValitorReservationTest extends TestCase
             $this->config->currency,
             null,
             '4111000011110000',
-            1,
-            2018,
+            '1',
+            '2018',
             '123'
         );
 
@@ -48,8 +48,8 @@ class ValitorReservationTest extends TestCase
             $this->config->currency,
             null,
             '4111000011110000',
-            1,
-            2018,
+            '1',
+            '2018',
             '123'
         );
 
@@ -65,8 +65,8 @@ class ValitorReservationTest extends TestCase
             $this->config->currency,
             null,
             '4111000011110000',
-            1,
-            2018,
+            '1',
+            '2018',
             '123'
         );
 
@@ -82,8 +82,8 @@ class ValitorReservationTest extends TestCase
             $this->config->currency,
             null,
             '4111000011110000',
-            1,
-            2018,
+            '1',
+            '2018',
             '123'
         );
 
@@ -138,8 +138,8 @@ class ValitorReservationTest extends TestCase
             $this->config->currency,
             null,
             '4111000011110000',
-            1,
-            2018,
+            '1',
+            '2018',
             '123',
             array('info1' => 'desc1', 'info2' => 'desc2'),
             'paymentAndCapture',

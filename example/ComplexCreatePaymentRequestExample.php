@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__.'/base.php';
+$api = InitializeValitorMerchantAPI();
 
 // Order details
 $orderId = 'order_'.time();
@@ -57,11 +58,6 @@ $orderLines = array(
     ),
 );
 
-/**
- * @return ValitorCreatePaymentRequestResponse
- *
- * @var ValitorMerchantAPI $api
- */
 $response = $api->createPaymentRequest(
     $terminal,
     $orderId,

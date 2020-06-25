@@ -9,7 +9,9 @@ class ValitorTerminal
     private $title;
     /** @var string */
     private $country;
+    /** @var string[] */
     private $natures = array();
+    /** @var string[] */
     private $currencies = array();
 
     /**
@@ -51,7 +53,7 @@ class ValitorTerminal
     }
 
     /**
-     * @return array
+     * @return string[]
      */
     public function getNature()
     {
@@ -69,6 +71,8 @@ class ValitorTerminal
     }
 
     /**
+     * @param string $currency
+     *
      * @return bool
      */
     public function hasCurrency($currency)

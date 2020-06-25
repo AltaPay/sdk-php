@@ -16,6 +16,8 @@ interface IValitorCommunicationLogger
      *
      * @param string $logId
      * @param string $message
+     *
+     * @return void
      */
     public function logResponse($logId, $message);
 }

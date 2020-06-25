@@ -5,15 +5,25 @@
  */
 class ValitorHttpRequest
 {
+    /** @var string */
     private $url;
+    /** @var string */
     private $method = 'GET';
+    /** @var string[] */
     private $parameters = array();
+    /** @var string|null */
     private $postContent;
+    /** @var string|null */
     private $user;
+    /** @var string|null */
     private $pass;
+    /** @var string */
     private $logPaymentId;
+    /** @var string */
     private $logPaymentRequestId;
+    /** @var string */
     private $cookie;
+    /** @var string[] */
     private $headers = array();
 
     /**
@@ -33,7 +43,7 @@ class ValitorHttpRequest
     }
 
     /**
-     * @return array
+     * @return string[]
      */
     public function getParameters()
     {
@@ -41,7 +51,7 @@ class ValitorHttpRequest
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
     public function getPostContent()
     {
@@ -49,7 +59,7 @@ class ValitorHttpRequest
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getUser()
     {
@@ -57,7 +67,7 @@ class ValitorHttpRequest
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getPass()
     {
@@ -65,7 +75,7 @@ class ValitorHttpRequest
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getLogPaymentId()
     {
@@ -73,7 +83,7 @@ class ValitorHttpRequest
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getLogPaymentRequestId()
     {
@@ -81,7 +91,7 @@ class ValitorHttpRequest
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getCookie()
     {
@@ -127,6 +137,8 @@ class ValitorHttpRequest
     }
 
     /**
+     * @param string $x
+     *
      * @return void
      */
     public function setPostContent($x)
@@ -155,6 +167,8 @@ class ValitorHttpRequest
     }
 
     /**
+     * @param string $x
+     *
      * @return void
      */
     public function setLogPaymentId($x)
@@ -163,6 +177,8 @@ class ValitorHttpRequest
     }
 
     /**
+     * @param string $x
+     *
      * @return void
      */
     public function setLogPaymentRequestId($x)
@@ -171,6 +187,8 @@ class ValitorHttpRequest
     }
 
     /**
+     * @param string $x
+     *
      * @return void
      */
     public function setCookie($x)

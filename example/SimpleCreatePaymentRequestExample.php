@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__.'/base.php';
+$api = InitializeValitorMerchantAPI();
 
 // Different variables which are used as arguments
 $orderId = 'TestOrder_'.time();
@@ -11,10 +12,6 @@ $config = array(
     , 'callback_notification' => '', // See documentation
 );
 
-/**
- * @var ValitorMerchantAPI                  $api
- * @var ValitorCreatePaymentRequestResponse $response
- */
 $response = $api->createPaymentRequest(
     $terminal,
     $orderId,

@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__.'/base.php';
+$api = InitializeValitorMerchantAPI();
 
 // Different variables, which are used as arguments
 $fullAmount = 1290.00;
@@ -32,9 +33,6 @@ function reserveAndCapture($api, $terminal, $amount)
     $cvc = '111';
     $expiryMonth = '12';
     $expiryYear = '2018';
-    /**
-     * @var ValitorReservationResponse $response
-     */
     $response = $api->reservation(
         $terminal,
         $orderId,
@@ -53,11 +51,7 @@ function reserveAndCapture($api, $terminal, $amount)
         throw new Exception('Reservation failed: '.$response->getErrorMessage());
     }
     $transactionId = $response->getPrimaryPayment()->getId();
-    /**
-     * Capture the amount based on the fetched transaction ID.
-     *
-     * @var ValitorCaptureResponse $captureResponse
-     */
+    // Capture the amount based on the fetched transaction ID.
     $captureResponse = $api->captureReservation($transactionId);
     if (!$captureResponse->wasSuccessful()) {
         throw new Exception('Capture failed: '.$response->getErrorMessage());
@@ -65,10 +59,6 @@ function reserveAndCapture($api, $terminal, $amount)
     return $transactionId;
 }
 
-/**
- * @var ValitorMerchantAPI    $api
- * @var ValitorRefundResponse $response
- */
 $response = $api->refundCapturedReservation($transactionId, $partialAmount);
 if (!$response->wasSuccessful()) {
     throw new Exception('Partial refund failed: '.$response->getErrorMessage());

@@ -2,31 +2,40 @@
 
 class ValitorAPICustomerInfo
 {
-    /*
-                    <UserAgent>Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:13.0)
-                        Gecko/20100101 Firefox/13.0.1</UserAgent>
-                    <IpAddress>81.7.175.18</IpAddress>
-                    <Email></Email>
-                    <Username></Username>
-                    <CustomerPhone></CustomerPhone>
-                    <OrganisationNumber></OrganisationNumber>
-                    <CountryOfOrigin>
-                        <Country></Country><Source>NotSet</Source>
-                    </CountryOfOrigin>
-    */
+    /** @var SimpleXMLElement
+     * <UserAgent>Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:13.0)
+     *     Gecko/20100101 Firefox/13.0.1</UserAgent>
+     * <IpAddress>81.7.175.18</IpAddress>
+     * <Email></Email>
+     * <Username></Username>
+     * <CustomerPhone></CustomerPhone>
+     * <OrganisationNumber></OrganisationNumber>
+     * <CountryOfOrigin>
+     *     <Country></Country><Source>NotSet</Source>
+     * </CountryOfOrigin>
+     */
     private $simpleXmlElement;
+    /** @var string */
     private $userAgent;
+    /** @var string */
     private $ipAddress;
+    /** @var string */
     private $email;
+    /** @var string */
     private $username;
+    /** @var string */
     private $phone;
+    /** @var string */
     private $organisationNumber;
 
     /** @var ValitorAPIAddress */
     private $billingAddress;
+    /** @var ValitorAPIAddress */
     private $shippingAddress;
+    /** @var ValitorAPIAddress */
     private $registeredAddress;
 
+    /** @var ValitorAPICountryOfOrigin */
     private $countryOfOrigin;
 
     /**

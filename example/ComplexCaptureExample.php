@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__.'/base.php';
+$api = InitializeValitorMerchantAPI();
 
 // Different variables which are used as arguments
 $amount = 215.00;
@@ -32,15 +33,17 @@ $orderLines = array(
         'goodsType'   => 'shipping',
     ),
 );
+
 $transactionId = reserveAmount($api, $terminal, $amount, $orderLines);
 
 /**
  * Helper method for reserving the payment amount
  * Obs: the amount cannot be captured if is not reserved firstly.
  *
- * @param ValitorMerchantAPI $api
- * @param string             $terminal
- * @param float              $amount
+ * @param ValitorMerchantAPI               $api
+ * @param string                           $terminal
+ * @param float                            $amount
+ * @param array<int, array<string, mixed>> $orderLines
  *
  * @throws Exception
  *
@@ -85,11 +88,6 @@ function reserveAmount($api, $terminal, $amount, $orderLines)
     return $response->getPrimaryPayment()->getId();
 }
 
-/**
- * @return ValitorCaptureResponse
- *
- * @var ValitorMerchantAPI $api
- */
 $response = $api->captureReservation($transactionId, $amount, $orderLines);
 if (!$response->wasSuccessful()) {
     throw new Exception('Capture failed: '.$response->getErrorMessage());

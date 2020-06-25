@@ -21,15 +21,25 @@
  */
 class ValitorAPIFunding
 {
+    /** @var string */
     private $filename;
+    /** @var string */
     private $contractIdentifier;
+    /** @var string[] */
     private $shops = array();
+    /** @var string */
     private $acquirer;
+    /** @var string */
     private $fundingDate;
+    /** @var string */
     private $amount;
+    /** @var string */
     private $currency;
+    /** @var string */
     private $createdDate;
+    /** @var string */
     private $downloadLink;
+    /** @var string */
     private $referenceText;
 
     /**
@@ -101,7 +111,7 @@ class ValitorAPIFunding
     }
 
     /**
-     * @return array
+     * @return string[]
      */
     public function getShops()
     {

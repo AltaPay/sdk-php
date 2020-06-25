@@ -10,7 +10,7 @@
 class ValitorCallbackHandler
 {
     /**
-     * @param string $xml
+     * @param SimpleXMLElement|string $xml
      *
      * @throws ValitorXmlException
      *

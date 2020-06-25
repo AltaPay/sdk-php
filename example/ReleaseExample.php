@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__.'/base.php';
+$api = InitializeValitorMerchantAPI();
 
 // Different variables which are used as arguments
 $amount = 125.55;
@@ -37,14 +38,14 @@ $transactionId = reserveAmount($api, $terminal, $amount, $orderLines);
 /**
  * Helper method for reserving the payment amount.
  *
- * @param ValitorMerchantAPI $api
- * @param string             $terminal
- * @param float              $amount
- * @param $orderLines
+ * @param ValitorMerchantAPI               $api
+ * @param string                           $terminal
+ * @param float                            $amount
+ * @param array<int, array<string, mixed>> $orderLines
  *
  * @throws Exception
  *
- * @return mixed
+ * @return string
  */
 function reserveAmount($api, $terminal, $amount, $orderLines)
 {
@@ -86,9 +87,6 @@ function reserveAmount($api, $terminal, $amount, $orderLines)
     return $response->getPrimaryPayment()->getId();
 }
 
-/**
- * @var ValitorReleaseResponse $response
- */
 $response = $api->releaseReservation($transactionId);
 if (!$response->wasSuccessful()) {
     throw new Exception('Release operation failed: '.$response->getErrorMessage());

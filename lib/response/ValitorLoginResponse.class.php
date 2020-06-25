@@ -5,6 +5,7 @@
  */
 class ValitorLoginResponse extends ValitorAbstractResponse
 {
+    /** @var string */
     private $result;
 
     /**

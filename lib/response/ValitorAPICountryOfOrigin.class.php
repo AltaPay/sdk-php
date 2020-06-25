@@ -13,7 +13,9 @@ class ValitorAPICountryOfOrigin
     const ShippingAddress = 'ShippingAddress';
     const PayPal = 'PayPal';
 
+    /** @var string */
     private $country;
+    /** @var string */
     private $source;
 
     /**

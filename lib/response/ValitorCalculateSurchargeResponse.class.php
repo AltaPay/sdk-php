@@ -5,8 +5,10 @@
  */
 class ValitorCalculateSurchargeResponse extends ValitorAbstractResponse
 {
+    /** @var string */
     private $result;
-    private $surchargeAmount = array();
+    /** @var string */
+    private $surchargeAmount;
 
     /**
      * ValitorCalculateSurchargeResponse constructor.
@@ -24,7 +26,7 @@ class ValitorCalculateSurchargeResponse extends ValitorAbstractResponse
     }
 
     /**
-     * @return array|string
+     * @return string
      */
     public function getSurchargeAmount()
     {

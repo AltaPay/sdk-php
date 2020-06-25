@@ -25,7 +25,11 @@ function autoLoader($class, $dir = null)
     //TODO: refactor this
     include_once $dir.DIRECTORY_SEPARATOR.'VALITOR_VERSION.php';
 
-    $listDir = scandir(realpath($dir));
+    $realDir = realpath($dir);
+    if (!$realDir) {
+        return;
+    }
+    $listDir = scandir($realDir);
     if (!empty($listDir)) {
         foreach ($listDir as $listDirkey => $subDir) {
             if ($subDir == '.' || $subDir == '..') {

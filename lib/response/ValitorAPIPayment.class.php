@@ -17,43 +17,75 @@
  */
 class ValitorAPIPayment
 {
+    /** @var SimpleXMLElement */
     private $simpleXmlElement;
 
     // Remember to reflect additions within this->getCurrentXml()
+    /** @var string */
     private $transactionId;
+    /** @var string */
     private $uuid;
+    /** @var string */
     private $authType;
+    /** @var string */
     private $creditCardMaskedPan;
+    /** @var string */
     private $creditCardExpiryMonth;
+    /** @var string */
     private $creditCardExpiryYear;
+    /** @var string */
     private $creditCardToken;
+    /** @var bool */
     private $isTokenized;
+    /** @var string */
     private $cardStatus;
+    /** @var string */
     private $shopOrderId;
+    /** @var string */
     private $shop;
+    /** @var string */
     private $terminal;
+    /** @var string */
     private $transactionStatus;
+    /** @var string */
     private $reasonCode;
+    /** @var string */
     private $currency;
+    /** @var string */
     private $addressVerification;
+    /** @var string */
     private $addressVerificationDescription;
 
+    /** @var string */
     private $reservedAmount;
+    /** @var string */
     private $capturedAmount;
+    /** @var string */
     private $refundedAmount;
+    /** @var string */
     private $recurringMaxAmount;
+    /** @var string */
     private $surchargeAmount;
 
+    /** @var string */
     private $paymentSchemeName;
+    /** @var string */
     private $paymentNature;
+    /** @var string */
     private $paymentSource;
+    /** @var ValitorAPIPaymentNatureService */
     private $paymentNatureService;
 
+    /** @var string */
     private $fraudRiskScore;
+    /** @var string */
     private $fraudExplanation;
+    /** @var string */
     private $fraudRecommendation;
 
+    /** @var string */
     private $createdDate;
+    /** @var string */
     private $updatedDate;
 
     // Remember to reflect additions within this->getCurrentXml()
@@ -63,6 +95,7 @@ class ValitorAPIPayment
     /** @var ValitorAPIPaymentInfos */
     private $paymentInfos;
 
+    /** @var ValitorAPIReconciliationIdentifier[] */
     private $reconciliationIdentifiers = array();
 
     /** @var ValitorAPIChargebackEvents */
@@ -305,7 +338,7 @@ class ValitorAPIPayment
     /**
      * @param string $keyName
      *
-     * @return string
+     * @return string|null
      */
     public function getPaymentInfo($keyName)
     {

@@ -5,6 +5,7 @@
  */
 class ValitorAPIChargebackEvents
 {
+    /** @var SimpleXMLElement */
     private $simpleXmlElement;
     /** @var ValitorAPIChargebackEvent[] */
     private $chargebackEvents = array();

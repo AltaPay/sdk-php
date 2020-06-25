@@ -1,10 +1,8 @@
 <?php
 require_once __DIR__.'/base.php';
+$api = InitializeValitorMerchantAPI();
 
 // Different variables, which are used as arguments
-/**
- * @var float $amount
- */
 $amount = 215.00;
 $orderLines = array(
     array(
@@ -42,10 +40,10 @@ $transactionId = reserveAndCapture($api, $terminal, $amount, $orderLines);
  * If success then the amount is captured
  * Obs: the amount cannot be captured if is not reserved firstly.
  *
- * @param alitorMerchantAPI $api
- * @param string            $terminal
- * @param float             $amount
- * @param $orderLines
+ * @param ValitorMerchantAPI               $api
+ * @param string                           $terminal
+ * @param float                            $amount
+ * @param array<int, array<string, mixed>> $orderLines
  *
  * @throws Exception
  *
@@ -64,9 +62,6 @@ function reserveAndCapture($api, $terminal, $amount, $orderLines)
     $cvc = '111';
     $expiryMonth = '12';
     $expiryYear = '2018';
-    /**
-     * @var ValitorReservationResponse $response
-     */
     $response = $api->reservation(
         $terminal,
         $orderId,
@@ -91,11 +86,7 @@ function reserveAndCapture($api, $terminal, $amount, $orderLines)
         throw new Exception('Reservation failed: '.$response->getErrorMessage());
     }
     $transactionId = $response->getPrimaryPayment()->getId();
-    /**
-     * Capture the amount based on the fetched transaction ID.
-     *
-     * @var ValitorCaptureResponse $captureResponse
-     */
+    // Capture the amount based on the fetched transaction ID.
     $captureResponse = $api->captureReservation($transactionId);
     if (!$captureResponse->wasSuccessful()) {
         throw new Exception('Capture failed: '.$response->getErrorMessage());
@@ -103,10 +94,6 @@ function reserveAndCapture($api, $terminal, $amount, $orderLines)
     return $transactionId;
 }
 
-/**
- * @var ValitorRefundResponse $response
- * @var ValitorMerchantAPI    $api
- */
 $response = $api->refundCapturedReservation($transactionId, $amount, $orderLines);
 if (!$response->wasSuccessful()) {
     throw new Exception('Refund failed: '.$response->getErrorMessage());

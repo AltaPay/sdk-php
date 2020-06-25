@@ -15,7 +15,7 @@ class ValitorPreauthRecurringResponse extends ValitorAbstractPaymentResponse
      * This payment represent the subscription, it is returned as the subscription it
      * self might have changed since last time it was used.
      *
-     * @return ValitorAPIPayment
+     * @return ValitorAPIPayment|null
      */
     public function getSubscriptionPayment()
     {
@@ -25,7 +25,7 @@ class ValitorPreauthRecurringResponse extends ValitorAbstractPaymentResponse
     /**
      * This is the payment which was pre-authed.
      *
-     * @return ValitorAPIPayment
+     * @return ValitorAPIPayment|null
      */
     public function getPrimaryPayment()
     {
