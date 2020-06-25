@@ -1,0 +1,18 @@
+image: $CI_REGISTRY/altapay/ops/docker/php:latest
+
+cache:
+  paths:
+    - vendor/
+
+before_script:
+  - composer install
+
+test:
+  script:
+  - vendor/bin/phpstan analyze --no-progress --error-format=junit > junit-phpstan.xml
+  - vendor/bin/phpunit --testsuite Unit --configuration phpunit.xml --coverage-text --colors=never --log-junit=junit-phpunit.xml
+  - vendor/bin/php-cs-fixer fix --dry-run --format=junit > junit-code-style.xml
+  artifacts:
+    reports:
+      junit: ["junit-*.xml"]
+

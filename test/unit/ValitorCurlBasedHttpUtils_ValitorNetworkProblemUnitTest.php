@@ -3,46 +3,36 @@
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
 
-class ValitorFOpenBasedHttpUtils_ValitorNetworkProblemTest extends TestCase
+class ValitorCurlBasedHttpUtils_ValitorNetworkProblemUnitTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
     /** @var ArrayCachingLogger */
     private $logger;
-    /** @var ValitorFOpenBasedHttpUtils */
-    private $httpUtils;
 
     /** @var ValitorMerchantAPI */
     private $merchantApi;
+    /** @var ValitorCurlBasedHttpUtils */
+    private $httpUtils;
 
     protected function setUp(): void
     {
         $this->logger = new ArrayCachingLogger();
-        $this->httpUtils = new ValitorFOpenBasedHttpUtils(5, 3);
+        $this->httpUtils = new ValitorCurlBasedHttpUtils(5, 3, false);
     }
 
-    /**
-     * Disabled due to the unstable nature of the php fopen timeout code. DHAKA DHAKA DHAKA.
-     */
-    public function _testRequestTimeout(): void
+    public function testConnectionRefused(): void
     {
-        $this->expectException(ValitorRequestTimeoutException::class);
+        $this->expectException(ValitorConnectionFailedException::class);
 
         $this->merchantApi = new ValitorMerchantAPI(
-            'https://testbank.valitor.com/Sleep?time=21&',
+            'https://localhost:404/',
             'username',
             'password',
             $this->logger,
             $this->httpUtils
         );
-        try {
-            $this->merchantApi->login();
-        } catch (Exception $exception) {
-            if (!($exception instanceof ValitorRequestTimeoutException)) {
-                print_r($this->logger->getLogs());
-            }
-            throw $exception;
-        }
+        $response = $this->merchantApi->login();
     }
 
     public function testNonXMLResponse(): void
@@ -50,21 +40,21 @@ class ValitorFOpenBasedHttpUtils_ValitorNetworkProblemTest extends TestCase
         $this->expectException(ValitorInvalidResponseException::class);
 
         $this->merchantApi = new ValitorMerchantAPI(
-            'https://testbank.valitor.com',
+            'https://example.com/',
             'username',
             'password',
             $this->logger,
             $this->httpUtils
         );
-        $this->merchantApi->login();
+        $response = $this->merchantApi->login();
     }
 
-    public function testUnauthorizedResponse(): void
+    public function testNonHTTP200Response(): void
     {
-        $this->expectException(ValitorUnauthorizedAccessException::class);
+        $this->expectException(ValitorInvalidResponseException::class);
 
         $this->merchantApi = new ValitorMerchantAPI(
-            'https://testgateway.valitor.com/',
+            'https://example.com/',
             'username',
             'password',
             $this->logger,

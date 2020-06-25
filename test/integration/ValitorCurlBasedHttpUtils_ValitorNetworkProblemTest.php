@@ -21,20 +21,6 @@ class ValitorCurlBasedHttpUtils_ValitorNetworkProblemTest extends TestCase
         $this->httpUtils = new ValitorCurlBasedHttpUtils(5, 3, false);
     }
 
-    public function testConnectionRefused(): void
-    {
-        $this->expectException(ValitorConnectionFailedException::class);
-
-        $this->merchantApi = new ValitorMerchantAPI(
-            'http://localhost:28888/',
-            'username',
-            'password',
-            $this->logger,
-            $this->httpUtils
-        );
-        $response = $this->merchantApi->login();
-    }
-
     public function testNoConnection(): void
     {
         $this->expectException(ValitorConnectionFailedException::class);
@@ -63,40 +49,12 @@ class ValitorCurlBasedHttpUtils_ValitorNetworkProblemTest extends TestCase
         $this->merchantApi->login();
     }
 
-    public function testNonXMLResponse(): void
-    {
-        $this->expectException(ValitorInvalidResponseException::class);
-
-        $this->merchantApi = new ValitorMerchantAPI(
-            'https://testbank.valitor.com',
-            'username',
-            'password',
-            $this->logger,
-            $this->httpUtils
-        );
-        $response = $this->merchantApi->login();
-    }
-
     public function testUnauthorizedResponse(): void
     {
         $this->expectException(ValitorUnauthorizedAccessException::class);
 
         $this->merchantApi = new ValitorMerchantAPI(
             'https://testgateway.valitor.com/',
-            'username',
-            'password',
-            $this->logger,
-            $this->httpUtils
-        );
-        $response = $this->merchantApi->login();
-    }
-
-    public function testNonHTTP200Response(): void
-    {
-        $this->expectException(ValitorInvalidResponseException::class);
-
-        $this->merchantApi = new ValitorMerchantAPI(
-            'http://www.valitor.com/',
             'username',
             'password',
             $this->logger,

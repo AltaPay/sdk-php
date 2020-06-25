@@ -1,3 +1,6 @@
+[![pipeline status](https://gitlab.com/altapay/aux/phpsdk/badges/master/pipeline.svg)](https://gitlab.com/altapay/aux/phpsdk/-/commits/master)
+[![coverage report](https://gitlab.com/altapay/aux/phpsdk/badges/master/coverage.svg)](https://gitlab.com/altapay/aux/phpsdk/-/commits/master)
+
 Valitor - PHP SDK
 =================
 
@@ -52,4 +55,4 @@ Valitor - PHP SDK
 
 ** Version 0.0.1
 
-    * Created the change log 
+    * Created the change log
