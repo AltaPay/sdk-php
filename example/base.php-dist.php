@@ -50,10 +50,11 @@ function reserveAmount($api, $terminal, $amount, $orderLines = array())
         null,
         $orderLines
     );
-    if (!$response->wasSuccessful()) {
+    $payment = $response->getPrimaryPayment();
+    if (!$response->wasSuccessful() || !$payment) {
         throw new Exception('Amount reservation failed: '.$response->getErrorMessage());
     }
-    return $response->getPrimaryPayment()->getId();
+    return $payment->getId();
 }
 
 /**

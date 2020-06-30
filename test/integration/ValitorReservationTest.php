@@ -86,13 +86,15 @@ class ValitorReservationTest extends TestCase
             '2018',
             '123'
         );
+        $payment = $response->getPrimaryPayment();
+        static::assertNotNull($payment);
 
         $response2 = $this->merchantApi->reservation(
             $this->config->terminal,
             'ReservationTest_'.time(),
             42.00,
             $this->config->currency,
-            $response->getPrimaryPayment()->getCreditCardToken(),
+            $payment->getCreditCardToken(),
             null,
             null,
             null,
@@ -153,37 +155,39 @@ class ValitorReservationTest extends TestCase
         );
 
         static::assertTrue($response->wasSuccessful(), $response->getErrorMessage());
+        $payment = $response->getPrimaryPayment();
+        static::assertNotNull($payment);
 
-        static::assertEquals($this->config->terminal, $response->getPrimaryPayment()->getTerminal());
-        static::assertEquals($shop_orderid, $response->getPrimaryPayment()->getShopOrderId());
-        static::assertEquals('paymentAndCapture', $response->getPrimaryPayment()->getAuthType());
-        static::assertEquals(42, $response->getPrimaryPayment()->getCapturedAmount());
-        static::assertEquals(42, $response->getPrimaryPayment()->getReservedAmount());
-        static::assertEquals('411100******0000', $response->getPrimaryPayment()->getMaskedPan());
-        static::assertEquals(1, $response->getPrimaryPayment()->getCreditCardExpiryMonth());
-        static::assertEquals(2018, $response->getPrimaryPayment()->getCreditCardExpiryYear());
+        static::assertEquals($this->config->terminal, $payment->getTerminal());
+        static::assertEquals($shop_orderid, $payment->getShopOrderId());
+        static::assertEquals('paymentAndCapture', $payment->getAuthType());
+        static::assertEquals(42, $payment->getCapturedAmount());
+        static::assertEquals(42, $payment->getReservedAmount());
+        static::assertEquals('411100******0000', $payment->getMaskedPan());
+        static::assertEquals(1, $payment->getCreditCardExpiryMonth());
+        static::assertEquals(2018, $payment->getCreditCardExpiryYear());
 
-        static::assertEquals('1111', $response->getPrimaryPayment()->getCustomerInfo()->getBillingAddress()->getPostalCode());
-        static::assertEquals('DK', $response->getPrimaryPayment()->getCustomerInfo()->getBillingAddress()->getCountry());
-        static::assertEquals('bil address 1', $response->getPrimaryPayment()->getCustomerInfo()->getBillingAddress()->getAddress());
-        static::assertEquals('bil city', $response->getPrimaryPayment()->getCustomerInfo()->getBillingAddress()->getCity());
-        static::assertEquals('bil region', $response->getPrimaryPayment()->getCustomerInfo()->getBillingAddress()->getRegion());
-        static::assertEquals('bil name', $response->getPrimaryPayment()->getCustomerInfo()->getBillingAddress()->getFirstName());
-        static::assertEquals('bil last', $response->getPrimaryPayment()->getCustomerInfo()->getBillingAddress()->getLastName());
+        static::assertEquals('1111', $payment->getCustomerInfo()->getBillingAddress()->getPostalCode());
+        static::assertEquals('DK', $payment->getCustomerInfo()->getBillingAddress()->getCountry());
+        static::assertEquals('bil address 1', $payment->getCustomerInfo()->getBillingAddress()->getAddress());
+        static::assertEquals('bil city', $payment->getCustomerInfo()->getBillingAddress()->getCity());
+        static::assertEquals('bil region', $payment->getCustomerInfo()->getBillingAddress()->getRegion());
+        static::assertEquals('bil name', $payment->getCustomerInfo()->getBillingAddress()->getFirstName());
+        static::assertEquals('bil last', $payment->getCustomerInfo()->getBillingAddress()->getLastName());
 
-        static::assertEquals('2222', $response->getPrimaryPayment()->getCustomerInfo()->getShippingAddress()->getPostalCode());
-        static::assertEquals('BR', $response->getPrimaryPayment()->getCustomerInfo()->getShippingAddress()->getCountry());
-        static::assertEquals('ship address 1', $response->getPrimaryPayment()->getCustomerInfo()->getShippingAddress()->getAddress());
-        static::assertEquals('ship city', $response->getPrimaryPayment()->getCustomerInfo()->getShippingAddress()->getCity());
-        static::assertEquals('ship region', $response->getPrimaryPayment()->getCustomerInfo()->getShippingAddress()->getRegion());
-        static::assertEquals('ship name', $response->getPrimaryPayment()->getCustomerInfo()->getShippingAddress()->getFirstName());
-        static::assertEquals('ship last', $response->getPrimaryPayment()->getCustomerInfo()->getShippingAddress()->getLastName());
+        static::assertEquals('2222', $payment->getCustomerInfo()->getShippingAddress()->getPostalCode());
+        static::assertEquals('BR', $payment->getCustomerInfo()->getShippingAddress()->getCountry());
+        static::assertEquals('ship address 1', $payment->getCustomerInfo()->getShippingAddress()->getAddress());
+        static::assertEquals('ship city', $payment->getCustomerInfo()->getShippingAddress()->getCity());
+        static::assertEquals('ship region', $payment->getCustomerInfo()->getShippingAddress()->getRegion());
+        static::assertEquals('ship name', $payment->getCustomerInfo()->getShippingAddress()->getFirstName());
+        static::assertEquals('ship last', $payment->getCustomerInfo()->getShippingAddress()->getLastName());
 
-        static::assertEquals('testperson@mydomain.com', $response->getPrimaryPayment()->getCustomerInfo()->getEmail());
-        static::assertEquals('user name', $response->getPrimaryPayment()->getCustomerInfo()->getUsername());
-        static::assertEquals('11 22 33 44', $response->getPrimaryPayment()->getCustomerInfo()->getPhone());
+        static::assertEquals('testperson@mydomain.com', $payment->getCustomerInfo()->getEmail());
+        static::assertEquals('user name', $payment->getCustomerInfo()->getUsername());
+        static::assertEquals('11 22 33 44', $payment->getCustomerInfo()->getPhone());
 
-        static::assertEquals('desc1', $response->getPrimaryPayment()->getPaymentInfo('info1'));
-        static::assertEquals('desc2', $response->getPrimaryPayment()->getPaymentInfo('info2'));
+        static::assertEquals('desc1', $payment->getPaymentInfo('info1'));
+        static::assertEquals('desc2', $payment->getPaymentInfo('info2'));
     }
 }

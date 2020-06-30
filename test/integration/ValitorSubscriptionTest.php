@@ -94,8 +94,10 @@ class ValitorSubscriptionTest extends TestCase
             '123',
             'eCommerce'
         );
+        $payment = $subscriptionResponse->getPrimaryPayment();
+        static::assertNotNull($payment);
 
-        $chargeResponse = $this->merchantApi->chargeSubscription($subscriptionResponse->getPrimaryPayment()->getId());
+        $chargeResponse = $this->merchantApi->chargeSubscription($payment->getId());
 
         static::assertTrue($chargeResponse->wasSuccessful(), $chargeResponse->getMerchantErrorMessage());
     }
@@ -113,12 +115,15 @@ class ValitorSubscriptionTest extends TestCase
             'eCommerce'
         );
 
+        $payment = $verifyCardResponse->getPrimaryPayment();
+        static::assertNotNull($payment);
+
         $subscriptionResponseWithToken = $this->merchantApi->setupSubscriptionWithToken(
             $this->config->terminal,
             'subscription-with-token'.time(),
             42.00,
             $this->config->currency,
-            $verifyCardResponse->getPrimaryPayment()->getCreditCardToken(),
+            $payment->getCreditCardToken(),
             '123',
             'eCommerce'
         );
