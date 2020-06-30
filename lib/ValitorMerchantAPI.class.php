@@ -800,7 +800,7 @@ class ValitorMerchantAPI
         $orderId,
         $amount,
         $currencyCode,
-        $paymentType,
+        $paymentType = null,
         $customerInfo = null,
         $cookie = null,
         $language = null,
@@ -823,8 +823,11 @@ class ValitorMerchantAPI
             'shop_orderid' => $orderId,
             'amount'       => $amount,
             'currency'     => $currencyCode,
-            'type'         => $paymentType,
         );
+
+        if ($paymentType !== null) {
+            $args['type'] = $paymentType;
+        }
 
         if ($customerInfo !== null && is_array($customerInfo)) {
             $this->addCustomerInfo($customerInfo, $args);

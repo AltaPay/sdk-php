@@ -6,4 +6,4 @@ parameters:
 		- .
 	excludes_analyse:
 		- vendor
-	level: 4
+	level: 6
