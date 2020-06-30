@@ -14,6 +14,8 @@ class ValitorMerchantAPI
     private $logger;
     /** @var IValitorHttpUtils */
     private $httpUtil;
+    /** @var string */
+    private $version = 'PHPSDK/2.1.0';
 
     /**
      * @param string $baseURL
@@ -27,6 +29,10 @@ class ValitorMerchantAPI
         $this->username = $username;
         $this->password = $password;
         $this->logger = $logger;
+
+        if (defined('VALITOR_VERSION')) {
+            $this->version = VALITOR_VERSION;
+        }
 
         if ($httpUtil === null) {
             if (function_exists('curl_init')) {
@@ -115,7 +121,7 @@ class ValitorMerchantAPI
         $request->setUser($this->username);
         $request->setPass($this->password);
         $request->setMethod('POST');
-        $request->addHeader('x-valitor-client-version: '.VALITOR_VERSION);
+        $request->addHeader('x-valitor-client-version: '.$this->version);
 
         $response = $this->httpUtil->requestURL($request);
 

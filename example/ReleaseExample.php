@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__.'/base.php';
 $api = InitializeValitorMerchantAPI();
+$terminal = 'Some Terminal'; // change this to one of the test terminals supplied in the welcome email
 
 // Different variables which are used as arguments
 $amount = 125.55;
@@ -34,58 +35,6 @@ $orderLines = array(
     ),
 );
 $transactionId = reserveAmount($api, $terminal, $amount, $orderLines);
-
-/**
- * Helper method for reserving the payment amount.
- *
- * @param ValitorMerchantAPI               $api
- * @param string                           $terminal
- * @param float                            $amount
- * @param array<int, array<string, mixed>> $orderLines
- *
- * @throws Exception
- *
- * @return string
- */
-function reserveAmount($api, $terminal, $amount, $orderLines)
-{
-    $orderId = 'order_'.time();
-    $transactionInfo = array();
-    $cardToken = null;
-    // Credit card details
-    $currencyCode = 'DKK';
-    $paymentType = 'payment';
-    $paymentSource = 'eCommerce';
-    $pan = '4111000011110000';
-    $cvc = '111';
-    $expiryMonth = '12';
-    $expiryYear = '2018';
-
-    $response = $api->reservation(
-        $terminal,
-        $orderId,
-        $amount,
-        $currencyCode,
-        $cardToken,
-        $pan,
-        $expiryMonth,
-        $expiryYear,
-        $cvc,
-        $transactionInfo,
-        $paymentType,
-        $paymentSource,
-        null,
-        null,
-        null,
-        null,
-        null,
-        $orderLines
-    );
-    if (!$response->wasSuccessful()) {
-        throw new Exception('Amount reservation failed: '.$response->getErrorMessage());
-    }
-    return $response->getPrimaryPayment()->getId();
-}
 
 $response = $api->releaseReservation($transactionId);
 if (!$response->wasSuccessful()) {
