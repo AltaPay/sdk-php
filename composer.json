@@ -9,7 +9,7 @@
         "sort-packages": true
     },
     "require": {
-        "php": ">=5.3.0",
+        "php": ">=5.3.2",
         "ext-bcmath": "*",
         "ext-simplexml": "*"
     },

@@ -343,8 +343,7 @@ class ValitorMerchantAPI
             $creditCardNumber,
             $creditCardExpiryYear,
             $creditCardExpiryMonth,
-            null // $creditCardToken
-            ,
+            null, // $creditCardToken
             $cvc,
             'payment',
             $paymentSource,
@@ -432,8 +431,7 @@ class ValitorMerchantAPI
             $creditCardNumber,
             $creditCardExpiryYear,
             $creditCardExpiryMonth,
-            null // $creditCardToken
-            ,
+            null, // $creditCardToken
             $cvc,
             'subscription',
             $paymentSource,
@@ -519,8 +517,7 @@ class ValitorMerchantAPI
             $creditCardNumber,
             $creditCardExpiryYear,
             $creditCardExpiryMonth,
-            null // $creditCardToken
-            ,
+            null, // $creditCardToken
             $cvc,
             'verifyCard',
             $paymentSource,
