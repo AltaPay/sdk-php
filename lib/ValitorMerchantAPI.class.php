@@ -97,7 +97,7 @@ class ValitorMerchantAPI
      * @throws ValitorUnauthorizedAccessException
      * @throws ValitorUnknownMerchantAPIException
      *
-     * @return SimpleXMLElement|string
+     * @return ValitorHttpResponse
      */
     private function callAPIMethod($method, array $args = array())
     {
@@ -131,19 +131,7 @@ class ValitorMerchantAPI
 
         if ($response->getConnectionResult() == ValitorHttpResponse::CONNECTION_OKAY) {
             if ($response->getHttpCode() == 200) {
-                if (stripos($response->getContentType() ?: '', 'text/xml') !== false) {
-                    try {
-                        return new SimpleXMLElement($response->getContent());
-                    } catch (Exception $e) {
-                        if ($e->getMessage() == 'String could not be parsed as XML') {
-                            throw new ValitorInvalidResponseException('Unparsable XML Content in response');
-                        }
-                        throw new ValitorUnknownMerchantAPIException($e);
-                    }
-                } elseif (stripos($response->getContentType() ?: '', 'text/csv') !== false) {
-                    return $response->getContent();
-                }
-                throw new ValitorInvalidResponseException('Non XML ContentType (was: '.$response->getContentType().')');
+                return $response;
             }
             if ($response->getHttpCode() == 401) {
                 throw new ValitorUnauthorizedAccessException($absoluteUrl, $this->username);
@@ -163,6 +151,63 @@ class ValitorMerchantAPI
     }
 
     /**
+     * Check API connection response and return a SimpleXMLElement object.
+     *
+     * @param string  $method
+     * @param mixed[] $args
+     *
+     * @throws ValitorConnectionFailedException
+     * @throws ValitorInvalidResponseException
+     * @throws ValitorRequestTimeoutException
+     * @throws ValitorUnauthorizedAccessException
+     * @throws ValitorUnknownMerchantAPIException
+     *
+     * @return SimpleXMLElement
+     */
+    private function callAPIMethodXML($method, array $args = array())
+    {
+        $response = $this->callAPIMethod($method, $args);
+
+        if (stripos($response->getContentType() ?: '', 'text/xml') === false) {
+            throw new ValitorInvalidResponseException('Non XML ContentType (was: '.$response->getContentType().')');
+        }
+
+        try {
+            return new SimpleXMLElement($response->getContent());
+        } catch (Exception $e) {
+            if ($e->getMessage() == 'String could not be parsed as XML') {
+                throw new ValitorInvalidResponseException('Unparsable XML Content in response');
+            }
+            throw new ValitorUnknownMerchantAPIException($e);
+        }
+    }
+
+    /**
+     * Check API connection response and return a CSV string.
+     *
+     * @param string  $method
+     * @param mixed[] $args
+     *
+     * @throws ValitorConnectionFailedException
+     * @throws ValitorInvalidResponseException
+     * @throws ValitorRequestTimeoutException
+     * @throws ValitorUnauthorizedAccessException
+     * @throws ValitorUnknownMerchantAPIException
+     *
+     * @return string
+     */
+    private function callAPIMethodCSV($method, array $args = array())
+    {
+        $response = $this->callAPIMethod($method, $args);
+
+        if (stripos($response->getContentType() ?: '', 'text/csv') === false) {
+            throw new ValitorInvalidResponseException('Non CSV ContentType (was: '.$response->getContentType().')');
+        }
+
+        return $response->getContent();
+    }
+
+    /**
      * @param int $page
      *
      * @throws ValitorMerchantAPIException
@@ -173,7 +218,7 @@ class ValitorMerchantAPI
     {
         $this->checkConnection();
 
-        return new ValitorFundingListResponse($this->callAPIMethod('fundingList', array('page' => $page)));
+        return new ValitorFundingListResponse($this->callAPIMethodXML('fundingList', array('page' => $page)));
     }
 
     /**
@@ -237,7 +282,7 @@ class ValitorMerchantAPI
      * @param string|null           $creditCardExpiryYear
      * @param string|null           $creditCardExpiryMonth
      * @param string|null           $creditCardToken
-     * @param string                $cvc
+     * @param string|null           $cvc
      * @param string                $type
      * @param string                $paymentSource
      * @param array<string, string> $customerInfo
@@ -268,10 +313,14 @@ class ValitorMerchantAPI
             'shop_orderid'   => $shopOrderId,
             'amount'         => $amount,
             'currency'       => $currency,
-            'cvc'            => $cvc,
             'type'           => $type,
             'payment_source' => $paymentSource,
         );
+
+        if ($cvc !== null) {
+            $args['cvc'] = $cvc;
+        }
+
         if ($creditCardToken !== null) {
             $args['credit_card_token'] = $creditCardToken;
         } else {
@@ -297,7 +346,7 @@ class ValitorMerchantAPI
         }
 
         return new ValitorOmniReservationResponse(
-            $this->callAPIMethod(
+            $this->callAPIMethodXML(
                 $apiMethod,
                 $args
             )
@@ -589,7 +638,7 @@ class ValitorMerchantAPI
         $this->checkConnection();
 
         return new ValitorCaptureResponse(
-            $this->callAPIMethod(
+            $this->callAPIMethodXML(
                 'captureReservation',
                 array(
                     'transaction_id'            => $paymentId,
@@ -628,7 +677,7 @@ class ValitorMerchantAPI
         $this->checkConnection();
 
         return new ValitorRefundResponse(
-            $this->callAPIMethod(
+            $this->callAPIMethodXML(
                 'refundCapturedReservation',
                 array(
                     'transaction_id'            => $paymentId,
@@ -659,7 +708,7 @@ class ValitorMerchantAPI
         $this->checkConnection();
 
         return new ValitorUpdateOrderResponse(
-            $this->callAPIMethod(
+            $this->callAPIMethodXML(
                 'updateOrder',
                 array(
                     'payment_id' => $paymentId,
@@ -686,7 +735,7 @@ class ValitorMerchantAPI
         $this->checkConnection();
 
         return new ValitorReleaseResponse(
-            $this->callAPIMethod(
+            $this->callAPIMethodXML(
                 'releaseReservation',
                 array(
                     'transaction_id' => $paymentId,
@@ -724,7 +773,7 @@ class ValitorMerchantAPI
                 'transaction' => $paymentId,
             );
         }
-        return new ValitorGetPaymentResponse($this->callAPIMethod(
+        return new ValitorGetPaymentResponse($this->callAPIMethodXML(
             'payments',
             $requestBody
         ));
@@ -739,7 +788,7 @@ class ValitorMerchantAPI
     {
         $this->checkConnection();
 
-        return new ValitorGetTerminalsResponse($this->callAPIMethod('getTerminals'));
+        return new ValitorGetTerminalsResponse($this->callAPIMethodXML('getTerminals'));
     }
 
     /**
@@ -751,7 +800,7 @@ class ValitorMerchantAPI
     {
         $this->connected = false;
 
-        $response = new ValitorLoginResponse($this->callAPIMethod('login'));
+        $response = new ValitorLoginResponse($this->callAPIMethodXML('login'));
 
         if ($response->getErrorCode() === '0') {
             $this->connected = true;
@@ -877,7 +926,7 @@ class ValitorMerchantAPI
 
         $args['config'] = $config;
 
-        return new ValitorCreatePaymentRequestResponse($this->callAPIMethod('createPaymentRequest', $args));
+        return new ValitorCreatePaymentRequestResponse($this->callAPIMethodXML('createPaymentRequest', $args));
     }
 
     /**
@@ -964,7 +1013,7 @@ class ValitorMerchantAPI
             $args['birthDate'] = $birthDate;
         }
 
-        return new ValitorCreateInvoiceReservationResponse($this->callAPIMethod('createInvoiceReservation', $args));
+        return new ValitorCreateInvoiceReservationResponse($this->callAPIMethodXML('createInvoiceReservation', $args));
     }
 
     /**
@@ -1066,7 +1115,7 @@ class ValitorMerchantAPI
             $args['orderLines'] = $orderLines;
         }
 
-        return new ValitorReservationResponse($this->callAPIMethod('reservation', $args));
+        return new ValitorReservationResponse($this->callAPIMethodXML('reservation', $args));
     }
 
     /**
@@ -1106,7 +1155,7 @@ class ValitorMerchantAPI
         $this->checkConnection();
 
         return new ValitorCaptureRecurringResponse(
-            $this->callAPIMethod(
+            $this->callAPIMethodXML(
                 'chargeSubscription',
                 array(
                     'transaction_id'            => $subscriptionId,
@@ -1166,7 +1215,7 @@ class ValitorMerchantAPI
         $this->checkConnection();
 
         return new ValitorPreauthRecurringResponse(
-            $this->callAPIMethod(
+            $this->callAPIMethodXML(
                 'reserveSubscriptionCharge',
                 array(
                     'transaction_id' => $subscriptionId,
@@ -1195,7 +1244,7 @@ class ValitorMerchantAPI
         $this->checkConnection();
 
         return new ValitorCalculateSurchargeResponse(
-            $this->callAPIMethod(
+            $this->callAPIMethodXML(
                 'calculateSurcharge',
                 array(
                     'terminal'          => $terminal,
@@ -1224,7 +1273,7 @@ class ValitorMerchantAPI
         $this->checkConnection();
 
         return new ValitorCalculateSurchargeResponse(
-            $this->callAPIMethod(
+            $this->callAPIMethodXML(
                 'calculateSurcharge',
                 array(
                     'payment_id' => $subscriptionId,
@@ -1243,13 +1292,13 @@ class ValitorMerchantAPI
      * @throws ValitorUnauthorizedAccessException
      * @throws ValitorUnknownMerchantAPIException
      *
-     * @return bool|string
+     * @return string
      */
     public function getCustomReport($args)
     {
         $this->checkConnection();
-        $response = $this->callAPIMethod('getCustomReport', $args);
-        return $response;
+
+        return $this->callAPIMethodCSV('getCustomReport', $args);
     }
 
     /**
@@ -1261,12 +1310,12 @@ class ValitorMerchantAPI
      * @throws ValitorUnauthorizedAccessException
      * @throws ValitorUnknownMerchantAPIException
      *
-     * @return bool|string
+     * @return string
      */
     public function getTransactions(ValitorAPITransactionsRequest $transactionsRequest)
     {
         $this->checkConnection();
-        return $this->callAPIMethod('transactions', $transactionsRequest->asArray());
+        return $this->callAPIMethodCSV('transactions', $transactionsRequest->asArray());
     }
 
     /**
