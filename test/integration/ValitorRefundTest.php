@@ -49,9 +49,11 @@ class ValitorRefundTest extends TestCase
         );
 
         static::assertTrue($response->wasSuccessful());
+        $payment = $response->getPrimaryPayment();
+        static::assertNotNull($payment);
 
         $response = $this->merchantApi->captureReservation(
-            $response->getPrimaryPayment()->getId(),
+            $payment->getId(),
             $testAmount,
             $testOrderLines,
             $testSalesTax,
@@ -60,9 +62,11 @@ class ValitorRefundTest extends TestCase
         );
 
         static::assertTrue($response->wasSuccessful());
+        $payment = $response->getPrimaryPayment();
+        static::assertNotNull($payment);
 
         $response = $this->merchantApi->refundCapturedReservation(
-            $response->getPrimaryPayment()->getId(),
+            $payment->getId(),
             $testAmount,
             $testOrderLines,
             $testReconciliationIdentifier,

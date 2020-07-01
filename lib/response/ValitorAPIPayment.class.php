@@ -521,7 +521,7 @@ class ValitorAPIPayment
      */
     public function getInitiallyAmount()
     {
-        return bcsub($this->reservedAmount, $this->surchargeAmount, 2);
+        return number_format((float)$this->reservedAmount - (float)$this->surchargeAmount, 2);
     }
 
     /**

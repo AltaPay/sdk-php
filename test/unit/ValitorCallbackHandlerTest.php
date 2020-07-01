@@ -207,7 +207,9 @@ class ValitorCallbackHandlerTest extends TestCase
 </APIResponse>');
 
         static::assertFalse($response->wasSuccessful());
-        static::assertEquals('epayment_cancelled', $response->getPrimaryPayment()->getCurrentStatus());
+        $payment = $response->getPrimaryPayment();
+        static::assertNotNull($payment);
+        static::assertEquals('epayment_cancelled', $payment->getCurrentStatus());
     }
 
     public function testMerchantErrorMessageWithoutTransactionParameter(): void
@@ -244,7 +246,9 @@ class ValitorCallbackHandlerTest extends TestCase
     {
         $xml = file_get_contents(__DIR__.'/xml/ReasonCode.xml') ?: '';
         $response = $this->handler->parseXmlResponse($xml);
-        static::assertEquals('NONE', $response->getPrimaryPayment()->getReasonCode());
+        $payment = $response->getPrimaryPayment();
+        static::assertNotNull($payment);
+        static::assertEquals('NONE', $payment->getReasonCode());
     }
 
     /**
@@ -254,6 +258,8 @@ class ValitorCallbackHandlerTest extends TestCase
     {
         $xml = file_get_contents(__DIR__.'/xml/ReasonCode.xml') ?: '';
         $response = $this->handler->parseXmlResponse($xml);
-        static::assertEquals('17794956-9bb6-4854-9712-bce5931e6e3a', $response->getPrimaryPayment()->getPaymentId());
+        $payment = $response->getPrimaryPayment();
+        static::assertNotNull($payment);
+        static::assertEquals('17794956-9bb6-4854-9712-bce5931e6e3a', $payment->getPaymentId());
     }
 }

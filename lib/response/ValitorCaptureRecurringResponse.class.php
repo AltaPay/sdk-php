@@ -3,10 +3,11 @@
 class ValitorCaptureRecurringResponse extends ValitorPreauthRecurringResponse
 {
     /**
-     * @return bool
+     * @return ?bool
      */
     public function wasSubscriptionReleased()
     {
-        return $this->getSubscriptionPayment()->isReleased();
+        $payment = $this->getSubscriptionPayment();
+        return $payment ? $payment->isReleased() : null;
     }
 }

@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__.'/base.php';
 $api = InitializeValitorMerchantAPI();
+$terminal = 'Some Terminal'; // change this to one of the test terminals supplied in the welcome email
 
 // Different variables which are used as arguments
 $orderId = 'TestOrder_'.time();

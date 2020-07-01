@@ -8,9 +8,10 @@ $xml = file_get_contents(__DIR__.'/xml/CallbackXML_subscriptionAndCharge_release
 try {
     /** @var ValitorCaptureRecurringResponse $response */
     $response = $callbackHandler->parseXmlResponse($xml);
-    if ($response->wasSubscriptionReleased()) {
+    $payment = $response->getPrimaryPayment();
+    if ($response->wasSubscriptionReleased() && $payment) {
         echo 'The subscription was released'.PHP_EOL;
-        $amount = (float)$response->getPrimaryPayment()->getCapturedAmount();
+        $amount = (float)$payment->getCapturedAmount();
         if ($amount > 0) {
             echo 'The capture was successful for the amount '.number_format($amount, 2).PHP_EOL;
         }

@@ -17,10 +17,11 @@ if (!$response->wasSuccessful()) {
 echo '[Case 1] Surcharge Amount: '.$response->getSurchargeAmount()."\n";
 
 $response = $api->chargeSubscription($subscriptionId, (float)bcadd((string)$amount, $response->getSurchargeAmount(), 2));
-if (!$response->wasSuccessful()) {
+$payment = $response->getPrimaryPayment();
+if (!$response->wasSuccessful() || !$payment) {
     throw new Exception('Could not capture including surcharge amount: '.$response->getErrorMessage());
 }
-echo '[Case 1] Captured Amount: '.$response->getPrimaryPayment()->getCapturedAmount()."\n";
+echo '[Case 1] Captured Amount: '.$payment->getCapturedAmount()."\n";
 
 // Example 2
 $currency = 'XXX';
@@ -31,7 +32,8 @@ if (!$response->wasSuccessful()) {
 echo '[Case 2] Surcharge Amount: '.$response->getSurchargeAmount()."\n";
 
 $response = $api->chargeSubscription($subscriptionId, (float)bcadd((string)$amount, $response->getSurchargeAmount(), 2));
-if (!$response->wasSuccessful()) {
+$payment = $response->getPrimaryPayment();
+if (!$response->wasSuccessful() || !$payment) {
     throw new Exception('Could not capture including surcharge amount: '.$response->getErrorMessage());
 }
-echo '[Case 2] Captured Amount: '.$response->getPrimaryPayment()->getCapturedAmount()."\n";
+echo '[Case 2] Captured Amount: '.$payment->getCapturedAmount()."\n";

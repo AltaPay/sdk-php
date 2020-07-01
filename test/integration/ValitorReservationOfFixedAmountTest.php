@@ -66,15 +66,17 @@ class ValitorReservationOfFixedAmountTest extends TestCase
         );
 
         static::assertTrue($response->wasSuccessful());
+        $payment = $response->getPrimaryPayment();
+        static::assertNotNull($payment);
 
-        static::assertEquals('2860', $response->getPrimaryPayment()->getCustomerInfo()->getBillingAddress()->getPostalCode());
-        static::assertEquals('DK', $response->getPrimaryPayment()->getCustomerInfo()->getBillingAddress()->getCountry());
-        static::assertEquals('Rosenkæret 13', $response->getPrimaryPayment()->getCustomerInfo()->getBillingAddress()->getAddress());
-        static::assertEquals('Søborg', $response->getPrimaryPayment()->getCustomerInfo()->getBillingAddress()->getCity());
-        static::assertEquals('some region', $response->getPrimaryPayment()->getCustomerInfo()->getBillingAddress()->getRegion());
-        static::assertEquals('Kødpålæg >-) <script>alert(42);</script>', $response->getPrimaryPayment()->getCustomerInfo()->getBillingAddress()->getFirstName());
-        static::assertEquals('Lyn', $response->getPrimaryPayment()->getCustomerInfo()->getBillingAddress()->getLastName());
-        static::assertEquals('testperson@mydomain.com', $response->getPrimaryPayment()->getCustomerInfo()->getEmail());
+        static::assertEquals('2860', $payment->getCustomerInfo()->getBillingAddress()->getPostalCode());
+        static::assertEquals('DK', $payment->getCustomerInfo()->getBillingAddress()->getCountry());
+        static::assertEquals('Rosenkæret 13', $payment->getCustomerInfo()->getBillingAddress()->getAddress());
+        static::assertEquals('Søborg', $payment->getCustomerInfo()->getBillingAddress()->getCity());
+        static::assertEquals('some region', $payment->getCustomerInfo()->getBillingAddress()->getRegion());
+        static::assertEquals('Kødpålæg >-) <script>alert(42);</script>', $payment->getCustomerInfo()->getBillingAddress()->getFirstName());
+        static::assertEquals('Lyn', $payment->getCustomerInfo()->getBillingAddress()->getLastName());
+        static::assertEquals('testperson@mydomain.com', $payment->getCustomerInfo()->getEmail());
     }
 
     public function testPaymentWithPaymentInfo(): void
@@ -96,8 +98,10 @@ class ValitorReservationOfFixedAmountTest extends TestCase
         );
 
         static::assertTrue($response->wasSuccessful());
-        static::assertEquals('aux data (<æøå>)', $response->getPrimaryPayment()->getPaymentInfo('auxkey'));
-        static::assertEquals('MyValue', $response->getPrimaryPayment()->getPaymentInfo('otherkey'));
+        $payment = $response->getPrimaryPayment();
+        static::assertNotNull($payment);
+        static::assertEquals('aux data (<æøå>)', $payment->getPaymentInfo('auxkey'));
+        static::assertEquals('MyValue', $payment->getPaymentInfo('otherkey'));
     }
 
     public function testPaymentSchemeNameIsVisa(): void
@@ -113,7 +117,8 @@ class ValitorReservationOfFixedAmountTest extends TestCase
             '123',
             'eCommerce'
         );
-        static::assertIsObject($response->getPrimaryPayment());
-        static::assertEquals('Visa', $response->getPrimaryPayment()->getPaymentSchemeName());
+        $payment = $response->getPrimaryPayment();
+        static::assertNotNull($payment);
+        static::assertEquals('Visa', $payment->getPaymentSchemeName());
     }
 }

@@ -1,6 +1,87 @@
 <?php
 require_once __DIR__.'/../../vendor/autoload.php';
 
+define('VALITOR_VERSION', 'PHPSDK/2.1.0');
+
+/**
+ * Helper method for reserving the payment amount.
+ * Obs: the amount cannot be captured if is not reserved firstly.
+ *
+ * @param ValitorMerchantAPI               $api
+ * @param string                           $terminal
+ * @param float                            $amount
+ * @param array<int, array<string, mixed>> $orderLines [array()]
+ *
+ * @throws Exception
+ *
+ * @return string
+ */
+function reserveAmount($api, $terminal, $amount, $orderLines = array())
+{
+    $orderId = 'order_'.time();
+    $transactionInfo = array();
+    $cardToken = null;
+    // Credit card details
+    $currencyCode = 'DKK';
+    $paymentType = 'payment';
+    $paymentSource = 'eCommerce';
+    $pan = '4111000011110000';
+    $cvc = '111';
+    $expiryMonth = '12';
+    $expiryYear = '2018';
+
+    $response = $api->reservation(
+        $terminal,
+        $orderId,
+        $amount,
+        $currencyCode,
+        $cardToken,
+        $pan,
+        $expiryMonth,
+        $expiryYear,
+        $cvc,
+        $transactionInfo,
+        $paymentType,
+        $paymentSource,
+        null,
+        null,
+        null,
+        null,
+        null,
+        $orderLines
+    );
+    $payment = $response->getPrimaryPayment();
+    if (!$response->wasSuccessful() || !$payment) {
+        throw new Exception('Amount reservation failed: '.$response->getErrorMessage());
+    }
+    return $payment->getId();
+}
+
+/**
+ * Helper method for reserving the order amount
+ * If success then the amount is captured
+ * Obs: the amount cannot be captured if is not reserved firstly.
+ *
+ * @param ValitorMerchantAPI               $api
+ * @param string                           $terminal
+ * @param float                            $amount
+ * @param array<int, array<string, mixed>> $orderLines [array()]
+ *
+ * @throws Exception
+ *
+ * @return string
+ */
+function reserveAndCapture($api, $terminal, $amount, $orderLines = array())
+{
+    $transactionId = reserveAmount($api, $terminal, $amount, $orderLines);
+    // Capture the amount based on the fetched transaction ID.
+    $response = $api->captureReservation($transactionId);
+    if (!$response->wasSuccessful()) {
+        throw new Exception('Capture failed: '.$response->getErrorMessage());
+    }
+    return $transactionId;
+}
+
 /**
  * @return ValitorMerchantAPI
  */
@@ -9,7 +90,6 @@ function InitializeValitorMerchantAPI()
     $baseURL = 'https://testgateway.valitor.com/';
     $username = 'username';
     $password = 'password';
-    $terminal = 'Some Terminal'; // change this to one of the test terminals supplied in the welcome email
 
     $api = new ValitorMerchantAPI($baseURL, $username, $password, /*IValitorCommunicationLogger $logger = */ null);
     $response = $api->login();

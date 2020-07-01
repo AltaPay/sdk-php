@@ -9,12 +9,13 @@ if (!$response->wasSuccessful()) {
     throw new Exception('Reservation and capture failed: '.$response->getErrorMessage());
 }
 echo 'Reservation and capture was successful'.PHP_EOL;
-if ($response->getPrimaryPayment()->getCapturedAmount() > 0) {
-    echo 'The capture was successful, the amount of '.number_format((float)$response->getPrimaryPayment()->getCapturedAmount(), 2).' was captured'.PHP_EOL;
-    $avsResponse = $response->getPrimaryPayment()->getAddressVerification();
+$payment = $response->getPrimaryPayment();
+if ($payment && $payment->getCapturedAmount() > 0) {
+    echo 'The capture was successful, the amount of '.number_format((float)$payment->getCapturedAmount(), 2).' was captured'.PHP_EOL;
+    $avsResponse = $payment->getAddressVerification();
     if ($avsResponse != '') {
         echo 'AVS response: '.$avsResponse.PHP_EOL;
-        echo 'AVS description: '.$response->getPrimaryPayment()->getAddressVerificationDescription().PHP_EOL;
+        echo 'AVS description: '.$payment->getAddressVerificationDescription().PHP_EOL;
     } else {
         echo 'No AVS response'.PHP_EOL;
     }

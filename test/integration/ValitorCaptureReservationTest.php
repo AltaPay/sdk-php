@@ -49,8 +49,11 @@ class ValitorCaptureReservationTest extends TestCase
 
         static::assertTrue($response->wasSuccessful());
 
+        $payment = $response->getPrimaryPayment();
+        static::assertNotNull($payment);
+
         $response = $this->merchantApi->captureReservation(
-            $response->getPrimaryPayment()->getId(),
+            $payment->getId(),
             $testAmount,
             $testOrderLines,
             $testSalesTax,
