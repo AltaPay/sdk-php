@@ -1,7 +1,7 @@
 {
     "name": "altapay/sdk-php",
     "license": "MIT",
-    "description": "AltaPay: we make buying and selling easy",
+    "description": "AltaPay: Payments less complicated",
     "minimum-stability": "dev",
     "prefer-stable": true,
     "config": {
