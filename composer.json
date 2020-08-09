@@ -1,5 +1,5 @@
 {
-    "name": "valitor/php-sdk",
+    "name": "altapay/sdk-php",
     "license": "MIT",
     "description": "AltaPay: we make buying and selling easy",
     "minimum-stability": "dev",
