@@ -1310,12 +1310,12 @@ class ValitorMerchantAPI
      * @throws ValitorUnauthorizedAccessException
      * @throws ValitorUnknownMerchantAPIException
      *
-     * @return string
+     * @return SimpleXMLElement
      */
     public function getTransactions(ValitorAPITransactionsRequest $transactionsRequest)
     {
         $this->checkConnection();
-        return $this->callAPIMethodCSV('transactions', $transactionsRequest->asArray());
+        return $this->callAPIMethodXML('transactions', $transactionsRequest->asArray());
     }
 
     /**
