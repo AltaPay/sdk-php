@@ -1,8 +1,6 @@
 <?php
 require_once __DIR__.'/../../vendor/autoload.php';
 
-define('VALITOR_VERSION', 'PHPSDK/2.1.0');
-
 /**
  * Helper method for reserving the payment amount.
  * Obs: the amount cannot be captured if is not reserved firstly.
