@@ -6,6 +6,8 @@ class ValitorCreatePaymentRequestResponse extends ValitorAbstractResponse
     private $redirectURL;
     /** @var string */
     private $result;
+    /** @var string */
+    private $dynamicJavascriptUrl;
 
     /**
      * @param SimpleXMLElement $xml
@@ -17,6 +19,7 @@ class ValitorCreatePaymentRequestResponse extends ValitorAbstractResponse
         if ($this->getErrorCode() === '0') {
             $this->result = (string)$xml->Body->Result;
             $this->redirectURL = (string)$xml->Body->Url;
+            $this->dynamicJavascriptUrl = (string)$xml->Body->DynamicJavascriptUrl;
         }
     }
 
@@ -34,5 +37,13 @@ class ValitorCreatePaymentRequestResponse extends ValitorAbstractResponse
     public function wasSuccessful()
     {
         return $this->getErrorCode() === '0' && $this->result == 'Success';
+    }
+
+    /**
+     * @return string
+     */
+    public function getDynamicJavascriptUrl()
+    {
+        return $this->dynamicJavascriptUrl;
     }
 }

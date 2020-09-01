@@ -35,7 +35,7 @@ class ValitorHttpResponse
      */
     public function getContentType()
     {
-        if (preg_match('/^Content-Type: (.+)$/m', $this->header, $matches)) {
+        if (preg_match('/^Content-Type: (.+)$/im', $this->header, $matches)) {
             return trim($matches[1]);
         }
         return null;
@@ -46,7 +46,7 @@ class ValitorHttpResponse
      */
     public function getLocationHeader()
     {
-        if (preg_match('/^Location: (.+)$/m', $this->header, $matches)) {
+        if (preg_match('/^Location: (.+)$/im', $this->header, $matches)) {
             return trim($matches[1]);
         }
         return null;
