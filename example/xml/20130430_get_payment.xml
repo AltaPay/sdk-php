@@ -40,7 +40,7 @@
                 <PaymentNature>CreditCard</PaymentNature>
                 <PaymentSource>eCommerce</PaymentSource>
                 <PaymentSchemeName>Visa</PaymentSchemeName>
-                <PaymentNatureService name="ValitorAcquirer">
+                <PaymentNatureService name="AltaPayAcquirer">
                     <SupportsRefunds>true</SupportsRefunds>
                     <SupportsRelease>true</SupportsRelease>
                     <SupportsMultipleCaptures>true</SupportsMultipleCaptures>

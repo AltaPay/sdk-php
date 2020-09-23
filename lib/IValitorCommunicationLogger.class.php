@@ -1,9 +1,9 @@
 <?php
 
-interface IValitorCommunicationLogger
+interface IAltaPayCommunicationLogger
 {
     /**
-     * Will get a string representation of the request being sent to Valitor.
+     * Will get a string representation of the request being sent to AltaPay.
      *
      * @param string $message
      *
@@ -12,7 +12,7 @@ interface IValitorCommunicationLogger
     public function logRequest($message);
 
     /**
-     * Will get a string representation of the response from Valitor for the request identified by the logId.
+     * Will get a string representation of the response from AltaPay for the request identified by the logId.
      *
      * @param string $logId
      * @param string $message

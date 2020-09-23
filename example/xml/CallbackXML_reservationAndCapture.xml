@@ -25,8 +25,8 @@
                 <CVVCheckResult>Not_Attempted</CVVCheckResult>
                 <BlacklistToken>ee2171dfc8a013fd0d52230fb3cda95144ff7e80</BlacklistToken>
                 <ShopOrderId>000000081</ShopOrderId>
-                <Shop>Valitor Shop Integration</Shop>
-                <Terminal>Valitor Soap Test Terminal</Terminal>
+                <Shop>AltaPay Shop Integration</Shop>
+                <Terminal>AltaPay Soap Test Terminal</Terminal>
                 <TransactionStatus>captured</TransactionStatus>
                 <ReasonCode>NONE</ReasonCode>
                 <MerchantCurrency>208</MerchantCurrency>
@@ -61,7 +61,7 @@
                     <UserAgent>Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36</UserAgent>
                     <IpAddress>10.101.97.217</IpAddress>
                     <Email>
-                        <![CDATA[dki@valitor.com]]>
+                        <![CDATA[dki@altapay.com]]>
                     </Email>
                     <Username/>
                     <CustomerPhone>111</CustomerPhone>

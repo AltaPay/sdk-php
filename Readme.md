@@ -1,58 +1,32 @@
-[![pipeline status](https://gitlab.com/altapay/aux/phpsdk/badges/master/pipeline.svg)](https://gitlab.com/altapay/aux/phpsdk/-/commits/master)
-[![coverage report](https://gitlab.com/altapay/aux/phpsdk/badges/master/coverage.svg)](https://gitlab.com/altapay/aux/phpsdk/-/commits/master)
-
-Valitor - PHP SDK
+AltaPay - PHP SDK
 =================
 
-== Change log ==
+The AltaPay PHP SDK provides a convinient object oriented interface for communicating with the AltaPay API
 
-** Version 2.1.0
+## Installation
 
-    * Added new parameters, according to the payment gateway Klarna Payments updates, for the following:
-	    - Create payment request
-	    - Capture and refund
-    * Code refactored according to latest coding standards
+The SDK can be installed via [Composer](https://getcomposer.org/):
 
-** Version 2.0.0
+```composer require altapay/sdk-php```
 
-    * Rebranding from Altapay to Valitor
-    * New paramaters added to the createPaymentRequest and captureReservation endpoints
-    * Improvements on various API endpoints (i.e. getPayment)
-    * Additional customer information sent to the payment gateway
+If you do not use Composer in your project, you can download the [releases](/AltaPay/sdk-php/releases) as a zip and manually include the php files in the lib folder.
 
-** Version 1.0.6
+## Usage
 
-    * ChargeSubscription can take reconciliationIdentifier
+See the provided examples for how to use the SDK
 
-** Version 1.0.5
+## Requirements
 
-    * Expose CreatedDate and UpdatedDate for payments
+The AltaPay PHP SDK requires PHP 5.3.2 or grater with the following extensions instaleld:
 
-** Version 1.0.4
+- bcmath
+- curl
+- date
+- iconv
+- pcre
+- session
+- simplexml
 
-    * New child element [IsTokenized] in Transaction
+## Changelog
 
-** Version 1.0.3
-
-    * Bugfix: Typo in package name
-    * Improvements: Add composer.lock
-
-** Version 1.0.2
-
-    * Bugfix: PensioCallbackHandler - xml body response with error and Transactions element
-
-** Version 1.0.1
-
-    * Bugfix: PensioCallbackHandler - xml body response without Transaction element
-
-** Version 1.0.0
-
-    * Set the base for the version number
-
-** Version 0.1.0
-
-    * New child element [PaymentSource] in Transaction
-
-** Version 0.0.1
-
-    * Created the change log
+See [CHANGELOG.md](CHANGELOG.md)

@@ -26,8 +26,8 @@
 				<ThreeDSecureResult>Not_Applicable</ThreeDSecureResult>
 				<BlacklistToken>8eb2e9b803f5fef2dc60bb5201aedc89ceffa4af</BlacklistToken>
 				<ShopOrderId>APISchemaVerificationTests::testPreauthRecurring</ShopOrderId>
-				<Shop>Valitor Functional Test Shop</Shop>
-				<Terminal>Valitor Test Terminal</Terminal>
+				<Shop>AltaPay Functional Test Shop</Shop>
+				<Terminal>AltaPay Test Terminal</Terminal>
 				<TransactionStatus>preauth</TransactionStatus>
 				<MerchantCurrency>978</MerchantCurrency>
 				<CardHolderCurrency>978</CardHolderCurrency>

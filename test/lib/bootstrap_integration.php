@@ -1,12 +1,12 @@
 <?php
 
-class ArrayCachingLogger implements IValitorCommunicationLogger
+class ArrayCachingLogger implements IAltaPayCommunicationLogger
 {
     /** @var array<string, array<string, string|null>> */
     private $logs = array();
 
     /**
-     * Will get a string representation of the request being sent to Valitor.
+     * Will get a string representation of the request being sent to AltaPay.
      *
      * @param string $message
      *
@@ -20,7 +20,7 @@ class ArrayCachingLogger implements IValitorCommunicationLogger
     }
 
     /**
-     * Will get a string representation of the response from Valitor for the request identified by the logId.
+     * Will get a string representation of the response from AltaPay for the request identified by the logId.
      *
      * @param string $logId
      * @param string $message

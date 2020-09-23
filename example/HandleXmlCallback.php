@@ -1,12 +1,12 @@
 <?php
 
-$callbackHandler = new ValitorCallbackHandler();
+$callbackHandler = new AltaPayCallbackHandler();
 // Load an example of reservation and capture request
 // The XML would normally be POST'ed back to the okay/fail page as a parameter named 'xml'
 $xml = file_get_contents(__DIR__.'/xml/CallbackXML_subscriptionAndCharge_released.xml') ?: '';
 
 try {
-    /** @var ValitorCaptureRecurringResponse $response */
+    /** @var AltaPayCaptureRecurringResponse $response */
     $response = $callbackHandler->parseXmlResponse($xml);
     $payment = $response->getPrimaryPayment();
     if ($response->wasSubscriptionReleased() && $payment) {

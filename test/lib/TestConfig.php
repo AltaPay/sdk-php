@@ -3,32 +3,32 @@
 class TestConfig
 {
     /** @var string */
-    public $installation = 'https://testgateway.valitor.com';
+    public $installation = 'https://testgateway.altapay.com';
     /** @var string */
     public $username = 'username';
     /** @var string */
     public $password = 'secret';
     /** @var string */
-    public $terminal = 'Valitor Test Terminal';
+    public $terminal = 'AltaPay Test Terminal';
     /** @var string */
     public $currency = 'EUR';
 
     public function __construct()
     {
-        if (defined('VALITOR_INTEGRATION_INSTALLATION')) {
-            $this->installation = VALITOR_INTEGRATION_INSTALLATION;
+        if (defined('ALTAPAY_INTEGRATION_INSTALLATION')) {
+            $this->installation = ALTAPAY_INTEGRATION_INSTALLATION;
         }
-        if (defined('VALITOR_INTEGRATION_USERNAME')) {
-            $this->username = VALITOR_INTEGRATION_USERNAME;
+        if (defined('ALTAPAY_INTEGRATION_USERNAME')) {
+            $this->username = ALTAPAY_INTEGRATION_USERNAME;
         }
-        if (defined('VALITOR_INTEGRATION_PASSWORD')) {
-            $this->password = VALITOR_INTEGRATION_PASSWORD;
+        if (defined('ALTAPAY_INTEGRATION_PASSWORD')) {
+            $this->password = ALTAPAY_INTEGRATION_PASSWORD;
         }
-        if (defined('VALITOR_INTEGRATION_TERMINAL')) {
-            $this->terminal = VALITOR_INTEGRATION_TERMINAL;
+        if (defined('ALTAPAY_INTEGRATION_TERMINAL')) {
+            $this->terminal = ALTAPAY_INTEGRATION_TERMINAL;
         }
-        if (defined('VALITOR_INTEGRATION_CURRENCY')) {
-            $this->currency = VALITOR_INTEGRATION_CURRENCY;
+        if (defined('ALTAPAY_INTEGRATION_CURRENCY')) {
+            $this->currency = ALTAPAY_INTEGRATION_CURRENCY;
         }
     }
 }

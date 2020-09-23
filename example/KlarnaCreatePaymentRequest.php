@@ -1,9 +1,9 @@
 <?php
 require_once __DIR__.'/base.php';
-$api = InitializeValitorMerchantAPI();
+$api = InitializeAltaPayMerchantAPI();
 
 // Different variables, which are used as arguments
-$terminal = 'Valitor Klarna DK';
+$terminal = 'AltaPay Klarna DK';
 $orderId = 'Example_Klarna_'.time();
 $amount = 5.5;
 $currency = 'DKK';
