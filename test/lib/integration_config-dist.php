@@ -1,7 +1,7 @@
 <?php
 
-define('VALITOR_INTEGRATION_INSTALLATION', 'https://testgateway.valitor.com');
-define('VALITOR_INTEGRATION_USERNAME', 'username');
-define('VALITOR_INTEGRATION_PASSWORD', 'secret');
-define('VALITOR_INTEGRATION_TERMINAL', 'Valitor Test Terminal');
-define('VALITOR_INTEGRATION_CURRENCY', 'EUR');
+define('ALTAPAY_INTEGRATION_INSTALLATION', 'https://testgateway.altapay.com');
+define('ALTAPAY_INTEGRATION_USERNAME', 'username');
+define('ALTAPAY_INTEGRATION_PASSWORD', 'secret');
+define('ALTAPAY_INTEGRATION_TERMINAL', 'AltaPay Test Terminal');
+define('ALTAPAY_INTEGRATION_CURRENCY', 'EUR');

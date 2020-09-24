@@ -1,11 +1,11 @@
 <?php
 
-interface IValitorHttpUtils
+interface IAltaPayHttpUtils
 {
     /**
-     * @param ValitorHttpRequest $request
+     * @param AltaPayHttpRequest $request
      *
-     * @return ValitorHttpResponse
+     * @return AltaPayHttpResponse
      */
-    public function requestURL(ValitorHttpRequest $request);
+    public function requestURL(AltaPayHttpRequest $request);
 }

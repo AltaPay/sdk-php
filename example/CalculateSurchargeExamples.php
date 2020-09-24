@@ -1,13 +1,13 @@
 <?php
 require_once __DIR__.'/base.php';
-$api = InitializeValitorMerchantAPI();
+$api = InitializeAltaPayMerchantAPI();
 
 // Different variables used as arguments
 $subscriptionId = '2';
 $amount = 2500.00;
 $currency = 'DKK';
 $cardToken = '193c93414f049ee89ef9381320adb334d7e49afc';
-$terminalName = 'Valitor Surcharge Test Terminal';
+$terminalName = 'AltaPay Surcharge Test Terminal';
 
 // Example 1
 $response = $api->calculateSurchargeForSubscription($subscriptionId, $amount);
