@@ -17,7 +17,7 @@ See the provided examples for how to use the SDK
 
 ## Requirements
 
-The AltaPay PHP SDK requires PHP 5.3.2 or grater with the following extensions instaleld:
+The AltaPay PHP SDK requires PHP 5.3.2 or grater with the following extensions installed:
 
 - bcmath
 - curl
