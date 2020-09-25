@@ -9,8 +9,13 @@
         "sort-packages": true
     },
     "require": {
-        "php": ">=5.3.2",
+        "php": "^5.3.2 || ^7.0.0",
         "ext-bcmath": "*",
+        "ext-curl": "*",
+        "ext-date": "*",
+        "ext-iconv": "*",
+        "ext-pcre": "*",
+        "ext-session": "*",
         "ext-simplexml": "*"
     },
     "require-dev": {
