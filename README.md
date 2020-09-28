@@ -1,7 +1,7 @@
-AltaPay - PHP SDK
+AltaPay - SDK PHP
 =================
 
-The AltaPay PHP SDK provides a convinient object oriented interface for communicating with the AltaPay API
+The AltaPay SDK PHP provides a convinient object oriented interface for communicating with the AltaPay API
 
 ## Installation
 
@@ -17,7 +17,7 @@ See the provided examples for how to use the SDK
 
 ## Requirements
 
-The AltaPay PHP SDK requires PHP 5.3.2 or grater with the following extensions instaleld:
+The AltaPay SDK PHP requires PHP 5.3.2 or grater with the following extensions installed:
 
 - bcmath
 - curl
@@ -30,3 +30,7 @@ The AltaPay PHP SDK requires PHP 5.3.2 or grater with the following extensions i
 ## Changelog
 
 See [CHANGELOG.md](CHANGELOG.md)
+
+## License
+
+See [LICENSE](LICENSE)
