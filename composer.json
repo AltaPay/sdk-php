@@ -25,6 +25,7 @@
         "phpstan/phpstan": "*",
         "phpstan/phpstan-mockery": "*",
         "phpstan/phpstan-phpunit": "*",
+        "phpstan/phpstan-strict-rules": "^0.12.5",
         "phpunit/phpunit": "^8.5"
     },
     "autoload": {
