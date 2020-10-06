@@ -10,7 +10,7 @@
  *     <Date>2011-08-31T23:36:14+02:00</Date>
  * </ReconciliationIdentifier>
  */
-class AltaPayAPIReconciliationIdentifier
+class AltapayAPIReconciliationIdentifier
 {
     /** @var string */
     private $id;

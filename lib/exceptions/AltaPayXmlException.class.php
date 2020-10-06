@@ -1,6 +1,6 @@
 <?php
 
-class AltaPayXmlException extends Exception
+class AltapayXmlException extends Exception
 {
     /** @var SimpleXMLElement */
     private $xml;

@@ -1,6 +1,6 @@
 <?php
 
-class AltaPayAPICountryOfOrigin
+class AltapayAPICountryOfOrigin
 {
     const NotSet = 'NotSet';
     const CardNumber = 'CardNumber';

@@ -5,7 +5,7 @@ require_once __DIR__.'/../../vendor/autoload.php';
  * Helper method for reserving the payment amount.
  * Obs: the amount cannot be captured if is not reserved firstly.
  *
- * @param AltaPayMerchantAPI               $api
+ * @param AltapayMerchantAPI               $api
  * @param string                           $terminal
  * @param float                            $amount
  * @param array<int, array<string, mixed>> $orderLines [array()]
@@ -60,7 +60,7 @@ function reserveAmount($api, $terminal, $amount, $orderLines = array())
  * If success then the amount is captured
  * Obs: the amount cannot be captured if is not reserved firstly.
  *
- * @param AltaPayMerchantAPI               $api
+ * @param AltapayMerchantAPI               $api
  * @param string                           $terminal
  * @param float                            $amount
  * @param array<int, array<string, mixed>> $orderLines [array()]
@@ -81,15 +81,15 @@ function reserveAndCapture($api, $terminal, $amount, $orderLines = array())
 }
 
 /**
- * @return AltaPayMerchantAPI
+ * @return AltapayMerchantAPI
  */
-function InitializeAltaPayMerchantAPI()
+function InitializeAltapayMerchantAPI()
 {
     $baseURL = 'https://testgateway.altapay.com/';
     $username = 'username';
     $password = 'password';
 
-    $api = new AltaPayMerchantAPI($baseURL, $username, $password, /*IAltaPayCommunicationLogger $logger = */ null);
+    $api = new AltapayMerchantAPI($baseURL, $username, $password, /*IAltapayCommunicationLogger $logger = */ null);
     $response = $api->login();
     if (!$response->wasSuccessful()) {
         /*

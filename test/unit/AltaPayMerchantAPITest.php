@@ -4,35 +4,35 @@ use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery\MockInterface;
 use PHPUnit\Framework\TestCase;
 
-class AltaPayMerchantAPITest extends TestCase
+class AltapayMerchantAPITest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    /** @var AltaPayMerchantAPI */
+    /** @var AltapayMerchantAPI */
     private $merchantAPI;
 
-    /** @var IAltaPayCommunicationLogger&MockInterface */
+    /** @var IAltapayCommunicationLogger&MockInterface */
     private $logger;
-    /** @var IAltaPayHttpUtils&MockInterface */
+    /** @var IAltapayHttpUtils&MockInterface */
     private $httpUtils;
-    /** @var AltaPayHttpResponse&MockInterface */
+    /** @var AltapayHttpResponse&MockInterface */
     private $response;
 
     protected function setUp(): void
     {
-        $this->logger = Mockery::spy(IAltaPayCommunicationLogger::class);
-        $this->httpUtils = Mockery::mock(IAltaPayHttpUtils::class);
-        $this->response = Mockery::mock(AltaPayHttpResponse::class);
+        $this->logger = Mockery::spy(IAltapayCommunicationLogger::class);
+        $this->httpUtils = Mockery::mock(IAltapayHttpUtils::class);
+        $this->response = Mockery::mock(AltapayHttpResponse::class);
 
-        $this->response->shouldReceive('getConnectionResult')->andReturn(AltaPayHttpResponse::CONNECTION_OKAY);
+        $this->response->shouldReceive('getConnectionResult')->andReturn(AltapayHttpResponse::CONNECTION_OKAY);
         $this->response->shouldReceive('getContentType')->andReturn('text/xml');
 
-        $this->merchantAPI = new AltaPayMerchantAPI('http://base.url', 'username', 'password', $this->logger, $this->httpUtils);
+        $this->merchantAPI = new AltapayMerchantAPI('http://base.url', 'username', 'password', $this->logger, $this->httpUtils);
     }
 
     public function testHandlesNonXmlNicely(): void
     {
-        $this->expectException(AltaPayInvalidResponseException::class);
+        $this->expectException(AltapayInvalidResponseException::class);
 
         $this->response->shouldReceive('getHttpCode')->andReturn(200);
         $this->response->shouldReceive('getContent')->andReturn('<html>
@@ -50,7 +50,7 @@ class AltaPayMerchantAPITest extends TestCase
 
     public function testNon200ReturnCodeIsHandled(): void
     {
-        $this->expectException(AltaPayInvalidResponseException::class);
+        $this->expectException(AltapayInvalidResponseException::class);
 
         $this->response->shouldReceive('getHttpCode')->andReturn(500);
         $this->httpUtils->shouldReceive('requestURL')->andReturn($this->response);
@@ -60,7 +60,7 @@ class AltaPayMerchantAPITest extends TestCase
 
     public function testUnAuthorizedReturnCodeIsHandled(): void
     {
-        $this->expectException(AltaPayUnauthorizedAccessException::class);
+        $this->expectException(AltapayUnauthorizedAccessException::class);
 
         $this->response->shouldReceive('getHttpCode')->andReturn(401);
         $this->httpUtils->shouldReceive('requestURL')->andReturn($this->response);
@@ -76,7 +76,7 @@ class AltaPayMerchantAPITest extends TestCase
 
         $this->merchantAPI->login();
         $getPaymentResponse = $this->merchantAPI->getPayment('123', array(''));
-        static::assertTrue($getPaymentResponse instanceof AltaPayGetPaymentResponse);
+        static::assertTrue($getPaymentResponse instanceof AltapayGetPaymentResponse);
         static::assertTrue($getPaymentResponse->wasSuccessful());
     }
 
@@ -88,7 +88,7 @@ class AltaPayMerchantAPITest extends TestCase
 
         $this->merchantAPI->login();
         $getPaymentResponse = $this->merchantAPI->getPayment('123', array(''));
-        static::assertTrue($getPaymentResponse instanceof AltaPayGetPaymentResponse);
+        static::assertTrue($getPaymentResponse instanceof AltapayGetPaymentResponse);
         static::assertTrue($getPaymentResponse->wasSuccessful());
     }
 
@@ -100,7 +100,7 @@ class AltaPayMerchantAPITest extends TestCase
 
         $this->merchantAPI->login();
         $getPaymentResponse = $this->merchantAPI->getPayment('', array('shop_orderid' => 'ceae3968b13111e38a24ac162d8c2738'));
-        static::assertTrue($getPaymentResponse instanceof AltaPayGetPaymentResponse);
+        static::assertTrue($getPaymentResponse instanceof AltapayGetPaymentResponse);
         static::assertTrue($getPaymentResponse->wasSuccessful());
     }
 

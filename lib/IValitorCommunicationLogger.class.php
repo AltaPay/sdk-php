@@ -1,6 +1,6 @@
 <?php
 
-interface IAltaPayCommunicationLogger
+interface IAltapayCommunicationLogger
 {
     /**
      * Will get a string representation of the request being sent to AltaPay.

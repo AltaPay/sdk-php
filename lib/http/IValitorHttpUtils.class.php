@@ -1,11 +1,11 @@
 <?php
 
-interface IAltaPayHttpUtils
+interface IAltapayHttpUtils
 {
     /**
-     * @param AltaPayHttpRequest $request
+     * @param AltapayHttpRequest $request
      *
-     * @return AltaPayHttpResponse
+     * @return AltapayHttpResponse
      */
-    public function requestURL(AltaPayHttpRequest $request);
+    public function requestURL(AltapayHttpRequest $request);
 }

@@ -1,6 +1,6 @@
 <?php
 
-class AltaPayTerminal
+class AltapayTerminal
 {
     /** @var string */
     private $title;

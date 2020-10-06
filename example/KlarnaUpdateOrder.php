@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__.'/base.php';
-$api = InitializeAltaPayMerchantAPI();
+$api = InitializeAltapayMerchantAPI();
 
 // Different variables, which are used as arguments
 // Replace the value with a payment ID from a previous created order

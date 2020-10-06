@@ -7,7 +7,7 @@
  *      <PaymentInfo name="auxkey">aux data (&lt;&#xE6;&#xF8;&#xE5;&gt;)</PaymentInfo>
  * </PaymentInfos>
  */
-class AltaPayAPIPaymentInfos
+class AltapayAPIPaymentInfos
 {
     /** @var SimpleXMLElement
      */

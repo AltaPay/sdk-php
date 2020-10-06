@@ -1,6 +1,6 @@
 <?php
 
-class AltaPayMerchantAPI
+class AltapayMerchantAPI
 {
     const VERSION = 'PHPSDK/2.1.0';
 
@@ -12,9 +12,9 @@ class AltaPayMerchantAPI
     private $password;
     /** @var bool */
     private $connected = false;
-    /** @var IAltaPayCommunicationLogger|null */
+    /** @var IAltapayCommunicationLogger|null */
     private $logger;
-    /** @var IAltaPayHttpUtils */
+    /** @var IAltapayHttpUtils */
     private $httpUtil;
 
     /**
@@ -22,7 +22,7 @@ class AltaPayMerchantAPI
      * @param string $username
      * @param string $password
      */
-    public function __construct($baseURL, $username, $password, IAltaPayCommunicationLogger $logger = null, IAltaPayHttpUtils $httpUtil = null)
+    public function __construct($baseURL, $username, $password, IAltapayCommunicationLogger $logger = null, IAltapayHttpUtils $httpUtil = null)
     {
         $this->connected = false;
         $this->baseURL = rtrim($baseURL, '/');
@@ -32,9 +32,9 @@ class AltaPayMerchantAPI
 
         if ($httpUtil === null) {
             if (function_exists('curl_init')) {
-                $httpUtil = new AltaPayCurlBasedHttpUtils();
+                $httpUtil = new AltapayCurlBasedHttpUtils();
             } elseif (ini_get('allow_url_fopen')) {
-                $httpUtil = new AltaPayFOpenBasedHttpUtils();
+                $httpUtil = new AltapayFOpenBasedHttpUtils();
             } else {
                 throw new Exception("Neither allow_url_fopen nor cURL is installed, we cannot communicate with AltaPay's Payment Gateway without at least one of them.");
             }
@@ -87,13 +87,13 @@ class AltaPayMerchantAPI
      * @param string  $method
      * @param mixed[] $args
      *
-     * @throws AltaPayConnectionFailedException
-     * @throws AltaPayInvalidResponseException
-     * @throws AltaPayRequestTimeoutException
-     * @throws AltaPayUnauthorizedAccessException
-     * @throws AltaPayUnknownMerchantAPIException
+     * @throws AltapayConnectionFailedException
+     * @throws AltapayInvalidResponseException
+     * @throws AltapayRequestTimeoutException
+     * @throws AltapayUnauthorizedAccessException
+     * @throws AltapayUnknownMerchantAPIException
      *
-     * @return AltaPayHttpResponse
+     * @return AltapayHttpResponse
      */
     private function callAPIMethod($method, array $args = array())
     {
@@ -111,7 +111,7 @@ class AltaPayMerchantAPI
             $logId = $this->logger->logRequest($absoluteUrl.'?'.http_build_query($loggedArgs));
         }
 
-        $request = new AltaPayHttpRequest();
+        $request = new AltapayHttpRequest();
         $request->setUrl($absoluteUrl);
         $request->setParameters($args);
         $request->setUser($this->username);
@@ -125,25 +125,25 @@ class AltaPayMerchantAPI
             $this->logger->logResponse($logId, print_r($response, true));
         }
 
-        if ($response->getConnectionResult() == AltaPayHttpResponse::CONNECTION_OKAY) {
+        if ($response->getConnectionResult() == AltapayHttpResponse::CONNECTION_OKAY) {
             if ($response->getHttpCode() == 200) {
                 return $response;
             }
             if ($response->getHttpCode() == 401) {
-                throw new AltaPayUnauthorizedAccessException($absoluteUrl, $this->username);
+                throw new AltapayUnauthorizedAccessException($absoluteUrl, $this->username);
             }
-            throw new AltaPayInvalidResponseException('Non HTTP 200 Response: '.$response->getHttpCode());
+            throw new AltapayInvalidResponseException('Non HTTP 200 Response: '.$response->getHttpCode());
         }
-        if ($response->getConnectionResult() == AltaPayHttpResponse::CONNECTION_REFUSED) {
-            throw new AltaPayConnectionFailedException($absoluteUrl, 'Connection refused');
+        if ($response->getConnectionResult() == AltapayHttpResponse::CONNECTION_REFUSED) {
+            throw new AltapayConnectionFailedException($absoluteUrl, 'Connection refused');
         }
-        if ($response->getConnectionResult() == AltaPayHttpResponse::CONNECTION_TIMEOUT) {
-            throw new AltaPayConnectionFailedException($absoluteUrl, 'Connection timed out');
+        if ($response->getConnectionResult() == AltapayHttpResponse::CONNECTION_TIMEOUT) {
+            throw new AltapayConnectionFailedException($absoluteUrl, 'Connection timed out');
         }
-        if ($response->getConnectionResult() == AltaPayHttpResponse::CONNECTION_READ_TIMEOUT) {
-            throw new AltaPayRequestTimeoutException($absoluteUrl);
+        if ($response->getConnectionResult() == AltapayHttpResponse::CONNECTION_READ_TIMEOUT) {
+            throw new AltapayRequestTimeoutException($absoluteUrl);
         }
-        throw new AltaPayUnknownMerchantAPIException();
+        throw new AltapayUnknownMerchantAPIException();
     }
 
     /**
@@ -152,11 +152,11 @@ class AltaPayMerchantAPI
      * @param string  $method
      * @param mixed[] $args
      *
-     * @throws AltaPayConnectionFailedException
-     * @throws AltaPayInvalidResponseException
-     * @throws AltaPayRequestTimeoutException
-     * @throws AltaPayUnauthorizedAccessException
-     * @throws AltaPayUnknownMerchantAPIException
+     * @throws AltapayConnectionFailedException
+     * @throws AltapayInvalidResponseException
+     * @throws AltapayRequestTimeoutException
+     * @throws AltapayUnauthorizedAccessException
+     * @throws AltapayUnknownMerchantAPIException
      *
      * @return SimpleXMLElement
      */
@@ -165,16 +165,16 @@ class AltaPayMerchantAPI
         $response = $this->callAPIMethod($method, $args);
 
         if (stripos($response->getContentType() ?: '', 'text/xml') === false) {
-            throw new AltaPayInvalidResponseException('Non XML ContentType (was: '.$response->getContentType().')');
+            throw new AltapayInvalidResponseException('Non XML ContentType (was: '.$response->getContentType().')');
         }
 
         try {
             return new SimpleXMLElement($response->getContent());
         } catch (Exception $e) {
             if ($e->getMessage() == 'String could not be parsed as XML') {
-                throw new AltaPayInvalidResponseException('Unparsable XML Content in response');
+                throw new AltapayInvalidResponseException('Unparsable XML Content in response');
             }
-            throw new AltaPayUnknownMerchantAPIException($e);
+            throw new AltapayUnknownMerchantAPIException($e);
         }
     }
 
@@ -184,11 +184,11 @@ class AltaPayMerchantAPI
      * @param string  $method
      * @param mixed[] $args
      *
-     * @throws AltaPayConnectionFailedException
-     * @throws AltaPayInvalidResponseException
-     * @throws AltaPayRequestTimeoutException
-     * @throws AltaPayUnauthorizedAccessException
-     * @throws AltaPayUnknownMerchantAPIException
+     * @throws AltapayConnectionFailedException
+     * @throws AltapayInvalidResponseException
+     * @throws AltapayRequestTimeoutException
+     * @throws AltapayUnauthorizedAccessException
+     * @throws AltapayUnknownMerchantAPIException
      *
      * @return string
      */
@@ -197,7 +197,7 @@ class AltaPayMerchantAPI
         $response = $this->callAPIMethod($method, $args);
 
         if (stripos($response->getContentType() ?: '', 'text/csv') === false) {
-            throw new AltaPayInvalidResponseException('Non CSV ContentType (was: '.$response->getContentType().')');
+            throw new AltapayInvalidResponseException('Non CSV ContentType (was: '.$response->getContentType().')');
         }
 
         return $response->getContent();
@@ -206,15 +206,15 @@ class AltaPayMerchantAPI
     /**
      * @param int $page
      *
-     * @throws AltaPayMerchantAPIException
+     * @throws AltapayMerchantAPIException
      *
-     * @return AltaPayFundingListResponse
+     * @return AltapayFundingListResponse
      */
     public function getFundingList($page = 0)
     {
         $this->checkConnection();
 
-        return new AltaPayFundingListResponse($this->callAPIMethodXML('fundingList', array('page' => $page)));
+        return new AltapayFundingListResponse($this->callAPIMethodXML('fundingList', array('page' => $page)));
     }
 
     /**
@@ -222,11 +222,11 @@ class AltaPayMerchantAPI
      *
      * @return bool|string
      */
-    public function downloadFundingCSV(AltaPayAPIFunding $funding)
+    public function downloadFundingCSV(AltapayAPIFunding $funding)
     {
         $this->checkConnection();
 
-        $request = new AltaPayHttpRequest();
+        $request = new AltapayHttpRequest();
         $request->setUrl($funding->getDownloadLink());
         $request->setUser($this->username);
         $request->setPass($this->password);
@@ -252,7 +252,7 @@ class AltaPayMerchantAPI
     {
         $this->checkConnection();
 
-        $request = new AltaPayHttpRequest();
+        $request = new AltapayHttpRequest();
 
         $request->setUrl($downloadLink);
         $request->setUser($this->username);
@@ -284,7 +284,7 @@ class AltaPayMerchantAPI
      * @param array<string, string> $customerInfo
      * @param array<string, string> $transactionInfo
      *
-     * @return AltaPayOmniReservationResponse
+     * @return AltapayOmniReservationResponse
      */
     private function reservationInternal(
         $apiMethod,
@@ -341,7 +341,7 @@ class AltaPayMerchantAPI
             $args['transaction_info'] = $transactionInfo;
         }
 
-        return new AltaPayOmniReservationResponse(
+        return new AltapayOmniReservationResponse(
             $this->callAPIMethodXML(
                 $apiMethod,
                 $args
@@ -364,7 +364,7 @@ class AltaPayMerchantAPI
      * @param array<string, string> $customerInfo
      * @param array<string, string> $transactionInfo
      *
-     * @return AltaPayOmniReservationResponse
+     * @return AltapayOmniReservationResponse
      */
     public function reservationOfFixedAmount(
         $terminal,
@@ -408,7 +408,7 @@ class AltaPayMerchantAPI
      * @param array<string, string> $customerInfo
      * @param array<string, string> $transactionInfo
      *
-     * @return AltaPayOmniReservationResponse
+     * @return AltapayOmniReservationResponse
      */
     public function reservationOfFixedAmountMOTOWithToken(
         $terminal,
@@ -452,7 +452,7 @@ class AltaPayMerchantAPI
      * @param array<string, string> $customerInfo
      * @param array<string, string> $transactionInfo
      *
-     * @return AltaPayOmniReservationResponse
+     * @return AltapayOmniReservationResponse
      */
     public function setupSubscription(
         $terminal,
@@ -496,7 +496,7 @@ class AltaPayMerchantAPI
      * @param array<string, string> $customerInfo
      * @param array<string, string> $transactionInfo
      *
-     * @return AltaPayOmniReservationResponse
+     * @return AltapayOmniReservationResponse
      */
     public function setupSubscriptionWithToken(
         $terminal,
@@ -539,7 +539,7 @@ class AltaPayMerchantAPI
      * @param array<string, string> $customerInfo
      * @param array<string, string> $transactionInfo
      *
-     * @return AltaPayOmniReservationResponse
+     * @return AltapayOmniReservationResponse
      */
     public function verifyCard(
         $terminal,
@@ -581,7 +581,7 @@ class AltaPayMerchantAPI
      * @param array<string, string> $customerInfo
      * @param array<string, string> $transactionInfo
      *
-     * @return AltaPayOmniReservationResponse
+     * @return AltapayOmniReservationResponse
      */
     public function verifyCardWithToken(
         $terminal,
@@ -621,19 +621,19 @@ class AltaPayMerchantAPI
      * @param string|null                      $shippingCompany
      * @param string|null                      $trackingNumber
      *
-     * @throws AltaPayConnectionFailedException
-     * @throws AltaPayInvalidResponseException
-     * @throws AltaPayRequestTimeoutException
-     * @throws AltaPayUnauthorizedAccessException
-     * @throws AltaPayUnknownMerchantAPIException
+     * @throws AltapayConnectionFailedException
+     * @throws AltapayInvalidResponseException
+     * @throws AltapayRequestTimeoutException
+     * @throws AltapayUnauthorizedAccessException
+     * @throws AltapayUnknownMerchantAPIException
      *
-     * @return AltaPayCaptureResponse
+     * @return AltapayCaptureResponse
      */
     public function captureReservation($paymentId, $amount = null, array $orderLines = array(), $salesTax = null, $reconciliationIdentifier = null, $invoiceNumber = null, $shippingCompany = null, $trackingNumber = null)
     {
         $this->checkConnection();
 
-        return new AltaPayCaptureResponse(
+        return new AltapayCaptureResponse(
             $this->callAPIMethodXML(
                 'captureReservation',
                 array(
@@ -660,19 +660,19 @@ class AltaPayMerchantAPI
      * @param bool|null                                    $allowOverRefund
      * @param string|null                                  $invoiceNumber
      *
-     * @throws AltaPayConnectionFailedException
-     * @throws AltaPayInvalidResponseException
-     * @throws AltaPayRequestTimeoutException
-     * @throws AltaPayUnauthorizedAccessException
-     * @throws AltaPayUnknownMerchantAPIException
+     * @throws AltapayConnectionFailedException
+     * @throws AltapayInvalidResponseException
+     * @throws AltapayRequestTimeoutException
+     * @throws AltapayUnauthorizedAccessException
+     * @throws AltapayUnknownMerchantAPIException
      *
-     * @return AltaPayRefundResponse
+     * @return AltapayRefundResponse
      */
     public function refundCapturedReservation($paymentId, $amount = null, $orderLines = null, $reconciliationIdentifier = null, $allowOverRefund = null, $invoiceNumber = null)
     {
         $this->checkConnection();
 
-        return new AltaPayRefundResponse(
+        return new AltapayRefundResponse(
             $this->callAPIMethodXML(
                 'refundCapturedReservation',
                 array(
@@ -691,19 +691,19 @@ class AltaPayMerchantAPI
      * @param string                                $paymentId
      * @param array<int, array<string, mixed>>|null $orderLines
      *
-     * @throws AltaPayMerchantAPIException
+     * @throws AltapayMerchantAPIException
      *
-     * @return AltaPayUpdateOrderResponse
+     * @return AltapayUpdateOrderResponse
      */
     public function updateOrder($paymentId, $orderLines)
     {
         if ($orderLines == null || count($orderLines) != 2) {
-            throw new AltaPayMerchantAPIException('orderLines must contain exactly two elements');
+            throw new AltapayMerchantAPIException('orderLines must contain exactly two elements');
         }
 
         $this->checkConnection();
 
-        return new AltaPayUpdateOrderResponse(
+        return new AltapayUpdateOrderResponse(
             $this->callAPIMethodXML(
                 'updateOrder',
                 array(
@@ -718,19 +718,19 @@ class AltaPayMerchantAPI
      * @param string     $paymentId
      * @param float|null $amount
      *
-     * @throws AltaPayConnectionFailedException
-     * @throws AltaPayInvalidResponseException
-     * @throws AltaPayRequestTimeoutException
-     * @throws AltaPayUnauthorizedAccessException
-     * @throws AltaPayUnknownMerchantAPIException
+     * @throws AltapayConnectionFailedException
+     * @throws AltapayInvalidResponseException
+     * @throws AltapayRequestTimeoutException
+     * @throws AltapayUnauthorizedAccessException
+     * @throws AltapayUnknownMerchantAPIException
      *
-     * @return AltaPayReleaseResponse
+     * @return AltapayReleaseResponse
      */
     public function releaseReservation($paymentId, $amount = null)
     {
         $this->checkConnection();
 
-        return new AltaPayReleaseResponse(
+        return new AltapayReleaseResponse(
             $this->callAPIMethodXML(
                 'releaseReservation',
                 array(
@@ -744,13 +744,13 @@ class AltaPayMerchantAPI
      * @param string   $paymentId
      * @param string[] $multipleParams
      *
-     * @throws AltaPayConnectionFailedException
-     * @throws AltaPayInvalidResponseException
-     * @throws AltaPayRequestTimeoutException
-     * @throws AltaPayUnauthorizedAccessException
-     * @throws AltaPayUnknownMerchantAPIException
+     * @throws AltapayConnectionFailedException
+     * @throws AltapayInvalidResponseException
+     * @throws AltapayRequestTimeoutException
+     * @throws AltapayUnauthorizedAccessException
+     * @throws AltapayUnknownMerchantAPIException
      *
-     * @return AltaPayGetPaymentResponse
+     * @return AltapayGetPaymentResponse
      */
     public function getPayment($paymentId, $multipleParams = array())
     {
@@ -769,34 +769,34 @@ class AltaPayMerchantAPI
                 'transaction' => $paymentId,
             );
         }
-        return new AltaPayGetPaymentResponse($this->callAPIMethodXML(
+        return new AltapayGetPaymentResponse($this->callAPIMethodXML(
             'payments',
             $requestBody
         ));
     }
 
     /**
-     * @throws AltaPayMerchantAPIException
+     * @throws AltapayMerchantAPIException
      *
-     * @return AltaPayGetTerminalsResponse
+     * @return AltapayGetTerminalsResponse
      */
     public function getTerminals()
     {
         $this->checkConnection();
 
-        return new AltaPayGetTerminalsResponse($this->callAPIMethodXML('getTerminals'));
+        return new AltapayGetTerminalsResponse($this->callAPIMethodXML('getTerminals'));
     }
 
     /**
-     * @throws AltaPayMerchantAPIException
+     * @throws AltapayMerchantAPIException
      *
-     * @return AltaPayLoginResponse
+     * @return AltapayLoginResponse
      */
     public function login()
     {
         $this->connected = false;
 
-        $response = new AltaPayLoginResponse($this->callAPIMethodXML('login'));
+        $response = new AltapayLoginResponse($this->callAPIMethodXML('login'));
 
         if ($response->getErrorCode() === '0') {
             $this->connected = true;
@@ -828,14 +828,14 @@ class AltaPayMerchantAPI
      * @param string|null                      $organizationNumber
      * @param float|null                       $salesTax
      *
-     * @throws AltaPayConnectionFailedException
-     * @throws AltaPayInvalidResponseException
-     * @throws AltaPayMerchantAPIException
-     * @throws AltaPayRequestTimeoutException
-     * @throws AltaPayUnauthorizedAccessException
-     * @throws AltaPayUnknownMerchantAPIException
+     * @throws AltapayConnectionFailedException
+     * @throws AltapayInvalidResponseException
+     * @throws AltapayMerchantAPIException
+     * @throws AltapayRequestTimeoutException
+     * @throws AltapayUnauthorizedAccessException
+     * @throws AltapayUnknownMerchantAPIException
      *
-     * @return AltaPayCreatePaymentRequestResponse
+     * @return AltapayCreatePaymentRequestResponse
      */
     public function createPaymentRequest(
         $terminal,
@@ -922,7 +922,7 @@ class AltaPayMerchantAPI
 
         $args['config'] = $config;
 
-        return new AltaPayCreatePaymentRequestResponse($this->callAPIMethodXML('createPaymentRequest', $args));
+        return new AltapayCreatePaymentRequestResponse($this->callAPIMethodXML('createPaymentRequest', $args));
     }
 
     /**
@@ -942,14 +942,14 @@ class AltaPayMerchantAPI
      * @param string|null                      $personalIdentifyNumber
      * @param string|null                      $birthDate
      *
-     * @throws AltaPayConnectionFailedException
-     * @throws AltaPayInvalidResponseException
-     * @throws AltaPayMerchantAPIException
-     * @throws AltaPayRequestTimeoutException
-     * @throws AltaPayUnauthorizedAccessException
-     * @throws AltaPayUnknownMerchantAPIException
+     * @throws AltapayConnectionFailedException
+     * @throws AltapayInvalidResponseException
+     * @throws AltapayMerchantAPIException
+     * @throws AltapayRequestTimeoutException
+     * @throws AltapayUnauthorizedAccessException
+     * @throws AltapayUnknownMerchantAPIException
      *
-     * @return AltaPayCreateInvoiceReservationResponse
+     * @return AltapayCreateInvoiceReservationResponse
      */
     public function createInvoiceReservation(
         $terminal,
@@ -1009,7 +1009,7 @@ class AltaPayMerchantAPI
             $args['birthDate'] = $birthDate;
         }
 
-        return new AltaPayCreateInvoiceReservationResponse($this->callAPIMethodXML('createInvoiceReservation', $args));
+        return new AltapayCreateInvoiceReservationResponse($this->callAPIMethodXML('createInvoiceReservation', $args));
     }
 
     /**
@@ -1032,14 +1032,14 @@ class AltaPayMerchantAPI
      * @param array<string, string>|null       $customerInfo
      * @param array<int, array<string, mixed>> $orderLines
      *
-     * @throws AltaPayConnectionFailedException
-     * @throws AltaPayInvalidResponseException
-     * @throws AltaPayMerchantAPIException
-     * @throws AltaPayRequestTimeoutException
-     * @throws AltaPayUnauthorizedAccessException
-     * @throws AltaPayUnknownMerchantAPIException
+     * @throws AltapayConnectionFailedException
+     * @throws AltapayInvalidResponseException
+     * @throws AltapayMerchantAPIException
+     * @throws AltapayRequestTimeoutException
+     * @throws AltapayUnauthorizedAccessException
+     * @throws AltapayUnknownMerchantAPIException
      *
-     * @return AltaPayReservationResponse
+     * @return AltapayReservationResponse
      */
     public function reservation(
         $terminal,
@@ -1111,20 +1111,20 @@ class AltaPayMerchantAPI
             $args['orderLines'] = $orderLines;
         }
 
-        return new AltaPayReservationResponse($this->callAPIMethodXML('reservation', $args));
+        return new AltapayReservationResponse($this->callAPIMethodXML('reservation', $args));
     }
 
     /**
      * @param string     $subscriptionId
      * @param float|null $amount
      *
-     * @throws AltaPayConnectionFailedException
-     * @throws AltaPayInvalidResponseException
-     * @throws AltaPayRequestTimeoutException
-     * @throws AltaPayUnauthorizedAccessException
-     * @throws AltaPayUnknownMerchantAPIException
+     * @throws AltapayConnectionFailedException
+     * @throws AltapayInvalidResponseException
+     * @throws AltapayRequestTimeoutException
+     * @throws AltapayUnauthorizedAccessException
+     * @throws AltapayUnknownMerchantAPIException
      *
-     * @return AltaPayCaptureRecurringResponse
+     * @return AltapayCaptureRecurringResponse
      *
      * @deprecated - use chargeSubscription instead
      */
@@ -1138,19 +1138,19 @@ class AltaPayMerchantAPI
      * @param string|null $reconciliationIdentifier
      * @param float|null  $amount
      *
-     * @throws AltaPayConnectionFailedException
-     * @throws AltaPayInvalidResponseException
-     * @throws AltaPayRequestTimeoutException
-     * @throws AltaPayUnauthorizedAccessException
-     * @throws AltaPayUnknownMerchantAPIException
+     * @throws AltapayConnectionFailedException
+     * @throws AltapayInvalidResponseException
+     * @throws AltapayRequestTimeoutException
+     * @throws AltapayUnauthorizedAccessException
+     * @throws AltapayUnknownMerchantAPIException
      *
-     * @return AltaPayCaptureRecurringResponse
+     * @return AltapayCaptureRecurringResponse
      */
     public function chargeSubscriptionWithReconciliationIdentifier($subscriptionId, $reconciliationIdentifier, $amount = null)
     {
         $this->checkConnection();
 
-        return new AltaPayCaptureRecurringResponse(
+        return new AltapayCaptureRecurringResponse(
             $this->callAPIMethodXML(
                 'chargeSubscription',
                 array(
@@ -1166,13 +1166,13 @@ class AltaPayMerchantAPI
      * @param string     $subscriptionId
      * @param float|null $amount
      *
-     * @throws AltaPayConnectionFailedException
-     * @throws AltaPayInvalidResponseException
-     * @throws AltaPayRequestTimeoutException
-     * @throws AltaPayUnauthorizedAccessException
-     * @throws AltaPayUnknownMerchantAPIException
+     * @throws AltapayConnectionFailedException
+     * @throws AltapayInvalidResponseException
+     * @throws AltapayRequestTimeoutException
+     * @throws AltapayUnauthorizedAccessException
+     * @throws AltapayUnknownMerchantAPIException
      *
-     * @return AltaPayCaptureRecurringResponse
+     * @return AltapayCaptureRecurringResponse
      */
     public function chargeSubscription($subscriptionId, $amount = null)
     {
@@ -1183,9 +1183,9 @@ class AltaPayMerchantAPI
      * @param string     $subscriptionId
      * @param float|null $amount
      *
-     * @throws AltaPayMerchantAPIException
+     * @throws AltapayMerchantAPIException
      *
-     * @return AltaPayPreauthRecurringResponse
+     * @return AltapayPreauthRecurringResponse
      *
      * @deprecated - use reserveSubscriptionCharge instead
      */
@@ -1198,19 +1198,19 @@ class AltaPayMerchantAPI
      * @param string     $subscriptionId
      * @param float|null $amount
      *
-     * @throws AltaPayConnectionFailedException
-     * @throws AltaPayInvalidResponseException
-     * @throws AltaPayRequestTimeoutException
-     * @throws AltaPayUnauthorizedAccessException
-     * @throws AltaPayUnknownMerchantAPIException
+     * @throws AltapayConnectionFailedException
+     * @throws AltapayInvalidResponseException
+     * @throws AltapayRequestTimeoutException
+     * @throws AltapayUnauthorizedAccessException
+     * @throws AltapayUnknownMerchantAPIException
      *
-     * @return AltaPayPreauthRecurringResponse
+     * @return AltapayPreauthRecurringResponse
      */
     public function reserveSubscriptionCharge($subscriptionId, $amount = null)
     {
         $this->checkConnection();
 
-        return new AltaPayPreauthRecurringResponse(
+        return new AltapayPreauthRecurringResponse(
             $this->callAPIMethodXML(
                 'reserveSubscriptionCharge',
                 array(
@@ -1227,19 +1227,19 @@ class AltaPayMerchantAPI
      * @param float  $amount
      * @param string $currency
      *
-     * @throws AltaPayConnectionFailedException
-     * @throws AltaPayInvalidResponseException
-     * @throws AltaPayRequestTimeoutException
-     * @throws AltaPayUnauthorizedAccessException
-     * @throws AltaPayUnknownMerchantAPIException
+     * @throws AltapayConnectionFailedException
+     * @throws AltapayInvalidResponseException
+     * @throws AltapayRequestTimeoutException
+     * @throws AltapayUnauthorizedAccessException
+     * @throws AltapayUnknownMerchantAPIException
      *
-     * @return AltaPayCalculateSurchargeResponse
+     * @return AltapayCalculateSurchargeResponse
      */
     public function calculateSurcharge($terminal, $cardToken, $amount, $currency)
     {
         $this->checkConnection();
 
-        return new AltaPayCalculateSurchargeResponse(
+        return new AltapayCalculateSurchargeResponse(
             $this->callAPIMethodXML(
                 'calculateSurcharge',
                 array(
@@ -1256,19 +1256,19 @@ class AltaPayMerchantAPI
      * @param string $subscriptionId
      * @param float  $amount
      *
-     * @throws AltaPayConnectionFailedException
-     * @throws AltaPayInvalidResponseException
-     * @throws AltaPayRequestTimeoutException
-     * @throws AltaPayUnauthorizedAccessException
-     * @throws AltaPayUnknownMerchantAPIException
+     * @throws AltapayConnectionFailedException
+     * @throws AltapayInvalidResponseException
+     * @throws AltapayRequestTimeoutException
+     * @throws AltapayUnauthorizedAccessException
+     * @throws AltapayUnknownMerchantAPIException
      *
-     * @return AltaPayCalculateSurchargeResponse
+     * @return AltapayCalculateSurchargeResponse
      */
     public function calculateSurchargeForSubscription($subscriptionId, $amount)
     {
         $this->checkConnection();
 
-        return new AltaPayCalculateSurchargeResponse(
+        return new AltapayCalculateSurchargeResponse(
             $this->callAPIMethodXML(
                 'calculateSurcharge',
                 array(
@@ -1282,11 +1282,11 @@ class AltaPayMerchantAPI
     /**
      * @param mixed[] $args
      *
-     * @throws AltaPayConnectionFailedException
-     * @throws AltaPayInvalidResponseException
-     * @throws AltaPayRequestTimeoutException
-     * @throws AltaPayUnauthorizedAccessException
-     * @throws AltaPayUnknownMerchantAPIException
+     * @throws AltapayConnectionFailedException
+     * @throws AltapayInvalidResponseException
+     * @throws AltapayRequestTimeoutException
+     * @throws AltapayUnauthorizedAccessException
+     * @throws AltapayUnknownMerchantAPIException
      *
      * @return string
      */
@@ -1298,17 +1298,17 @@ class AltaPayMerchantAPI
     }
 
     /**
-     * @param AltaPayAPITransactionsRequest $transactionsRequest
+     * @param AltapayAPITransactionsRequest $transactionsRequest
      *
-     * @throws AltaPayConnectionFailedException
-     * @throws AltaPayInvalidResponseException
-     * @throws AltaPayRequestTimeoutException
-     * @throws AltaPayUnauthorizedAccessException
-     * @throws AltaPayUnknownMerchantAPIException
+     * @throws AltapayConnectionFailedException
+     * @throws AltapayInvalidResponseException
+     * @throws AltapayRequestTimeoutException
+     * @throws AltapayUnauthorizedAccessException
+     * @throws AltapayUnknownMerchantAPIException
      *
      * @return SimpleXMLElement
      */
-    public function getTransactions(AltaPayAPITransactionsRequest $transactionsRequest)
+    public function getTransactions(AltapayAPITransactionsRequest $transactionsRequest)
     {
         $this->checkConnection();
         return $this->callAPIMethodXML('transactions', $transactionsRequest->asArray());
@@ -1318,7 +1318,7 @@ class AltaPayMerchantAPI
      * @param array<string, string|null>|null $customerInfo
      * @param string[][]                      $args
      *
-     * @throws AltaPayMerchantAPIException
+     * @throws AltapayMerchantAPIException
      *
      * @return void
      */
@@ -1346,7 +1346,7 @@ class AltaPayMerchantAPI
             }
         }
         if (count($errors) > 0) {
-            throw new AltaPayMerchantAPIException("Failed to create customer_info variable: \n".print_r($errors, true));
+            throw new AltapayMerchantAPIException("Failed to create customer_info variable: \n".print_r($errors, true));
         }
         $args['customer_info'] = $customerInfo;
     }

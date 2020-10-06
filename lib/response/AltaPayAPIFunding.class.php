@@ -14,7 +14,7 @@
  * <CreatedDate>2013-01-19</CreatedDate>
  * <DownloadLink>http://gateway.dev.altapay.com/merchant.php/API/fundingDownload?id=1</DownloadLink>
  */
-class AltaPayAPIFunding
+class AltapayAPIFunding
 {
     /** @var string */
     private $filename;

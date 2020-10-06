@@ -1,6 +1,6 @@
 <?php
 
-class AltaPayOmniReservationResponse extends AltaPayAbstractPaymentResponse
+class AltapayOmniReservationResponse extends AltapayAbstractPaymentResponse
 {
     /**
      * @param SimpleXMLElement $body

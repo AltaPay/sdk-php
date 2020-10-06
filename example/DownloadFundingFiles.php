@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__.'/base.php';
-$api = InitializeAltaPayMerchantAPI();
+$api = InitializeAltapayMerchantAPI();
 
 // For the purpose of this example will be assumed that there is one page
 $pageCount = 1;

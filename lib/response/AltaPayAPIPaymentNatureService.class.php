@@ -1,6 +1,6 @@
 <?php
 
-class AltaPayAPIPaymentNatureService
+class AltapayAPIPaymentNatureService
 {
     /** @var string|null */
     private $name;

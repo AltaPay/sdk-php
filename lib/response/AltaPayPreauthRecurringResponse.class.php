@@ -1,6 +1,6 @@
 <?php
 
-class AltaPayPreauthRecurringResponse extends AltaPayAbstractPaymentResponse
+class AltapayPreauthRecurringResponse extends AltapayAbstractPaymentResponse
 {
     /**
      * @param SimpleXMLElement $body
@@ -15,7 +15,7 @@ class AltaPayPreauthRecurringResponse extends AltaPayAbstractPaymentResponse
      * This payment represent the subscription, it is returned as the subscription it
      * self might have changed since last time it was used.
      *
-     * @return AltaPayAPIPayment|null
+     * @return AltapayAPIPayment|null
      */
     public function getSubscriptionPayment()
     {
@@ -25,7 +25,7 @@ class AltaPayPreauthRecurringResponse extends AltaPayAbstractPaymentResponse
     /**
      * This is the payment which was pre-authed.
      *
-     * @return AltaPayAPIPayment|null
+     * @return AltapayAPIPayment|null
      */
     public function getPrimaryPayment()
     {

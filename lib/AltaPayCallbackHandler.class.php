@@ -5,14 +5,14 @@
  * a usefull response object from which your business logic can get information
  * for the decisions it needs to make.
  */
-class AltaPayCallbackHandler
+class AltapayCallbackHandler
 {
     /**
      * @param SimpleXMLElement|string $xml
      *
-     * @throws AltaPayXmlException
+     * @throws AltapayXmlException
      *
-     * @return AltaPayAbstractPaymentResponse
+     * @return AltapayAbstractPaymentResponse
      */
     public function parseXmlResponse($xml)
     {
@@ -31,10 +31,10 @@ class AltaPayCallbackHandler
         case 'recurring':
         case 'subscription':
         case 'verifyCard':
-            return new AltaPayOmniReservationResponse($xml);
+            return new AltapayOmniReservationResponse($xml);
         case 'subscriptionAndCharge':
         case 'recurringAndCapture':
-            return new AltaPayCaptureRecurringResponse($xml);
+            return new AltapayCaptureRecurringResponse($xml);
         default:
             throw new Exception("Unsupported 'authType': (".$authType.')');
         }
@@ -43,39 +43,39 @@ class AltaPayCallbackHandler
     /**
      * @param SimpleXMLElement $xml
      *
-     * @throws AltaPayXmlException
+     * @throws AltapayXmlException
      *
      * @return void
      */
     private function verifyXml(SimpleXMLElement $xml)
     {
         if ($xml->getName() != 'APIResponse') {
-            throw new AltaPayXmlException('Unknown root-tag <'.$xml->getName().'> in XML, should have been <APIResponse>', $xml);
+            throw new AltapayXmlException('Unknown root-tag <'.$xml->getName().'> in XML, should have been <APIResponse>', $xml);
         }
         if (!isset($xml->Header)) {
-            throw new AltaPayXmlException('No <Header> in response', $xml);
+            throw new AltapayXmlException('No <Header> in response', $xml);
         }
         if (!isset($xml->Header->ErrorCode)) {
-            throw new AltaPayXmlException('No <ErrorCode> in Header of response', $xml);
+            throw new AltapayXmlException('No <ErrorCode> in Header of response', $xml);
         }
         if ((string)$xml->Header->ErrorCode !== '0') {
             throw new Exception($xml->Header->ErrorMessage.' (Error code: '.$xml->Header->ErrorCode.')');
         }
         if (!isset($xml->Body)) {
-            throw new AltaPayXmlException('No <Body> in response', $xml);
+            throw new AltapayXmlException('No <Body> in response', $xml);
         }
 
         if ($this->getBodyResult($xml) != 'Error' && !isset($xml->Body[0]->Transactions)) {
             $error = $this->getBodyMerchantErrorMessage($xml);
-            throw new AltaPayXmlException('No <Transactions> in <Body> of response'.($error ? ' ('.$error.')' : ''), $xml);
+            throw new AltapayXmlException('No <Transactions> in <Body> of response'.($error ? ' ('.$error.')' : ''), $xml);
         }
         if ($this->getBodyResult($xml) != 'Error' && !isset($xml->Body[0]->Transactions[0]->Transaction)) {
             $error = $this->getBodyMerchantErrorMessage($xml);
-            throw new AltaPayXmlException('No <Transaction> in <Transactions> of response'.($error ? ' ('.$error.')' : ''), $xml);
+            throw new AltapayXmlException('No <Transaction> in <Transactions> of response'.($error ? ' ('.$error.')' : ''), $xml);
         }
         if ($this->getBodyResult($xml) == 'Error' && !isset($xml->Body[0]->Transactions[0]->Transaction)) {
             $error = $this->getBodyMerchantErrorMessage($xml);
-            throw new AltaPayXmlException(($error ? ' ('.$error.')' : ''), $xml);
+            throw new AltapayXmlException(($error ? ' ('.$error.')' : ''), $xml);
         }
     }
 

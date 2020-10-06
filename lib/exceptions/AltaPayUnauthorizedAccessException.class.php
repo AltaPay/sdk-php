@@ -1,6 +1,6 @@
 <?php
 
-class AltaPayUnauthorizedAccessException extends AltaPayMerchantAPIException
+class AltapayUnauthorizedAccessException extends AltapayMerchantAPIException
 {
     /**
      * @param string $url

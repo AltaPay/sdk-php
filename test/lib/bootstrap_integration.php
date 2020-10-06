@@ -1,6 +1,6 @@
 <?php
 
-class ArrayCachingLogger implements IAltaPayCommunicationLogger
+class ArrayCachingLogger implements IAltapayCommunicationLogger
 {
     /** @var array<string, array<string, string|null>> */
     private $logs = array();

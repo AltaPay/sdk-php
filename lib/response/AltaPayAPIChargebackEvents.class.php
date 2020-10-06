@@ -1,10 +1,10 @@
 <?php
 
-class AltaPayAPIChargebackEvents
+class AltapayAPIChargebackEvents
 {
     /** @var SimpleXMLElement */
     private $simpleXmlElement;
-    /** @var AltaPayAPIChargebackEvent[] */
+    /** @var AltapayAPIChargebackEvent[] */
     private $chargebackEvents = array();
 
     /**
@@ -17,13 +17,13 @@ class AltaPayAPIChargebackEvents
         $this->simpleXmlElement = $xml;
         if (isset($xml->ChargebackEvent)) {
             foreach ($xml->ChargebackEvent as $chargebackEvent) {
-                $this->chargebackEvents[] = new AltaPayAPIChargebackEvent($chargebackEvent);
+                $this->chargebackEvents[] = new AltapayAPIChargebackEvent($chargebackEvent);
             }
         }
     }
 
     /**
-     * @return AltaPayAPIChargebackEvent|null
+     * @return AltapayAPIChargebackEvent|null
      */
     public function getNewest()
     {

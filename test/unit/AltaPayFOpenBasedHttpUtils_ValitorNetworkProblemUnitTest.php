@@ -3,29 +3,29 @@
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
 
-class AltaPayFOpenBasedHttpUtils_AltaPayNetworkProblemUnitTest extends TestCase
+class AltapayFOpenBasedHttpUtils_AltapayNetworkProblemUnitTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
     /** @var ArrayCachingLogger */
     private $logger;
-    /** @var AltaPayFOpenBasedHttpUtils */
+    /** @var AltapayFOpenBasedHttpUtils */
     private $httpUtils;
 
-    /** @var AltaPayMerchantAPI */
+    /** @var AltapayMerchantAPI */
     private $merchantApi;
 
     protected function setUp(): void
     {
         $this->logger = new ArrayCachingLogger();
-        $this->httpUtils = new AltaPayFOpenBasedHttpUtils(5, 3);
+        $this->httpUtils = new AltapayFOpenBasedHttpUtils(5, 3);
     }
 
     public function testConnectionRefused(): void
     {
-        $this->expectException(AltaPayConnectionFailedException::class);
+        $this->expectException(AltapayConnectionFailedException::class);
 
-        $this->merchantApi = new AltaPayMerchantAPI(
+        $this->merchantApi = new AltapayMerchantAPI(
             'https://localhost:404/',
             'username',
             'password',
@@ -37,9 +37,9 @@ class AltaPayFOpenBasedHttpUtils_AltaPayNetworkProblemUnitTest extends TestCase
 
     public function testNoConnection(): void
     {
-        $this->expectException(AltaPayConnectionFailedException::class);
+        $this->expectException(AltapayConnectionFailedException::class);
 
-        $this->merchantApi = new AltaPayMerchantAPI(
+        $this->merchantApi = new AltapayMerchantAPI(
             'https://localhost:404/',
             'username',
             'password',
@@ -51,9 +51,9 @@ class AltaPayFOpenBasedHttpUtils_AltaPayNetworkProblemUnitTest extends TestCase
 
     public function testNonHTTP200Response(): void
     {
-        $this->expectException(AltaPayInvalidResponseException::class);
+        $this->expectException(AltapayInvalidResponseException::class);
 
-        $this->merchantApi = new AltaPayMerchantAPI(
+        $this->merchantApi = new AltapayMerchantAPI(
             'https://example.com/',
             'username',
             'password',

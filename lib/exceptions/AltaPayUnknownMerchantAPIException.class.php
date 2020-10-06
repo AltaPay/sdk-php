@@ -1,6 +1,6 @@
 <?php
 
-class AltaPayUnknownMerchantAPIException extends AltaPayMerchantAPIException
+class AltapayUnknownMerchantAPIException extends AltapayMerchantAPIException
 {
     /** @var Exception|null */
     private $cause;

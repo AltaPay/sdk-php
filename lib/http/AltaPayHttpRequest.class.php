@@ -1,6 +1,6 @@
 <?php
 
-class AltaPayHttpRequest
+class AltapayHttpRequest
 {
     /** @var string */
     private $url;

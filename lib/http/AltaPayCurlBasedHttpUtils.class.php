@@ -1,6 +1,6 @@
 <?php
 
-class AltaPayCurlBasedHttpUtils implements IAltaPayHttpUtils
+class AltapayCurlBasedHttpUtils implements IAltapayHttpUtils
 {
     /** @var int */
     private $timeout;
@@ -22,11 +22,11 @@ class AltaPayCurlBasedHttpUtils implements IAltaPayHttpUtils
     }
 
     /**
-     * @param AltaPayHttpRequest $request
+     * @param AltapayHttpRequest $request
      *
-     * @return AltaPayHttpResponse
+     * @return AltapayHttpResponse
      */
-    public function requestURL(AltaPayHttpRequest $request)
+    public function requestURL(AltapayHttpRequest $request)
     {
         $curl = curl_init();
         if ($request->getUser() !== null && $request->getPass() !== null) {
@@ -49,7 +49,7 @@ class AltaPayCurlBasedHttpUtils implements IAltaPayHttpUtils
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, $this->sslVerifyPeer);
 
         // Container for the header/content
-        $httpResponse = new AltaPayHttpResponse();
+        $httpResponse = new AltapayHttpResponse();
         curl_setopt($curl, CURLOPT_HEADERFUNCTION, array($httpResponse, 'curlReadHeader'));
         curl_setopt($curl, CURLOPT_WRITEFUNCTION, array($httpResponse, 'curlReadContent'));
 
@@ -109,15 +109,15 @@ class AltaPayCurlBasedHttpUtils implements IAltaPayHttpUtils
         if ($httpResponse->getErrorMessage() == 'connect() timed out!'
             || preg_match('/Connection timed out/i', $httpResponse->getErrorMessage())
         ) {
-            $httpResponse->setConnectionResult(AltaPayHttpResponse::CONNECTION_TIMEOUT);
+            $httpResponse->setConnectionResult(AltapayHttpResponse::CONNECTION_TIMEOUT);
         } elseif ($httpResponse->getErrorMessage() == 'couldn\'t connect to host'
             || preg_match('/Connection refused/i', $httpResponse->getErrorMessage())
         ) {
-            $httpResponse->setConnectionResult(AltaPayHttpResponse::CONNECTION_REFUSED);
+            $httpResponse->setConnectionResult(AltapayHttpResponse::CONNECTION_REFUSED);
         } elseif (preg_match('/Operation timed out/i', $httpResponse->getErrorMessage())) {
-            $httpResponse->setConnectionResult(AltaPayHttpResponse::CONNECTION_READ_TIMEOUT);
+            $httpResponse->setConnectionResult(AltapayHttpResponse::CONNECTION_READ_TIMEOUT);
         } else {
-            $httpResponse->setConnectionResult(AltaPayHttpResponse::CONNECTION_OKAY);
+            $httpResponse->setConnectionResult(AltapayHttpResponse::CONNECTION_OKAY);
         }
 
         return $httpResponse;

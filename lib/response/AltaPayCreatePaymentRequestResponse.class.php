@@ -1,6 +1,6 @@
 <?php
 
-class AltaPayCreatePaymentRequestResponse extends AltaPayAbstractResponse
+class AltapayCreatePaymentRequestResponse extends AltapayAbstractResponse
 {
     /** @var string */
     private $redirectURL;

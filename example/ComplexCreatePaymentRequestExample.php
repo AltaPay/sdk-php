@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__.'/base.php';
-$api = InitializeAltaPayMerchantAPI();
+$api = InitializeAltapayMerchantAPI();
 $terminal = 'Some Terminal'; // change this to one of the test terminals supplied in the welcome email
 
 // Order details

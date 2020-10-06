@@ -1,6 +1,6 @@
 <?php
 
-abstract class AltaPayAbstractPaymentResponse extends AltaPayAbstractResponse
+abstract class AltapayAbstractPaymentResponse extends AltapayAbstractResponse
 {
     /** @var string */
     private $result;
@@ -10,7 +10,7 @@ abstract class AltaPayAbstractPaymentResponse extends AltaPayAbstractResponse
     private $cardHolderErrorMessage;
     /** @var string */
     private $cardHolderMessageMustBeShown;
-    /** @var AltaPayAPIPayment[] */
+    /** @var AltapayAPIPayment[] */
     protected $payments = array();
 
     /**
@@ -52,24 +52,24 @@ abstract class AltaPayAbstractPaymentResponse extends AltaPayAbstractResponse
 
             if (isset($xml->Body->Transactions->Transaction)) {
                 foreach ($xml->Body->Transactions->Transaction as $transactionXml) {
-                    $this->addPayment(new AltaPayAPIPayment($transactionXml));
+                    $this->addPayment(new AltapayAPIPayment($transactionXml));
                 }
             }
         }
     }
 
     /**
-     * @param AltaPayAPIPayment $payment
+     * @param AltapayAPIPayment $payment
      *
      * @return void
      */
-    private function addPayment(AltaPayAPIPayment $payment)
+    private function addPayment(AltapayAPIPayment $payment)
     {
         $this->payments[] = $payment;
     }
 
     /**
-     * @return AltaPayAPIPayment[]
+     * @return AltapayAPIPayment[]
      */
     public function getPayments()
     {
@@ -77,7 +77,7 @@ abstract class AltaPayAbstractPaymentResponse extends AltaPayAbstractResponse
     }
 
     /**
-     * @return AltaPayAPIPayment|null
+     * @return AltapayAPIPayment|null
      */
     public function getPrimaryPayment()
     {

@@ -1,6 +1,6 @@
 <?php
 
-class AltaPayUpdateOrderResponse extends AltaPayAbstractPaymentResponse
+class AltapayUpdateOrderResponse extends AltapayAbstractPaymentResponse
 {
     /**
      * @param SimpleXMLElement $body

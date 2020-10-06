@@ -41,7 +41,7 @@
  *     <ReconciliationIdentifiers></ReconciliationIdentifiers>
  * </Transaction>
  */
-class AltaPayAPIPayment
+class AltapayAPIPayment
 {
     /** @var SimpleXMLElement */
     private $simpleXmlElement;
@@ -99,7 +99,7 @@ class AltaPayAPIPayment
     private $paymentNature;
     /** @var string */
     private $paymentSource;
-    /** @var AltaPayAPIPaymentNatureService */
+    /** @var AltapayAPIPaymentNatureService */
     private $paymentNatureService;
 
     /** @var string */
@@ -115,16 +115,16 @@ class AltaPayAPIPayment
     private $updatedDate;
 
     // Remember to reflect additions within this->getCurrentXml()
-    /** @var AltaPayAPICustomerInfo */
+    /** @var AltapayAPICustomerInfo */
     private $customerInfo;
 
-    /** @var AltaPayAPIPaymentInfos */
+    /** @var AltapayAPIPaymentInfos */
     private $paymentInfos;
 
-    /** @var AltaPayAPIReconciliationIdentifier[] */
+    /** @var AltapayAPIReconciliationIdentifier[] */
     private $reconciliationIdentifiers = array();
 
-    /** @var AltaPayAPIChargebackEvents */
+    /** @var AltapayAPIChargebackEvents */
     private $chargebackEvents;
     // Remember to reflect additions within this->getCurrentXml()
 
@@ -166,19 +166,19 @@ class AltaPayAPIPayment
         $this->paymentSchemeName = (string)$xml->PaymentSchemeName;
         $this->paymentNature = (string)$xml->PaymentNature;
         $this->paymentSource = (string)$xml->PaymentSource;
-        $this->paymentNatureService = new AltaPayAPIPaymentNatureService($xml->PaymentNatureService);
+        $this->paymentNatureService = new AltapayAPIPaymentNatureService($xml->PaymentNatureService);
 
         $this->fraudRiskScore = (string)$xml->FraudRiskScore;
         $this->fraudExplanation = (string)$xml->FraudExplanation;
         $this->fraudRecommendation = (string)$xml->FraudRecommendation;
 
-        $this->customerInfo = new AltaPayAPICustomerInfo($xml->CustomerInfo);
-        $this->paymentInfos = new AltaPayAPIPaymentInfos($xml->PaymentInfos);
-        $this->chargebackEvents = new AltaPayAPIChargebackEvents($xml->ChargebackEvents);
+        $this->customerInfo = new AltapayAPICustomerInfo($xml->CustomerInfo);
+        $this->paymentInfos = new AltapayAPIPaymentInfos($xml->PaymentInfos);
+        $this->chargebackEvents = new AltapayAPIChargebackEvents($xml->ChargebackEvents);
 
         if (isset($xml->ReconciliationIdentifiers->ReconciliationIdentifier)) {
             foreach ($xml->ReconciliationIdentifiers->ReconciliationIdentifier as $reconXml) {
-                $this->reconciliationIdentifiers[] = new AltaPayAPIReconciliationIdentifier($reconXml);
+                $this->reconciliationIdentifiers[] = new AltapayAPIReconciliationIdentifier($reconXml);
             }
         }
     }
@@ -208,7 +208,7 @@ class AltaPayAPIPayment
     }
 
     /**
-     * @return AltaPayAPIReconciliationIdentifier
+     * @return AltapayAPIReconciliationIdentifier
      */
     public function getLastReconciliationIdentifier()
     {
@@ -320,7 +320,7 @@ class AltaPayAPIPayment
     }
 
     /**
-     * @return AltaPayAPIPaymentNatureService
+     * @return AltapayAPIPaymentNatureService
      */
     public function getPaymentNatureService()
     {
@@ -352,7 +352,7 @@ class AltaPayAPIPayment
     }
 
     /**
-     * @return AltaPayAPICustomerInfo
+     * @return AltapayAPICustomerInfo
      */
     public function getCustomerInfo()
     {
@@ -426,7 +426,7 @@ class AltaPayAPIPayment
     }
 
     /**
-     * @return AltaPayAPIChargebackEvents
+     * @return AltapayAPIChargebackEvents
      */
     public function getChargebackEvents()
     {
@@ -436,7 +436,7 @@ class AltaPayAPIPayment
     /**
      * Returns an XML representation of the payment as used to instantiate the object. It does not reflect any subsequent changes.
      *
-     * @see    AltaPayAPIPayment::getCurrentXml() for an up-to-date XML representation of the payment
+     * @see    AltapayAPIPayment::getCurrentXml() for an up-to-date XML representation of the payment
      *
      * @return SimpleXMLElement an XML representation of the object as it was instantiated
      */
@@ -448,7 +448,7 @@ class AltaPayAPIPayment
     /**
      * Returns an up-to-date XML representation of the payment.
      *
-     * @see    AltaPayAPIPayment::getXml() for an XML representation of the payment as used to instantiate the object
+     * @see    AltapayAPIPayment::getXml() for an XML representation of the payment as used to instantiate the object
      *
      * @return SimpleXMLElement an up-to-date XML representation of the payment
      */

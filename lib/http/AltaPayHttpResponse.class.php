@@ -1,6 +1,6 @@
 <?php
 
-class AltaPayHttpResponse
+class AltapayHttpResponse
 {
     const CONNECTION_REFUSED = 'CONNECTION_REFUSED';
     const CONNECTION_TIMEOUT = 'CONNECTION_TIMEOUT';

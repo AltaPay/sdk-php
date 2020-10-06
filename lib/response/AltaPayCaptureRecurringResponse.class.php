@@ -1,6 +1,6 @@
 <?php
 
-class AltaPayCaptureRecurringResponse extends AltaPayPreauthRecurringResponse
+class AltapayCaptureRecurringResponse extends AltapayPreauthRecurringResponse
 {
     /**
      * @return ?bool

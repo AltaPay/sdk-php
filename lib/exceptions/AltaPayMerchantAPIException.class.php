@@ -1,5 +1,5 @@
 <?php
 
-class AltaPayMerchantAPIException extends Exception
+class AltapayMerchantAPIException extends Exception
 {
 }

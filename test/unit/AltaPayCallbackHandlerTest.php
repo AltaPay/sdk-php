@@ -3,16 +3,16 @@
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
 
-class AltaPayCallbackHandlerTest extends TestCase
+class AltapayCallbackHandlerTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    /** @var AltaPayCallbackHandler */
+    /** @var AltapayCallbackHandler */
     private $handler;
 
     protected function setUp(): void
     {
-        $this->handler = new AltaPayCallbackHandler();
+        $this->handler = new AltapayCallbackHandler();
     }
 
     public function testErrorCaseDueToTooLongCardNumber(): void
@@ -218,7 +218,7 @@ class AltaPayCallbackHandlerTest extends TestCase
         try {
             $this->handler->parseXmlResponse($xml);
             static::fail('Expected an exception');
-        } catch (AltaPayXmlException $e) {
+        } catch (AltapayXmlException $e) {
             static::assertInstanceOf('SimpleXMLElement', $e->getXml());
             $merchantErrorMessage = (string)$e->getXml()->Body[0]->MerchantErrorMessage;
             static::assertEquals('Unable to register MobilePay payment', $merchantErrorMessage);
@@ -226,7 +226,7 @@ class AltaPayCallbackHandlerTest extends TestCase
     }
 
     /**
-     * @throws AltaPayXmlException
+     * @throws AltapayXmlException
      */
     public function testReadCardHolderErrorMessageMustBeShown(): void
     {
@@ -240,7 +240,7 @@ class AltaPayCallbackHandlerTest extends TestCase
     }
 
     /**
-     * @throws AltaPayXmlException
+     * @throws AltapayXmlException
      */
     public function testReadReasonCode(): void
     {
@@ -252,7 +252,7 @@ class AltaPayCallbackHandlerTest extends TestCase
     }
 
     /**
-     * @throws AltaPayXmlException
+     * @throws AltapayXmlException
      */
     public function testReadPaymentId(): void
     {

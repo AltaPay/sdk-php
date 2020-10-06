@@ -1,6 +1,6 @@
 <?php
 
-class AltaPayLoginResponse extends AltaPayAbstractResponse
+class AltapayLoginResponse extends AltapayAbstractResponse
 {
     /** @var string */
     private $result;

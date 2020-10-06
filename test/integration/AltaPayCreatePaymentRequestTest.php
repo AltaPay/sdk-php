@@ -3,22 +3,22 @@
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
 
-class AltaPayCreatePaymentRequestTest extends TestCase
+class AltapayCreatePaymentRequestTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
     /** @var TestConfig */
     private $config;
-    /** @var AltaPayMerchantAPI */
+    /** @var AltapayMerchantAPI */
     private $merchantApi;
 
     /**
-     * @throws AltaPayMerchantAPIException
+     * @throws AltapayMerchantAPIException
      */
     protected function setUp(): void
     {
         $this->config = new TestConfig();
-        $this->merchantApi = new AltaPayMerchantAPI($this->config->installation, $this->config->username, $this->config->password);
+        $this->merchantApi = new AltapayMerchantAPI($this->config->installation, $this->config->username, $this->config->password);
         $this->merchantApi->login();
     }
 
