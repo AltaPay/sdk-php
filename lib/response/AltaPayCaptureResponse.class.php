@@ -1,6 +1,6 @@
 <?php
 
-class AltaPayCaptureResponse extends AltaPayAbstractPaymentResponse
+class AltapayCaptureResponse extends AltapayAbstractPaymentResponse
 {
     /**
      * @return void

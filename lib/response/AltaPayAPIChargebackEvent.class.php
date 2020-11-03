@@ -1,6 +1,6 @@
 <?php
 
-class AltaPayAPIChargebackEvent
+class AltapayAPIChargebackEvent
 {
     /** @var DateTime */
     private $date;

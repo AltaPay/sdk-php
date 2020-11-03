@@ -3,22 +3,22 @@
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
 
-class AltaPayFOpenBasedHttpUtils_AltaPayNetworkProblemTest extends TestCase
+class AltapayFOpenBasedHttpUtils_AltapayNetworkProblemTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
     /** @var ArrayCachingLogger */
     private $logger;
-    /** @var AltaPayFOpenBasedHttpUtils */
+    /** @var AltapayFOpenBasedHttpUtils */
     private $httpUtils;
 
-    /** @var AltaPayMerchantAPI */
+    /** @var AltapayMerchantAPI */
     private $merchantApi;
 
     protected function setUp(): void
     {
         $this->logger = new ArrayCachingLogger();
-        $this->httpUtils = new AltaPayFOpenBasedHttpUtils(5, 3);
+        $this->httpUtils = new AltapayFOpenBasedHttpUtils(5, 3);
     }
 
     /**
@@ -26,9 +26,9 @@ class AltaPayFOpenBasedHttpUtils_AltaPayNetworkProblemTest extends TestCase
      */
     public function _testRequestTimeout(): void
     {
-        $this->expectException(AltaPayRequestTimeoutException::class);
+        $this->expectException(AltapayRequestTimeoutException::class);
 
-        $this->merchantApi = new AltaPayMerchantAPI(
+        $this->merchantApi = new AltapayMerchantAPI(
             'https://testbank.altapay.com/Sleep?time=21&',
             'username',
             'password',
@@ -38,7 +38,7 @@ class AltaPayFOpenBasedHttpUtils_AltaPayNetworkProblemTest extends TestCase
         try {
             $this->merchantApi->login();
         } catch (Exception $exception) {
-            if (!($exception instanceof AltaPayRequestTimeoutException)) {
+            if (!($exception instanceof AltapayRequestTimeoutException)) {
                 print_r($this->logger->getLogs());
             }
             throw $exception;
@@ -47,9 +47,9 @@ class AltaPayFOpenBasedHttpUtils_AltaPayNetworkProblemTest extends TestCase
 
     public function testNonXMLResponse(): void
     {
-        $this->expectException(AltaPayInvalidResponseException::class);
+        $this->expectException(AltapayInvalidResponseException::class);
 
-        $this->merchantApi = new AltaPayMerchantAPI(
+        $this->merchantApi = new AltapayMerchantAPI(
             'https://testbank.altapay.com',
             'username',
             'password',
@@ -61,9 +61,9 @@ class AltaPayFOpenBasedHttpUtils_AltaPayNetworkProblemTest extends TestCase
 
     public function testUnauthorizedResponse(): void
     {
-        $this->expectException(AltaPayUnauthorizedAccessException::class);
+        $this->expectException(AltapayUnauthorizedAccessException::class);
 
-        $this->merchantApi = new AltaPayMerchantAPI(
+        $this->merchantApi = new AltapayMerchantAPI(
             'https://testgateway.altapay.com/',
             'username',
             'password',

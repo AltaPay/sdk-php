@@ -1,6 +1,6 @@
 <?php
 
-class AltaPayFOpenBasedHttpUtils implements IAltaPayHttpUtils
+class AltapayFOpenBasedHttpUtils implements IAltapayHttpUtils
 {
     /** @var string */
     private $streamState;
@@ -20,11 +20,11 @@ class AltaPayFOpenBasedHttpUtils implements IAltaPayHttpUtils
     }
 
     /**
-     * @param AltaPayHttpRequest $request
+     * @param AltapayHttpRequest $request
      *
-     * @return AltaPayHttpResponse
+     * @return AltapayHttpResponse
      */
-    public function requestURL(AltaPayHttpRequest $request)
+    public function requestURL(AltapayHttpRequest $request)
     {
         $this->streamState = 'NOT_CONNECTED';
 
@@ -33,27 +33,27 @@ class AltaPayFOpenBasedHttpUtils implements IAltaPayHttpUtils
 
         $url = ($request->getMethod() == 'GET') ? $this->appendToUrl($request->getUrl(), $request->getParameters()) : $request->getUrl();
         $content = @file_get_contents($url, false, $context);
-        $response = new AltaPayHttpResponse();
+        $response = new AltapayHttpResponse();
         $response->setInfo(array('http_code' => $this->getHttpCodeFromHeader($http_response_header)));
         if ($content !== false) {
             $response->setHeader($http_response_header);
             $response->setContent($content);
-            $response->setConnectionResult(AltaPayHttpResponse::CONNECTION_OKAY);
+            $response->setConnectionResult(AltapayHttpResponse::CONNECTION_OKAY);
         } elseif ($this->streamState == 'NOT_CONNECTED') {
-            $response->setConnectionResult(AltaPayHttpResponse::CONNECTION_REFUSED);
+            $response->setConnectionResult(AltapayHttpResponse::CONNECTION_REFUSED);
         } else {
-            $response->setConnectionResult(AltaPayHttpResponse::CONNECTION_READ_TIMEOUT);
+            $response->setConnectionResult(AltapayHttpResponse::CONNECTION_READ_TIMEOUT);
         }
 
         return $response;
     }
 
     /**
-     * @param AltaPayHttpRequest $request
+     * @param AltapayHttpRequest $request
      *
      * @return resource
      */
-    private function createContext(AltaPayHttpRequest $request)
+    private function createContext(AltapayHttpRequest $request)
     {
         $args = array(
             'http' => array(

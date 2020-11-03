@@ -14,7 +14,7 @@
         </exec>
     </target>
 
-    <target name="SetAltaPayVersion" depends="GetGitLastTag">
+    <target name="SetAltapayVersion" depends="GetGitLastTag">
         <echo file="lib/ALTAPAY_VERSION.php">&lt;?php
 define('ALTAPAY_VERSION', 'PHPSDK/${GitLastTag}');</echo>
     </target>
@@ -24,7 +24,7 @@ define('ALTAPAY_VERSION', 'PHPSDK/${GitLastTag}');</echo>
         <mkdir dir="dist"/>
     </target>
 
-    <target name="Build" depends="-ensureDist,SetAltaPayVersion">
+    <target name="Build" depends="-ensureDist,SetAltapayVersion">
         <zip destfile="dist/PHPSDK_${GitLastTag}.zip">
             <fileset dir=".">
                 <include name="lib/**/*" />

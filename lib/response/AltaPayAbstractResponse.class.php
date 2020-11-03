@@ -15,7 +15,7 @@
  *     </Body>
  * </APIResponse>
  */
-abstract class AltaPayAbstractResponse
+abstract class AltapayAbstractResponse
 {
     /** @var string */
     protected $xml;

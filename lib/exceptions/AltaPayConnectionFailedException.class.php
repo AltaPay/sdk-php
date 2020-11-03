@@ -1,6 +1,6 @@
 <?php
 
-class AltaPayConnectionFailedException extends AltaPayMerchantAPIException
+class AltapayConnectionFailedException extends AltapayMerchantAPIException
 {
     /**
      * @param string $url

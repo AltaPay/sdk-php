@@ -1,12 +1,12 @@
 <?php
 
-$callbackHandler = new AltaPayCallbackHandler();
+$callbackHandler = new AltapayCallbackHandler();
 // Load an example of reservation and capture request
 // The XML would normally be POST'ed back to the okay/fail page as a parameter named 'xml'
 $xml = file_get_contents(__DIR__.'/xml/CallbackXML_subscriptionAndCharge_released.xml') ?: '';
 
 try {
-    /** @var AltaPayCaptureRecurringResponse $response */
+    /** @var AltapayCaptureRecurringResponse $response */
     $response = $callbackHandler->parseXmlResponse($xml);
     $payment = $response->getPrimaryPayment();
     if ($response->wasSubscriptionReleased() && $payment) {

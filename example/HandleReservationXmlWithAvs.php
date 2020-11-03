@@ -1,6 +1,6 @@
 <?php
 
-$callbackHandler = new AltaPayCallbackHandler();
+$callbackHandler = new AltapayCallbackHandler();
 // Load an example of reservation and capture request
 $xml = file_get_contents(__DIR__.'/xml/CallbackXML_reservationAndCapture.xml') ?: '';
 

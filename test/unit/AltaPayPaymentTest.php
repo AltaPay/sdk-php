@@ -3,7 +3,7 @@
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
 
-class AltaPayPaymentTest extends TestCase
+class AltapayPaymentTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
@@ -87,7 +87,7 @@ class AltaPayPaymentTest extends TestCase
      */
     public function testCreatedDate(): void
     {
-        $payment = new AltaPayAPIPayment($this->xml);
+        $payment = new AltapayAPIPayment($this->xml);
 
         static::assertEquals('2014-03-21 20:49:38', $payment->getCreatedDate());
     }
@@ -97,7 +97,7 @@ class AltaPayPaymentTest extends TestCase
      */
     public function testUpdatedDate(): void
     {
-        $payment = new AltaPayAPIPayment($this->xml);
+        $payment = new AltapayAPIPayment($this->xml);
 
         static::assertEquals('2014-03-21 20:49:41', $payment->getUpdatedDate());
     }
@@ -108,9 +108,9 @@ class AltaPayPaymentTest extends TestCase
     public function testParsingOfSimpleXml(): void
     {
         $xml = new SimpleXMLElement('<Transaction><PaymentNatureService /><ReconciliationIdentifiers /></Transaction>');
-        $payment = new AltaPayAPIPayment($xml);
+        $payment = new AltapayAPIPayment($xml);
 
-        static::assertInstanceOf(AltaPayAPIPayment::class, $payment);
+        static::assertInstanceOf(AltapayAPIPayment::class, $payment);
     }
 
     /**
@@ -118,7 +118,7 @@ class AltaPayPaymentTest extends TestCase
      */
     public function testParsingOfCurrentStatus(): void
     {
-        $payment = new AltaPayAPIPayment($this->xml);
+        $payment = new AltapayAPIPayment($this->xml);
 
         static::assertEquals('captured', $payment->getCurrentStatus());
     }
@@ -128,7 +128,7 @@ class AltaPayPaymentTest extends TestCase
      */
     public function testParsingOfId(): void
     {
-        $payment = new AltaPayAPIPayment($this->xml);
+        $payment = new AltapayAPIPayment($this->xml);
 
         static::assertEquals('14398495', $payment->getId());
     }
@@ -138,7 +138,7 @@ class AltaPayPaymentTest extends TestCase
      */
     public function testParsingOfAuthType(): void
     {
-        $payment = new AltaPayAPIPayment($this->xml);
+        $payment = new AltapayAPIPayment($this->xml);
 
         static::assertEquals('paymentAndCapture', $payment->getAuthType());
     }
@@ -148,7 +148,7 @@ class AltaPayPaymentTest extends TestCase
      */
     public function testParsingOfShopOrderId(): void
     {
-        $payment = new AltaPayAPIPayment($this->xml);
+        $payment = new AltapayAPIPayment($this->xml);
 
         static::assertEquals('ceae3968b82640e38a24ac162d8c2738', $payment->getShopOrderId());
     }
@@ -158,7 +158,7 @@ class AltaPayPaymentTest extends TestCase
      */
     public function testParsingOfMaskedPan(): void
     {
-        $payment = new AltaPayAPIPayment($this->xml);
+        $payment = new AltapayAPIPayment($this->xml);
 
         static::assertEquals('424374******7275', $payment->getMaskedPan());
     }
@@ -168,7 +168,7 @@ class AltaPayPaymentTest extends TestCase
      */
     public function testParsingOfCreditCardToken(): void
     {
-        $payment = new AltaPayAPIPayment($this->xml);
+        $payment = new AltapayAPIPayment($this->xml);
 
         static::assertEquals('37ad3ff596164142876df477e13336e0aeef0905', $payment->getCreditCardToken());
     }
@@ -178,7 +178,7 @@ class AltaPayPaymentTest extends TestCase
      */
     public function testParsingOfCardStatus(): void
     {
-        $payment = new AltaPayAPIPayment($this->xml);
+        $payment = new AltapayAPIPayment($this->xml);
 
         static::assertEquals('Valid', $payment->getCardStatus());
     }
@@ -188,7 +188,7 @@ class AltaPayPaymentTest extends TestCase
      */
     public function testParsingOfPaymentNature(): void
     {
-        $payment = new AltaPayAPIPayment($this->xml);
+        $payment = new AltapayAPIPayment($this->xml);
 
         static::assertEquals('CreditCard', $payment->getPaymentNature());
     }
@@ -198,7 +198,7 @@ class AltaPayPaymentTest extends TestCase
      */
     public function testParsingOfPaymentSchemeName(): void
     {
-        $payment = new AltaPayAPIPayment($this->xml);
+        $payment = new AltapayAPIPayment($this->xml);
 
         static::assertEquals('Visa', $payment->getPaymentSchemeName());
     }
@@ -208,7 +208,7 @@ class AltaPayPaymentTest extends TestCase
      */
     public function testParsingOfPaymentNatureService(): void
     {
-        $payment = new AltaPayAPIPayment($this->xml);
+        $payment = new AltapayAPIPayment($this->xml);
 
         $paymentNature = $payment->getPaymentNatureService();
         static::assertEquals('AltaPayAcquirer', $paymentNature->getName());
@@ -223,7 +223,7 @@ class AltaPayPaymentTest extends TestCase
      */
     public function testParsingOfFraudRiskScore(): void
     {
-        $payment = new AltaPayAPIPayment($this->xml);
+        $payment = new AltapayAPIPayment($this->xml);
 
         static::assertEquals('42', $payment->getFraudRiskScore());
     }
@@ -233,7 +233,7 @@ class AltaPayPaymentTest extends TestCase
      */
     public function testParsingOfFraudExplanation(): void
     {
-        $payment = new AltaPayAPIPayment($this->xml);
+        $payment = new AltapayAPIPayment($this->xml);
 
         static::assertEquals('For the test fraud service the risk score is always equal mod 101 of the created amount for the payment', $payment->getFraudExplanation());
     }
@@ -243,7 +243,7 @@ class AltaPayPaymentTest extends TestCase
      */
     public function testParsingOfFraudRecommendation(): void
     {
-        $payment = new AltaPayAPIPayment($this->xml);
+        $payment = new AltapayAPIPayment($this->xml);
 
         static::assertEquals('Deny', $payment->getFraudRecommendation());
     }
@@ -253,7 +253,7 @@ class AltaPayPaymentTest extends TestCase
      */
     public function testParsingOfCustomerInfo(): void
     {
-        $payment = new AltaPayAPIPayment($this->xml);
+        $payment = new AltapayAPIPayment($this->xml);
         $customerInfo = $payment->getCustomerInfo();
 
         static::assertEquals('Mozilla/5.0 (Windows NT 6.1; WOW64; rv:27.0) Gecko/20100101 Firefox/27.0', $customerInfo->getUserAgent());
@@ -270,7 +270,7 @@ class AltaPayPaymentTest extends TestCase
      */
     public function testParsingOfPaymentInfo(): void
     {
-        $payment = new AltaPayAPIPayment($this->xml);
+        $payment = new AltapayAPIPayment($this->xml);
 
         static::assertEquals('5 500 Gold', $payment->getPaymentInfo('item_name'));
         static::assertEquals('19.95', $payment->getPaymentInfo('original_amount'));
@@ -284,7 +284,7 @@ class AltaPayPaymentTest extends TestCase
      */
     public function testParsingOfCurrency(): void
     {
-        $payment = new AltaPayAPIPayment($this->xml);
+        $payment = new AltapayAPIPayment($this->xml);
 
         static::assertEquals('978', $payment->getCurrency());
     }
@@ -294,7 +294,7 @@ class AltaPayPaymentTest extends TestCase
      */
     public function testParsingOfReservedAmount(): void
     {
-        $payment = new AltaPayAPIPayment($this->xml);
+        $payment = new AltapayAPIPayment($this->xml);
 
         static::assertEquals('20.00', $payment->getReservedAmount());
     }
@@ -304,14 +304,14 @@ class AltaPayPaymentTest extends TestCase
      */
     public function testParsingOfCapturedAmount(): void
     {
-        $payment = new AltaPayAPIPayment($this->xml);
+        $payment = new AltapayAPIPayment($this->xml);
 
         static::assertEquals('19.95', $payment->getCapturedAmount());
     }
 
     public function testIsTokenized(): void
     {
-        $payment = new AltaPayAPIPayment($this->xml);
+        $payment = new AltapayAPIPayment($this->xml);
 
         static::assertTrue($payment->isTokenized());
     }

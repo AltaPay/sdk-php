@@ -1,6 +1,6 @@
 <?php
 
-class AltaPayCreateInvoiceReservationResponse extends AltaPayAbstractResponse
+class AltapayCreateInvoiceReservationResponse extends AltapayAbstractResponse
 {
     /** @var string */
     private $result;

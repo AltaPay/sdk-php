@@ -13,7 +13,7 @@
  *     <PostalCode><![CDATA[2860]]></PostalCode>
  * </BillingAddress>
  */
-class AltaPayAPIAddress
+class AltapayAPIAddress
 {
     /** @var string */
     private $firstName;

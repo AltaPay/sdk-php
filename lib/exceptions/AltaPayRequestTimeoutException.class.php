@@ -1,6 +1,6 @@
 <?php
 
-class AltaPayRequestTimeoutException extends AltaPayMerchantAPIException
+class AltapayRequestTimeoutException extends AltapayMerchantAPIException
 {
     /**
      * @param string $url

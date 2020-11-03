@@ -1,6 +1,6 @@
 <?php
 
-class AltaPayAPITransactionsRequest
+class AltapayAPITransactionsRequest
 {
     /** @var string */
     private $shop;

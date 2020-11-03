@@ -14,7 +14,7 @@
  *     <Country></Country><Source>NotSet</Source>
  * </CountryOfOrigin>
  */
-class AltaPayAPICustomerInfo
+class AltapayAPICustomerInfo
 {
     /** @var SimpleXMLElement */
     private $simpleXmlElement;
@@ -31,14 +31,14 @@ class AltaPayAPICustomerInfo
     /** @var string */
     private $organisationNumber;
 
-    /** @var AltaPayAPIAddress */
+    /** @var AltapayAPIAddress */
     private $billingAddress;
-    /** @var AltaPayAPIAddress */
+    /** @var AltapayAPIAddress */
     private $shippingAddress;
-    /** @var AltaPayAPIAddress */
+    /** @var AltapayAPIAddress */
     private $registeredAddress;
 
-    /** @var AltaPayAPICountryOfOrigin */
+    /** @var AltapayAPICountryOfOrigin */
     private $countryOfOrigin;
 
     /**
@@ -55,21 +55,21 @@ class AltaPayAPICustomerInfo
         $this->organisationNumber = (string)$xml->OrganisationNumber;
 
         if (isset($xml->CountryOfOrigin)) {
-            $this->countryOfOrigin = new AltaPayAPICountryOfOrigin($xml->CountryOfOrigin);
+            $this->countryOfOrigin = new AltapayAPICountryOfOrigin($xml->CountryOfOrigin);
         }
         if (isset($xml->BillingAddress)) {
-            $this->billingAddress = new AltaPayAPIAddress($xml->BillingAddress);
+            $this->billingAddress = new AltapayAPIAddress($xml->BillingAddress);
         }
         if (isset($xml->ShippingAddress)) {
-            $this->shippingAddress = new AltaPayAPIAddress($xml->ShippingAddress);
+            $this->shippingAddress = new AltapayAPIAddress($xml->ShippingAddress);
         }
         if (isset($xml->RegisteredAddress)) {
-            $this->registeredAddress = new AltaPayAPIAddress($xml->RegisteredAddress);
+            $this->registeredAddress = new AltapayAPIAddress($xml->RegisteredAddress);
         }
     }
 
     /**
-     * @return AltaPayAPIAddress
+     * @return AltapayAPIAddress
      */
     public function getBillingAddress()
     {
@@ -77,7 +77,7 @@ class AltaPayAPICustomerInfo
     }
 
     /**
-     * @return AltaPayAPIAddress
+     * @return AltapayAPIAddress
      */
     public function getShippingAddress()
     {
@@ -85,7 +85,7 @@ class AltaPayAPICustomerInfo
     }
 
     /**
-     * @return AltaPayAPIAddress
+     * @return AltapayAPIAddress
      */
     public function getRegisteredAddress()
     {
@@ -93,7 +93,7 @@ class AltaPayAPICustomerInfo
     }
 
     /**
-     * @return AltaPayAPICountryOfOrigin
+     * @return AltapayAPICountryOfOrigin
      */
     public function getCountryOfOrigin()
     {

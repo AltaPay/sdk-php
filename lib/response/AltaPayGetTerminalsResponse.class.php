@@ -1,8 +1,8 @@
 <?php
 
-class AltaPayGetTerminalsResponse extends AltaPayAbstractResponse
+class AltapayGetTerminalsResponse extends AltapayAbstractResponse
 {
-    /** @var AltaPayTerminal[] */
+    /** @var AltapayTerminal[] */
     private $terminals = array();
 
     public function __construct(SimpleXMLElement $xml)
@@ -11,7 +11,7 @@ class AltaPayGetTerminalsResponse extends AltaPayAbstractResponse
 
         if ($this->getErrorCode() === '0') {
             foreach ($xml->Body->Terminals->Terminal as $terminalXml) {
-                $terminal = new AltaPayTerminal();
+                $terminal = new AltapayTerminal();
                 $terminal->setTitle((string)$terminalXml->Title);
                 $terminal->setCountry((string)$terminalXml->Country);
                 foreach ($terminalXml->Natures->Nature as $nature) {
@@ -27,7 +27,7 @@ class AltaPayGetTerminalsResponse extends AltaPayAbstractResponse
     }
 
     /**
-     * @return AltaPayTerminal[]
+     * @return AltapayTerminal[]
      */
     public function getTerminals()
     {

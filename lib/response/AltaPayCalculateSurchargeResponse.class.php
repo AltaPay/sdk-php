@@ -1,6 +1,6 @@
 <?php
 
-class AltaPayCalculateSurchargeResponse extends AltaPayAbstractResponse
+class AltapayCalculateSurchargeResponse extends AltapayAbstractResponse
 {
     /** @var string */
     private $result;

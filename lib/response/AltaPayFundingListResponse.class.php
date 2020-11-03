@@ -1,10 +1,10 @@
 <?php
 
-class AltaPayFundingListResponse extends AltaPayAbstractResponse
+class AltapayFundingListResponse extends AltapayAbstractResponse
 {
     /** @var int */
     private $numberOfPages;
-    /** @var AltaPayAPIFunding[] */
+    /** @var AltapayAPIFunding[] */
     private $fundings = array();
 
     /**
@@ -17,7 +17,7 @@ class AltaPayFundingListResponse extends AltaPayAbstractResponse
             $attr = $xml->Body->Fundings->attributes();
             $this->numberOfPages = isset($attr['numberOfPages']) ? (int)$attr['numberOfPages'] : 0;
             foreach ($xml->Body->Fundings->Funding as $funding) {
-                $this->fundings[] = new AltaPayAPIFunding($funding);
+                $this->fundings[] = new AltapayAPIFunding($funding);
             }
         }
     }
@@ -39,7 +39,7 @@ class AltaPayFundingListResponse extends AltaPayAbstractResponse
     }
 
     /**
-     * @return AltaPayAPIFunding[]
+     * @return AltapayAPIFunding[]
      */
     public function getFundings()
     {
