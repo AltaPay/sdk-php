@@ -1,6 +1,7 @@
 {
     "name": "altapay/sdk-php",
     "license": "MIT",
+    "abandoned": "altapay/api-php"
     "description": "AltaPay: Payments less complicated",
     "minimum-stability": "dev",
     "prefer-stable": true,
